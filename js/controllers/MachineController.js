@@ -1,9 +1,9 @@
 const STEP_MS = 2500;  // time per step during auto play
-const FIRST_STEP = 1;  // the step right after the power button is pressed
 
-// Drives the boot sequence: the power button turns the machine on or off, the player
-// moves through the steps once it is on, every step change is pushed to memory and
-// all the views that show machine state, and auto play advances one step at a time.
+// Drives the tutorial: the chapter picker and the URL choose a chapter, the power button
+// turns the machine on or off, the player moves through the chapter's steps once it is
+// on, and every step change is pushed to memory and all the views that show machine
+// state. Auto play advances one step at a time.
 export class MachineController {
   #playing = false;
   #timer = null;
@@ -14,32 +14,45 @@ export class MachineController {
     this.machine = machine;
     this.memory = memory;
     this.views = views;
-    const { frontPanel, player } = views;
+    const { frontPanel, player, chapters, route } = views;
 
     frontPanel.on('power', () => {
       this.#pause();
       machine.pressPower();
     });
 
+    chapters.on('select', (id) => machine.loadChapter(id, 0));
+    route.on('navigate', (target) => {
+      // A broken link or a chapter that isn't ready yet: point the URL back at where we are
+      if (!target || !machine.loadChapter(target.chapterId, target.index)) {
+        route.render(machine.chapter.id, machine.index);
+      }
+    });
+
     player.on('play', () => (this.#playing ? this.#pause() : this.#play()));
     player.on('prev', () => {
-      if (machine.index > FIRST_STEP) machine.back();
+      if (machine.index > machine.firstStep) machine.back();
     });
     player.on('next', () => {
       if (machine.powered) machine.next();
     });
     player.on('seek', (index) => {
-      if (machine.powered) machine.goto(Math.max(FIRST_STEP, index));
+      if (machine.powered) machine.goto(Math.max(machine.firstStep, index));
     });
     player.on('restart', () => {
-      if (machine.powered) machine.goto(FIRST_STEP);
+      if (machine.powered) machine.goto(machine.firstStep);
+    });
+
+    machine.on('chapter', (chapter) => {
+      this.#stop();
+      player.setSteps(chapter.steps, machine.firstStep);
+      chapters.render(chapter.id);
     });
 
     machine.on('step', (event) => {
       this.#remaining = STEP_MS;
       if (this.#playing && machine.isLast) {
-        clearTimeout(this.#timer);
-        this.#playing = false;  // reached the end
+        this.#stop();  // reached the end
       } else if (this.#playing) {
         this.#schedule(STEP_MS);
       }
@@ -47,8 +60,13 @@ export class MachineController {
     });
   }
 
+  // Open the chapter and step in the URL, or the first chapter's start
   init() {
-    const { index, step, state } = this.machine;
+    const target = this.views.route.current();
+    if (target && this.machine.loadChapter(target.chapterId, target.index)) return;
+    const { chapter, index, step, state } = this.machine;
+    this.views.player.setSteps(chapter.steps, this.machine.firstStep);
+    this.views.chapters.render(chapter.id);
     this.#render({ index, step, state, previous: null });
   }
 
@@ -58,7 +76,7 @@ export class MachineController {
 
   #play() {
     if (!this.machine.powered) return;
-    if (this.machine.isLast) this.machine.goto(FIRST_STEP);  // replay from the start
+    if (this.machine.isLast) this.machine.goto(this.machine.firstStep);  // replay from the start
     this.#playing = true;
     this.#schedule(this.#remaining);
     this.#renderPlayer();
@@ -67,9 +85,13 @@ export class MachineController {
   #pause() {
     if (!this.#playing) return;
     this.#remaining = this.#timeLeft;
+    this.#stop();
+    this.#renderPlayer();
+  }
+
+  #stop() {
     clearTimeout(this.#timer);
     this.#playing = false;
-    this.#renderPlayer();
   }
 
   #schedule(ms) {
@@ -79,7 +101,7 @@ export class MachineController {
   }
 
   #render({ index, step, state, previous }) {
-    const { frontPanel, lesson, board, registers, display, status } = this.views;
+    const { frontPanel, lesson, board, registers, display, status, route } = this.views;
     frontPanel.render({ powered: this.machine.powered, led: state.led, time: step.time });
     this.memory.apply({
       ...state.memory,
@@ -92,6 +114,7 @@ export class MachineController {
     registers.render(state.regs, previous && previous.regs, state.cpu);
     display.render({ monitor: state.monitor, screen: state.screen });
     status.render({ cpu: state.cpu, csip: state.csip });
+    route.render(this.machine.chapter.id, index);
     this.#renderPlayer();
   }
 
@@ -103,7 +126,7 @@ export class MachineController {
       playing: this.#playing,
       duration,
       elapsed: duration - this.#timeLeft,
-      canPrev: this.machine.index > FIRST_STEP,
+      canPrev: this.machine.index > this.machine.firstStep,
       canNext: !this.machine.isLast,
     });
   }

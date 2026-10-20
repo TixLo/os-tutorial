@@ -2,9 +2,9 @@ import { EventEmitter } from '../core/EventEmitter.js';
 
 const STEP_TRANSITION_MS = 200;  // smooth jump when stepping by hand
 
-// Video-player style controls for the boot sequence, on the front panel next to power.
-// The progress bar runs from A1 (just after the power button) to the last step, and
-// every control stays disabled until the machine is powered on. Milestone steps get a
+// Video-player style controls for the current chapter, on the front panel next to power.
+// The progress bar runs from the chapter's first powered-on step to its last step, and
+// every control stays disabled while the machine is off. Milestone steps get a
 // diamond marker with a short label on the bar; hover it for the full text.
 // Events: 'restart', 'prev', 'play' (toggle), 'next', 'seek' (step index)
 // Keyboard: Space plays/pauses, Left/Right step back/forward.
@@ -15,17 +15,16 @@ export class PlayerView extends EventEmitter {
   #fill;
   #count;
   #markers = [];  // { index, el }
-  #steps;
+  #steps = [];
+  #first = 0;     // index of the bar's left end
   #enabled = false;
 
-  constructor(steps, root = document.getElementById('player')) {
+  constructor(root = document.getElementById('player')) {
     super();
     this.#root = root;
-    this.#steps = steps;
     this.#track = root.querySelector('.pl-track');
     this.#fill = root.querySelector('.pl-fill');
     this.#count = root.querySelector('.pl-count');
-    this.#track.setAttribute('aria-valuemax', String(this.#lastIndex));
 
     for (const action of ['restart', 'prev', 'play', 'next']) {
       const button = root.querySelector(`[data-action="${action}"]`);
@@ -33,15 +32,25 @@ export class PlayerView extends EventEmitter {
       this.#buttons[action] = button;
     }
 
-    this.#buildMarkers();
     this.#bindScrubbing();
     this.#bindKeyboard();
   }
 
+  // Switch to a chapter's steps; `first` is the step at the bar's left end
+  setSteps(steps, first) {
+    this.#steps = steps;
+    this.#first = first;
+    this.#track.setAttribute('aria-valuemin', '1');
+    this.#track.setAttribute('aria-valuemax', String(this.#lastIndex - first + 1));
+    this.#buildMarkers();
+  }
+
   #buildMarkers() {
     const rail = this.#fill.parentElement;
+    for (const marker of this.#markers) marker.el.remove();
+    this.#markers = [];
     this.#steps.forEach((step, index) => {
-      if (!step.milestone || index === 0) return;
+      if (!step.milestone || index < this.#first) return;
       const position = this.#position(index);
       const el = document.createElement('span');
       el.className = 'pl-milestone';
@@ -62,9 +71,10 @@ export class PlayerView extends EventEmitter {
     return this.#steps.length - 1;
   }
 
-  // Position on the bar (0..1) of the start of a step; step 1 is the left end
+  // Position on the bar (0..1) of the start of a step
   #position(index) {
-    return Math.min(1, Math.max(0, (index - 1) / (this.#lastIndex - 1)));
+    const span = Math.max(1, this.#lastIndex - this.#first);
+    return Math.min(1, Math.max(0, (index - this.#first) / span));
   }
 
   // duration: ms per step during auto play; elapsed: ms already spent on this step
@@ -78,9 +88,10 @@ export class PlayerView extends EventEmitter {
     this.#buttons.prev.disabled = !enabled || !canPrev;
     this.#buttons.restart.disabled = !enabled || !canPrev;
     this.#buttons.next.disabled = !enabled || !canNext;
-    this.#count.textContent = `${index} / ${this.#lastIndex}`;
+    const number = Math.max(0, index - this.#first + 1);
+    this.#count.textContent = `${number} / ${this.#lastIndex - this.#first + 1}`;
     this.#track.setAttribute('aria-disabled', String(!enabled));
-    this.#track.setAttribute('aria-valuenow', String(index));
+    this.#track.setAttribute('aria-valuenow', String(number));
     this.#track.setAttribute('aria-valuetext', step.title);
     for (const marker of this.#markers) {
       marker.el.classList.toggle('reached', enabled && index >= marker.index);
@@ -120,7 +131,7 @@ export class PlayerView extends EventEmitter {
       if (!this.#enabled) return;
       const rect = track.getBoundingClientRect();
       const fraction = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
-      const index = 1 + Math.round(fraction * (this.#lastIndex - 1));
+      const index = this.#first + Math.round(fraction * (this.#lastIndex - this.#first));
       if (index === last) return;
       last = index;
       this.emit('seek', index);

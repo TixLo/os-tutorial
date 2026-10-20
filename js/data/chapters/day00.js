@@ -1,6 +1,7 @@
-// Boot sequence from pressing the power button to the boot sector taking over at 0x7C00,
-// where day 1 of the book begins. Modeled on a classic PC/AT BIOS (SeaBIOS under QEMU,
-// as used by the book); timings are rough.
+// Day 0: the boot sequence from pressing the power button to the boot sector taking over
+// at 0x7C00, where day 1 of the book begins. The book itself has no day 0.
+// Modeled on a classic PC/AT BIOS (SeaBIOS under QEMU, as used by the book); timings are
+// rough.
 //
 // Each step's `state` is a patch merged onto the previous step's state, one level deep,
 // so keyed objects like `writes` and `ranges` build up from step to step.
@@ -15,7 +16,7 @@
 // next to a marker on the progress bar (keep it to a word or two so it fits on phones);
 // the full text shows in the marker's tooltip and in a badge above the step's title.
 
-export const PHASES = Object.freeze({
+const PHASES = Object.freeze({
   A: 'Power on',
   B: 'CPU reset',
   C: 'Power-on self test',
@@ -49,7 +50,7 @@ const RESET_REGS = {
   'EDX':          { value: '00000663', note: 'CPU model ID (the value depends on the CPU)' },
 };
 
-export const BOOT_STEPS = Object.freeze([
+const STEPS = Object.freeze([
   {
     id: 'A0',
     phase: 'A',
@@ -452,3 +453,14 @@ export const BOOT_STEPS = Object.freeze([
     },
   },
 ]);
+
+// Day 0 starts with the machine switched off, so step 0 (standby) comes before the
+// power button and the player only covers steps 1 onward.
+export const DAY_00 = Object.freeze({
+  id: 'day0',
+  title: 'Day 0',
+  name: 'Power on',
+  startsOff: true,
+  phases: PHASES,
+  steps: STEPS,
+});

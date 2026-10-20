@@ -64,17 +64,21 @@ js/
   core/
     EventEmitter.js        Shared pub/sub for models and views
   data/                    Static facts the models load (no logic)
-    bootSteps.js           Boot steps: text, timing, and hardware state patches
+    chapters/
+      index.js             Chapter list: day 0 plus the book's 30 days
+      day00.js             Day 0 steps: text, timing, and hardware state patches
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
   models/                  State and rules. No DOM access.
     LayoutModel.js         Panel sizes, limits, persistence
-    MachineModel.js        Current boot step and the merged hardware state
+    MachineModel.js        Current chapter and step, and the merged hardware state
     MemoryModel.js         Regions, their state, known bytes, and the step focus
     AboutModel.js          Whether this visitor has seen the About dialog
   views/                   DOM rendering and user input. No app state.
     LayoutView.js          Splitter drag/keyboard input, CSS variable output
     FrontPanelView.js      Power button and LEDs
     PlayerView.js          Play/pause, step buttons, progress bar, milestones, keys
+    ChapterView.js         Chapter picker
+    RouteView.js           URL hash (#day0/5) for links and reloads
     LessonView.js          Current step explanation
     BoardView.js           Motherboard diagram (signals, CPU state)
     RegisterView.js        CPU register table
@@ -84,18 +88,28 @@ js/
     AboutView.js           ABOUT button and dialog
   controllers/             Connect views to models. No DOM, no state.
     LayoutController.js
-    MachineController.js   Input -> machine steps; step -> every view; playback timing
+    MachineController.js   Input -> chapter and step; step -> every view; playback timing
     MemoryController.js
     AboutController.js     Opens About on request and once on the first visit
 ```
 
-## Boot sequence
+## Chapters and steps
 
-The tutorial plays the boot process as a list of steps in
-`js/data/bootSteps.js`. Each step has a title, a plain-language summary, a
-technical detail paragraph, an approximate time, and a `state` patch.
-`MachineModel` merges the patches in order, so any step can be shown on its
-own.
+The tutorial is split into chapters, one per day, listed in
+`js/data/chapters/index.js`; each day lives in its own file such as
+`day00.js`. A chapter is a list of steps. Each step has a title, a
+plain-language summary, a technical detail paragraph, an approximate time,
+and a `state` patch. `MachineModel` merges the patches in order, so any step
+can be shown on its own. Step 0 of every chapter holds its full starting
+state, so a chapter opens directly without replaying the ones before it:
+day 0 starts switched off, and later days start with the machine already
+running.
+
+The chapter picker on the front panel lists every day; days without steps
+yet show as coming soon. The URL hash follows the current chapter and step
+(`#day0/5`), so links and reloads open the same place.
+
+### Player
 
 Next to the power button, the front panel has a video-player style control:
 play/pause advances one step every 2.5 seconds, the
@@ -105,6 +119,8 @@ Right step back and forward. Steps with a `milestone` (such as
 "BIOS done" at the end of day 0) get a labeled diamond on the bar and a badge
 above their title. The player stays disabled until the power
 button is pressed, and the bar starts at A1 (standby comes before power).
+
+### Day 0
 
 | Phase | Steps | What happens |
 |---|---|---|
@@ -125,10 +141,12 @@ pages over the whole map, 16-byte blocks inside one page, and single bytes
 above the grid zooms back out. A step's memory focus can name a byte range
 (`focus.bytes`), and the panel zooms to it on its own.
 
-To add steps, append them to `BOOT_STEPS`. A new kind of hardware state needs
-a field in the A0 base state and a view that renders it.
+To add a day, create `js/data/chapters/dayNN.js` exporting a chapter
+(`{ id, title, name, steps }`) and put it in `CHAPTERS` in place of its
+coming-soon entry. A new kind of hardware state needs a field in the
+chapter's step 0 and a view that renders it.
 
-### Rules
+## Code rules
 
 - **Models** hold state and emit `change` events. They never touch the DOM.
 - **Views** render what they're given and emit user-intent events
@@ -137,7 +155,7 @@ a field in the A0 base state and a view that renders it.
   model events call view render methods.
 - One file per class, named after the class.
 
-### Adding a feature
+## Adding a feature
 
 The memory map panel was added this way:
 
