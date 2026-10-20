@@ -1,0 +1,128 @@
+/* Boot panel: step list, explanation, and register table */
+
+.lesson {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--text);
+}
+
+/* Step list */
+.step-strip {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+.phase-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin: 0 2px 0 10px;
+}
+.phase-label:first-child { margin-left: 0; }
+.step-chip {
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-dim);
+  font: 11px ui-monospace, Menlo, Consolas, monospace;
+  cursor: pointer;
+}
+.step-chip:hover { border-color: #566070; }
+.step-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.step-chip.done { color: var(--text); }
+.step-chip[aria-current="step"] {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* Current step */
+.lesson-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.step-id {
+  font: 12px ui-monospace, Menlo, Consolas, monospace;
+  color: var(--accent);
+}
+.step-title {
+  flex: 1;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+.step-time {
+  font: 12px ui-monospace, Menlo, Consolas, monospace;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.step-summary {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.step-detail {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.step-formula {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #0f1319;
+  color: var(--mem-rom-text);
+  font: 12px ui-monospace, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+}
+.step-hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--led-on);
+}
+
+/* Register table */
+.registers h3 {
+  margin: 4px 0 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+.regs-empty {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.regs {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.regs td {
+  padding: 3px 6px;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+}
+.reg-name { white-space: nowrap; color: var(--text-dim); }
+.reg-value {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  color: var(--text);
+}
+.reg-note { color: var(--text-dim); }
+.regs tr.changed td {
+  animation: reg-flash 1.6s ease-out;
+}
+.regs tr.changed .reg-value { color: var(--mem-rom-text); }
+
+@keyframes reg-flash {
+  from { background: rgba(240, 207, 134, 0.18); }
+  to { background: transparent; }
+}

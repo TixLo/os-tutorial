@@ -13,17 +13,20 @@ const POWERED_STATE = Object.freeze({
   reserved: 'unmapped',
 });
 
-// Memory regions and their state. Emits 'change' (regions).
+// Memory regions, their state, and an optional note pointing out what the CPU is doing there.
+// Emits 'change' (regions).
 export class MemoryModel extends EventEmitter {
-  #regions = MEMORY_MAP.map((region) => ({ ...region, state: 'off' }));
+  #regions = MEMORY_MAP.map((region) => ({ ...region, state: 'off', note: null }));
 
   get regions() {
     return this.#regions.map((region) => ({ ...region }));
   }
 
-  setPowered(on) {
+  // memory: { powered, focus: { id, note } | null }
+  apply({ powered, focus }) {
     for (const region of this.#regions) {
-      region.state = on ? POWERED_STATE[region.kind] : 'off';
+      region.state = powered ? POWERED_STATE[region.kind] : 'off';
+      region.note = focus && focus.id === region.id ? focus.note : null;
     }
     this.emit('change', this.regions);
   }

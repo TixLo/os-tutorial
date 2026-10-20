@@ -11,6 +11,13 @@
   --text-dim: #8a93a3;
   --bezel: #12151b;
   --led-on: #4ade80;
+  --accent: #4c8dff;
+  --accent-bg: #1d3a6b;
+
+  /* Signal wires */
+  --sig-on: #4c8dff;
+  --sig-ramp: #f0b429;
+  --sig-held: #ef5350;
 
   /* Memory region states */
   --mem-off-bg: #181b21;
@@ -24,8 +31,8 @@
   --mem-unmapped-border: #3a414e;
 
   /* Defaults before JS runs; LayoutModel owns the live values */
-  --console-width: 60%;  /* width of the console column */
-  --memory-height: 50%;  /* height of the memory panel */
+  --console-width: 42%;  /* width of the console column */
+  --memory-height: 45%;  /* height of the memory panel */
   --gutter-size: 6px;
 }
 

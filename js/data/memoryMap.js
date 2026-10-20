@@ -1,4 +1,4 @@
-// Real-mode (first 1 MiB) memory map of an IBM PC compatible.
+// Memory map of an IBM PC compatible: the real-mode first 1 MiB plus the reset vector area.
 // kind: 'ram' | 'vram' | 'rom' | 'reserved'
 export const MEMORY_MAP = Object.freeze([
   { id: 'ivt',         start: 0x00000, end: 0x003FF, name: 'Interrupt vector table', kind: 'ram' },
@@ -11,4 +11,7 @@ export const MEMORY_MAP = Object.freeze([
   { id: 'video_bios',  start: 0xC0000, end: 0xC7FFF, name: 'Video BIOS',             kind: 'rom' },
   { id: 'option_rom',  start: 0xC8000, end: 0xEFFFF, name: 'Option ROMs / unmapped', kind: 'reserved' },
   { id: 'system_bios', start: 0xF0000, end: 0xFFFFF, name: 'System BIOS',            kind: 'rom' },
+  // The chipset also maps the BIOS ROM to the top of the 4 GiB address space,
+  // where the CPU fetches its first instruction after reset.
+  { id: 'bios_alias',  start: 0xFFFF0000, end: 0xFFFFFFFF, name: 'BIOS ROM (top of 4 GiB)', kind: 'rom' },
 ]);

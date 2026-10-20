@@ -1,0 +1,33 @@
+/* Console panel shown as a monitor */
+
+.monitor {
+  display: grid;
+  place-items: center;
+  background: #050608;
+  transition: background 0.4s;
+}
+
+.monitor-osd {
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 20px;
+  border: 1px solid #2a303b;
+  border-radius: 6px;
+  background: #0d1015;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  opacity: 0;
+  transition: opacity 0.4s 0.3s;
+}
+.monitor-osd strong {
+  font-size: 15px;
+  letter-spacing: 0.15em;
+  color: var(--text);
+}
+
+.monitor[data-monitor="nosignal"] .monitor-osd { opacity: 1; }

@@ -52,6 +52,13 @@
   width: 18px;
   height: 18px;
 }
+.fp-power.hint {
+  animation: fp-hint 0.8s ease-out 2;
+}
+@keyframes fp-hint {
+  from { box-shadow: 0 0 0 0 rgba(76, 141, 255, 0.8); }
+  to { box-shadow: 0 0 0 14px rgba(76, 141, 255, 0); }
+}
 #front-panel[data-power="on"] .fp-power {
   color: var(--led-on);
   border-color: #2f6b45;

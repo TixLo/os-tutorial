@@ -1,0 +1,42 @@
+/* Top bar chapter label and playback controls */
+
+#topbar .chapter {
+  color: var(--text-dim);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toolbar {
+  display: flex;
+  gap: 6px;
+}
+
+.tb-btn {
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tb-btn:hover:not(:disabled) { border-color: #566070; }
+.tb-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.tb-btn:disabled { opacity: 0.4; cursor: default; }
+.tb-primary {
+  background: #1d3a6b;
+  border-color: #2f5ea8;
+}
+.tb-btn[aria-pressed="true"] {
+  border-color: var(--accent);
+}
+
+@media (max-width: 767px) {
+  #topbar { height: auto; flex-wrap: wrap; padding: 6px 12px; }
+  #topbar .chapter { flex-basis: 100%; order: 3; }
+}

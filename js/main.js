@@ -1,20 +1,35 @@
 // Entry point: build each model/view/controller trio and start it.
+import { BOOT_STEPS, PHASES } from './data/bootSteps.js';
 import { LayoutModel } from './models/LayoutModel.js';
-import { LayoutView } from './views/LayoutView.js';
-import { LayoutController } from './controllers/LayoutController.js';
 import { MachineModel } from './models/MachineModel.js';
 import { MemoryModel } from './models/MemoryModel.js';
+import { LayoutView } from './views/LayoutView.js';
 import { FrontPanelView } from './views/FrontPanelView.js';
+import { ToolbarView } from './views/ToolbarView.js';
+import { LessonView } from './views/LessonView.js';
+import { BoardView } from './views/BoardView.js';
+import { RegisterView } from './views/RegisterView.js';
+import { ConsoleView } from './views/ConsoleView.js';
+import { StatusView } from './views/StatusView.js';
 import { MemoryView } from './views/MemoryView.js';
-import { MachineController } from './controllers/MachineController.js';
+import { LayoutController } from './controllers/LayoutController.js';
 import { MemoryController } from './controllers/MemoryController.js';
+import { MachineController } from './controllers/MachineController.js';
 
-const machine = new MachineModel();
+const machine = new MachineModel(BOOT_STEPS);
 const memory = new MemoryModel();
 
 const controllers = [
   new LayoutController(new LayoutModel(), new LayoutView()),
   new MemoryController(memory, new MemoryView()),
-  new MachineController(machine, memory, new FrontPanelView()),
+  new MachineController(machine, memory, {
+    frontPanel: new FrontPanelView(),
+    toolbar: new ToolbarView(),
+    lesson: new LessonView(BOOT_STEPS, PHASES),
+    board: new BoardView(),
+    registers: new RegisterView(),
+    console: new ConsoleView(),
+    status: new StatusView(),
+  }),
 ];
 controllers.forEach((controller) => controller.init());

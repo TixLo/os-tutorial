@@ -5,8 +5,8 @@ const STORAGE_KEY = 'os-tutorial.layout.v1';
 // Panel sizes in percent. Emits 'change' (name, percent) whenever a size changes.
 export class LayoutModel extends EventEmitter {
   static DEFAULTS = Object.freeze({
-    consoleWidth: 60,
-    memoryHeight: 50,
+    consoleWidth: 42,
+    memoryHeight: 45,
   });
   static MIN = 15;  // each panel keeps at least 15%
   static MAX = 85;

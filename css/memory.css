@@ -9,7 +9,7 @@
 .mem-region {
   flex: var(--grow, 1) 0 26px;
   display: grid;
-  grid-template-columns: 9.5em minmax(0, 1fr) auto 6.5em;
+  grid-template-columns: 13.5em minmax(0, 1fr) auto 6.5em;
   align-items: center;
   gap: 10px;
   padding: 0 10px;
@@ -19,16 +19,36 @@
   background: var(--mem-off-bg);
   color: var(--mem-off-text);
   /* Rows light up one after another on power-on */
-  transition: background 0.35s, border-color 0.35s, color 0.35s;
-  transition-delay: calc(var(--i, 0) * 70ms);
+  --delay: calc(var(--i, 0) * 70ms);
+  transition:
+    background 0.35s var(--delay),
+    border-color 0.35s var(--delay),
+    color 0.35s var(--delay),
+    box-shadow 0.25s;
 }
 .mem-range { font-family: ui-monospace, Menlo, Consolas, monospace; }
 .mem-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mem-note {
+  margin-left: 8px;
+  color: var(--text);
+  font-weight: 600;
+}
 .mem-size { opacity: 0.8; }
 .mem-state { text-align: right; }
 
 .mem-region[data-state="off"] {
-  transition-delay: 0s;
+  --delay: 0s;
+}
+.mem-region[data-focus="true"] {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.mem-gap {
+  flex: none;
+  padding: 2px 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
 }
 .mem-region[data-state="undefined"] {
   background: repeating-linear-gradient(-45deg,

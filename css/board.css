@@ -1,0 +1,90 @@
+/* Motherboard diagram. State comes from data attributes on #board (see BoardView). */
+
+.board {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  flex: none;
+  align-self: center;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Parts */
+.bd-part rect,
+.bd-part circle {
+  fill: #1a1e25;
+  stroke: #3a414e;
+  stroke-width: 1.5;
+  transition: fill 0.3s, stroke 0.3s;
+}
+.bd-part text { font-size: 10px; fill: var(--text); }
+.bd-part .bd-sub { font-size: 8px; fill: var(--text-dim); }
+.bd-wire-label { font-size: 8px; fill: var(--text-dim); }
+.bd-reset-state { font-size: 8px; fill: var(--sig-held); }
+#board[data-reset="released"] .bd-reset-state { fill: var(--led-on); }
+
+/* The chipset is always awake on standby power */
+.bd-chipset rect { stroke: #2f6b45; }
+
+/* Wires */
+.wire {
+  fill: none;
+  stroke: #2f3540;
+  stroke-width: 2;
+  transition: stroke 0.3s;
+}
+#board[data-pwrsw="true"] [data-wire="pwrsw"],
+#board[data-pson="true"] [data-wire="pson"],
+#board[data-pwrok="true"] [data-wire="pwrok"],
+#board[data-bus="true"] [data-wire="bus"] {
+  stroke: var(--sig-on);
+  stroke-dasharray: 5 3;
+  animation: wire-flow 0.6s linear infinite;
+}
+#board[data-pwrsw="true"] .bd-button circle {
+  fill: #1d3a6b;
+  stroke: var(--sig-on);
+}
+
+/* Power rails */
+#board[data-rails="ramping"] .wire-rail {
+  stroke: var(--sig-ramp);
+  animation: rail-wobble 0.35s ease-in-out infinite alternate;
+}
+#board[data-rails="ramping"] .bd-psu rect { stroke: var(--sig-ramp); }
+#board[data-rails="on"] .wire-rail { stroke: var(--led-on); }
+#board[data-rails="on"] .bd-psu rect { stroke: var(--led-on); }
+#board[data-rails="ramping"] .bd-ram rect,
+#board[data-rails="on"] .bd-ram rect {
+  fill: var(--mem-ram-bg);
+  stroke: var(--mem-ram-border);
+}
+
+/* Reset line and CPU */
+#board[data-reset="held"] [data-wire="reset"] { stroke: var(--sig-held); }
+#board[data-reset="released"] [data-wire="reset"] { stroke: var(--led-on); }
+#board[data-cpu="reset"] .bd-cpu rect { stroke: var(--sig-held); }
+#board[data-cpu="starting"] .bd-cpu rect { stroke: var(--sig-ramp); }
+#board[data-cpu="running"] .bd-cpu rect {
+  fill: #1d3a6b;
+  stroke: var(--accent);
+}
+
+/* ROM is readable once there is power */
+#board[data-rails="on"] .bd-rom rect {
+  fill: var(--mem-rom-bg);
+  stroke: var(--mem-rom-border);
+}
+#board[data-bus="true"] .bd-rom rect { stroke: var(--sig-on); }
+
+@keyframes wire-flow {
+  to { stroke-dashoffset: -16; }
+}
+@keyframes rail-wobble {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board * { animation: none !important; }
+}
