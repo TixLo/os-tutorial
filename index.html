@@ -20,7 +20,23 @@
 <header id="topbar">
   <span class="title">OS Tutorial</span>
   <span class="chapter" title="Day 0: from power button to first instruction">Day 0</span>
-  <div id="player" class="player" data-playing="false">
+</header>
+
+<div id="front-panel" data-power="off">
+  <div class="fp-group">
+    <button class="fp-power" type="button" data-action="power"
+            aria-pressed="false" aria-label="Power">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" aria-hidden="true">
+        <path d="M12 3v8"/>
+        <path d="M17.5 6.5a8 8 0 1 1-11 0"/>
+      </svg>
+    </button>
+    <span class="fp-led" data-led="power"></span>
+    <span class="fp-label">POWER</span>
+  </div>
+
+  <div id="player" class="player" data-playing="false" data-enabled="false">
     <div class="pl-buttons">
       <button type="button" class="pl-btn" data-action="restart" aria-label="Restart" title="Restart">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
@@ -52,21 +68,6 @@
     <span class="pl-label"><span class="pl-count"></span><span class="pl-title"></span></span>
     <button type="button" class="pl-speed" data-action="speed" aria-label="Playback speed"
             title="Playback speed">1×</button>
-  </div>
-</header>
-
-<div id="front-panel" data-power="off">
-  <div class="fp-group">
-    <button class="fp-power" type="button" data-action="power"
-            aria-pressed="false" aria-label="Power">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-           stroke-linecap="round" aria-hidden="true">
-        <path d="M12 3v8"/>
-        <path d="M17.5 6.5a8 8 0 1 1-11 0"/>
-      </svg>
-    </button>
-    <span class="fp-led" data-led="power"></span>
-    <span class="fp-label">POWER</span>
   </div>
 </div>
 

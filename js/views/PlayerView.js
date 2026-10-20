@@ -1,6 +1,8 @@
 import { EventEmitter } from '../core/EventEmitter.js';
 
-// Video-player style controls for the boot sequence.
+// Video-player style controls for the boot sequence, on the front panel next to power.
+// The track covers the steps after standby, and every control stays disabled until
+// the machine is powered on.
 // Events: 'restart', 'prev', 'play' (toggle), 'next', 'speed' (cycle), 'seek' (step index)
 // Keyboard: Space plays/pauses, Left/Right step back/forward.
 export class PlayerView extends EventEmitter {
@@ -11,6 +13,7 @@ export class PlayerView extends EventEmitter {
   #count;
   #title;
   #steps;
+  #enabled = false;
 
   constructor(steps, phases, root = document.getElementById('player')) {
     super();
@@ -19,7 +22,7 @@ export class PlayerView extends EventEmitter {
     this.#track = root.querySelector('.pl-track');
     this.#count = root.querySelector('.pl-count');
     this.#title = root.querySelector('.pl-title');
-    this.#track.setAttribute('aria-valuemax', String(steps.length));
+    this.#track.setAttribute('aria-valuemax', String(steps.length - 1));
 
     for (const action of ['restart', 'prev', 'play', 'next', 'speed']) {
       const button = root.querySelector(`[data-action="${action}"]`);
@@ -33,20 +36,27 @@ export class PlayerView extends EventEmitter {
   }
 
   // duration: ms per step at the current speed; elapsed: ms already spent on this step
-  render({ index, playing, duration, elapsed, speed, canPrev, canNext }) {
+  render({ enabled, index, playing, duration, elapsed, speed, canPrev, canNext }) {
     const step = this.#steps[index];
+    const total = this.#steps.length - 1;
+    this.#enabled = enabled;
+    this.#root.dataset.enabled = String(enabled);
     this.#root.dataset.playing = String(playing);
     this.#buttons.play.setAttribute('aria-label', playing ? 'Pause' : 'Play');
-    this.#buttons.prev.disabled = !canPrev;
-    this.#buttons.restart.disabled = !canPrev;
-    this.#buttons.next.disabled = !canNext;
+    this.#buttons.play.disabled = !enabled;
+    this.#buttons.prev.disabled = !enabled || !canPrev;
+    this.#buttons.restart.disabled = !enabled || !canPrev;
+    this.#buttons.next.disabled = !enabled || !canNext;
+    this.#buttons.speed.disabled = !enabled;
     this.#buttons.speed.textContent = speed + '×';
-    this.#count.textContent = `${index + 1} / ${this.#steps.length}`;
-    this.#title.textContent = `${step.id} ${step.title}`;
-    this.#track.setAttribute('aria-valuenow', String(index + 1));
+    this.#count.textContent = `${index} / ${total}`;
+    this.#title.textContent = enabled ? `${step.id} ${step.title}` : 'Press power to start';
+    this.#track.setAttribute('aria-disabled', String(!enabled));
+    this.#track.setAttribute('aria-valuenow', String(index));
     this.#track.setAttribute('aria-valuetext', `${step.id} ${step.title}`);
 
-    this.#segments.forEach((segment, i) => {
+    this.#segments.forEach((segment) => {
+      const i = Number(segment.dataset.index);
       const fill = segment.firstElementChild;
       segment.classList.toggle('done', i < index || (i === index && !canNext));
       segment.classList.toggle('current', i === index);
@@ -62,6 +72,7 @@ export class PlayerView extends EventEmitter {
   #buildTrack(steps, phases) {
     let group = null;
     steps.forEach((step, i) => {
+      if (i === 0) return;  // standby is before the power button, not part of playback
       if (!group || group.dataset.phase !== step.phase) {
         group = document.createElement('div');
         group.className = 'pl-phase';
@@ -85,6 +96,7 @@ export class PlayerView extends EventEmitter {
     const track = this.#track;
     let last = null;
     const seekAt = (e) => {
+      if (!this.#enabled) return;
       const rect = track.getBoundingClientRect();
       const segmentRect = this.#segments[0].getBoundingClientRect();
       const y = segmentRect.top + segmentRect.height / 2;
@@ -108,7 +120,7 @@ export class PlayerView extends EventEmitter {
 
   #bindKeyboard() {
     document.addEventListener('keydown', (e) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (!this.#enabled || e.metaKey || e.ctrlKey || e.altKey) return;
       if (e.target.closest('input, textarea, select, .gutter')) return;
       if (e.key === ' ' && !e.target.closest('button')) {
         e.preventDefault();

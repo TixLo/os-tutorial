@@ -26,7 +26,7 @@ css/
   base.css                 Design tokens (colors, sizes) and resets
   layout.css               Page frame, split areas, responsive rules
   panels.css               Panel chrome and splitters
-  player.css               Video-player controls in the top bar
+  player.css               Video-player controls on the front panel
   front-panel.css          Power button and LEDs
   console.css              Console panel drawn as a monitor
   memory.css               Memory map rows, region states, legend
@@ -67,11 +67,12 @@ technical detail paragraph, an approximate time, and a `state` patch.
 `MachineModel` merges the patches in order, so any step can be shown on its
 own.
 
-The top bar works like a video player: play/pause advances one step every
-6 seconds (0.5×, 1×, or 2× speed), the step buttons move one step at a time,
-and the progress track can be clicked or dragged to jump to any step.
-Keyboard: Space plays or pauses, Left and Right step back and forward.
-Playing from standby presses the power button automatically.
+Next to the power button, the front panel has a video-player style control:
+play/pause advances one step every 5 seconds (0.5×, 1×, or 2× speed), the
+step buttons move one step at a time, and the progress track can be clicked
+or dragged to jump to any step. Keyboard: Space plays or pauses, Left and
+Right step back and forward. The player stays disabled until the power
+button is pressed, and the track starts at A1 (standby comes before power).
 
 | Phase | Steps | What happens |
 |---|---|---|

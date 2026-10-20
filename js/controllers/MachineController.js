@@ -1,9 +1,10 @@
-const STEP_MS = 6000;  // time per step at 1× speed, long enough to read the explanation
+const STEP_MS = 5000;  // time per step at 1× speed
 const SPEEDS = [0.5, 1, 2];
+const FIRST_STEP = 1;  // the step right after the power button is pressed
 
-// Drives the boot sequence: the front panel and the player move the machine,
-// every step change is pushed to memory and all the views that show machine state,
-// and auto play advances one step at a time like a video.
+// Drives the boot sequence: the power button turns the machine on or off, the player
+// moves through the steps once it is on, every step change is pushed to memory and
+// all the views that show machine state, and auto play advances one step at a time.
 export class MachineController {
   #playing = false;
   #speedIndex = 1;
@@ -23,13 +24,18 @@ export class MachineController {
     });
 
     player.on('play', () => (this.#playing ? this.#pause() : this.#play()));
-    player.on('prev', () => machine.back());
-    player.on('next', () => this.#advance());
-    player.on('seek', (index) => machine.goto(index));
+    player.on('prev', () => {
+      if (machine.index > FIRST_STEP) machine.back();
+    });
+    player.on('next', () => {
+      if (machine.powered) machine.next();
+    });
+    player.on('seek', (index) => {
+      if (machine.powered) machine.goto(Math.max(FIRST_STEP, index));
+    });
     player.on('speed', () => this.#cycleSpeed());
     player.on('restart', () => {
-      this.#pause();
-      machine.goto(0);
+      if (machine.powered) machine.goto(FIRST_STEP);
     });
 
     machine.on('step', (event) => {
@@ -57,21 +63,12 @@ export class MachineController {
     return this.#playing ? Math.max(0, this.#deadline - performance.now()) : this.#remaining;
   }
 
-  // Moving on from standby means pressing the power button, so show it being pressed
-  #advance() {
-    if (!this.machine.powered) this.views.frontPanel.press();
-    this.machine.next();
-  }
-
   #play() {
-    if (this.machine.isLast) this.machine.goto(0);  // replay from the start
+    if (!this.machine.powered) return;
+    if (this.machine.isLast) this.machine.goto(FIRST_STEP);  // replay from the start
     this.#playing = true;
-    if (!this.machine.powered) {
-      this.#advance();  // start right away by pressing power
-    } else {
-      this.#schedule(this.#remaining);
-      this.#renderPlayer();
-    }
+    this.#schedule(this.#remaining);
+    this.#renderPlayer();
   }
 
   #pause() {
@@ -85,7 +82,7 @@ export class MachineController {
   #schedule(ms) {
     clearTimeout(this.#timer);
     this.#deadline = performance.now() + ms;
-    this.#timer = setTimeout(() => this.#advance(), ms);
+    this.#timer = setTimeout(() => this.machine.next(), ms);
   }
 
   // Keep the same fraction of the step left when the speed changes
@@ -112,12 +109,13 @@ export class MachineController {
   #renderPlayer() {
     const duration = this.#stepMs;
     this.views.player.render({
+      enabled: this.machine.powered,
       index: this.machine.index,
       playing: this.#playing,
       duration,
       elapsed: duration - this.#timeLeft,
       speed: SPEEDS[this.#speedIndex],
-      canPrev: this.machine.index > 0,
+      canPrev: this.machine.index > FIRST_STEP,
       canNext: !this.machine.isLast,
     });
   }
