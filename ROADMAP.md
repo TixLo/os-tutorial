@@ -61,7 +61,7 @@ and nothing is copied from the book.
 | **M5** | Days 4–5 | Drawing into VRAM, palette, fonts | Display supports 320×200 graphics mode |
 | **M6** | Days 6–8 | PIC, interrupts, keyboard and mouse | **Devices panel** (PIC, keyboard controller); keyboard and mouse input on the display |
 | **M7** | Days 9–11 | Memory management, layers, windows | Memory panel shows allocations and frees |
-| **M8** | Days 12–16 | Timers, multitasking | Boot / process / time panel shows the task list and a timeline |
+| **M8** | Days 12–16 | Timers, multitasking | What's happening panel shows the task list and a timeline |
 | **M9** | Days 17–22 | Console, FAT12, applications, API, protection | **Terminal panel becomes the OS console**; floppy panel shows FAT12 |
 | **M10** | Days 23–30 | Remaining APIs and applications | Mostly "run it" plus highlights instead of step-by-step breakdowns |
 
