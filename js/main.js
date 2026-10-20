@@ -19,10 +19,13 @@ import { MachineController } from './controllers/MachineController.js';
 const machine = new MachineModel(BOOT_STEPS);
 const memory = new MemoryModel();
 const lesson = new LessonView();
+const registers = new RegisterView();
 const memoryController = new MemoryController(memory, new MemoryView());
 
-// Clicking an address in the explanation shows it in the memory panel
-lesson.on('locate', (address) => memoryController.locate(address));
+// Clicking an address in the explanation or the register table shows it in memory
+for (const view of [lesson, registers]) {
+  view.on('locate', (address) => memoryController.locate(address));
+}
 
 const controllers = [
   new LayoutController(new LayoutModel(), new LayoutView()),
@@ -32,7 +35,7 @@ const controllers = [
     player: new PlayerView(BOOT_STEPS),
     lesson,
     board: new BoardView(),
-    registers: new RegisterView(),
+    registers,
     display: new DisplayView(),
     status: new StatusView(),
   }),
