@@ -117,6 +117,12 @@ Next phases: C · POST (BIOS self test) and D · loading the boot sector to
 the plan covering the whole book. New physical controls (reset
 button, disk LED, ...) go on the front panel in `FrontPanelView`.
 
+## Analytics
+
+The published site counts page views with
+[GoatCounter](https://www.goatcounter.com/), which uses no cookies and
+collects no personal data. Visits from `localhost` are not counted.
+
 ## Credits
 
 This project follows the structure of *30日でできる! OS自作入門* by Hidemi
