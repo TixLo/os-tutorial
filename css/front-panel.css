@@ -99,9 +99,14 @@
   color: var(--led-on);
 }
 
-/* Narrow screens: power and clock on the first row, the player below */
+/* Narrow screens: power and clock on the first row, the player below.
+   The page scrolls here, so the panel sticks to the top to stay in reach. */
 @media (max-width: 767px) {
+  html { scroll-padding-top: 130px; }  /* keep scrolled-to items clear of the panel */
   #front-panel {
+    position: sticky;
+    top: 0;
+    z-index: 10;
     height: auto;
     flex-wrap: wrap;
     gap: 8px 12px;
