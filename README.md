@@ -113,7 +113,8 @@ The memory map panel was added this way:
    `index.html`
 
 Next phases: C · POST (BIOS self test) and D · loading the boot sector to
-`0x7C00`, where day 1 of the book begins. New physical controls (reset
+`0x7C00`, where day 1 of the book begins. See [ROADMAP.md](ROADMAP.md) for
+the plan covering the whole book. New physical controls (reset
 button, disk LED, ...) go on the front panel in `FrontPanelView`.
 
 ## Credits
