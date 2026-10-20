@@ -2,6 +2,7 @@
 
 .monitor {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);  /* the text screen must not widen the panel */
   place-items: center;
   background: #050608;
   transition: background 0.4s;
@@ -31,3 +32,31 @@
 }
 
 .monitor[data-monitor="nosignal"] .monitor-osd { opacity: 1; }
+
+/* 80 x 25 text mode screen; DisplayView sets the font size so it fits the panel */
+.monitor-osd,
+.text-screen { grid-area: 1 / 1; }
+.monitor[data-monitor="text"] { place-items: start center; }
+
+.text-screen {
+  margin: 0;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  line-height: 1.15;
+  color: #c0c0c0;   /* VGA light gray, color 07 */
+  white-space: pre;
+  max-width: 100%;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.monitor[data-monitor="text"] .text-screen { opacity: 1; }
+
+.text-cursor {
+  animation: text-cursor-blink 1s steps(1) infinite;
+}
+@keyframes text-cursor-blink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-cursor { animation: none; }
+}

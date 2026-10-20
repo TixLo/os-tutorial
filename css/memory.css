@@ -77,6 +77,14 @@
   background: repeating-linear-gradient(-45deg, var(--mem-ram-bg) 0 3px, #1a3746 3px 6px);
   border-color: var(--mem-ram-border);
 }
+.mem-cell[data-state="tested"] {
+  background: var(--mem-tested-bg);
+  border-color: var(--mem-tested-border);
+}
+.mem-cell[data-state="written"] {
+  background: var(--mem-written-bg);
+  border-color: var(--mem-written-border);
+}
 .mem-cell[data-state="rom"] {
   background: var(--mem-rom-bg);
   border-color: var(--mem-rom-border);
@@ -114,6 +122,8 @@
   color: var(--mem-ram-text);
 }
 .mem-grid[data-level="2"] .mem-cell[data-state="rom"] { color: var(--mem-rom-text); }
+.mem-grid[data-level="2"] .mem-cell[data-state="tested"] { color: var(--mem-tested-text); }
+.mem-grid[data-level="2"] .mem-cell[data-state="written"] { color: var(--mem-written-text); }
 .mem-grid[data-level="2"] .mem-cell[data-focus="true"] { font-weight: 700; color: var(--text); }
 
 .mem-cell:hover { box-shadow: 0 0 0 1px var(--text); }
@@ -149,6 +159,8 @@
 .mem-detail-state { text-align: right; }
 .mem-detail-region[data-state="undefined"] .mem-detail-state { color: var(--mem-ram-text); }
 .mem-detail-region[data-state="rom"] .mem-detail-state { color: var(--mem-rom-text); }
+.mem-detail-region[data-state="tested"] .mem-detail-state { color: var(--mem-tested-text); }
+.mem-detail-region[data-state="written"] .mem-detail-state { color: var(--mem-written-text); }
 
 @media (max-width: 767px) {
   .mem-detail-region { grid-template-columns: auto auto minmax(0, 1fr); column-gap: 10px; }
@@ -178,6 +190,8 @@
 }
 .mem-legend [data-state="off"]::before { background: var(--mem-off-bg); border-color: var(--border); }
 .mem-legend [data-state="undefined"]::before { background: var(--mem-ram-bg); border-color: var(--mem-ram-border); }
+.mem-legend [data-state="tested"]::before { background: var(--mem-tested-bg); border-color: var(--mem-tested-border); }
+.mem-legend [data-state="written"]::before { background: var(--mem-written-bg); border-color: var(--mem-written-border); }
 .mem-legend [data-state="rom"]::before { background: var(--mem-rom-bg); border-color: var(--mem-rom-border); }
 .mem-legend [data-state="unmapped"]::before { border: 1px dashed var(--mem-unmapped-border); }
 .mem-legend [data-state="mixed"]::before {

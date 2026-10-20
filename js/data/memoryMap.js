@@ -25,4 +25,6 @@ const RESET_JUMP = Object.freeze([0xEA, 0x5B, 0xE0, 0x00, 0xF0]);
 export const ROM_BYTES = Object.freeze([
   { address: 0xFFFFFFF0, bytes: RESET_JUMP },
   { address: 0x000FFFF0, bytes: RESET_JUMP },
+  // Video BIOS option ROM header: signature 55 AA, then the size in 512-byte blocks
+  { address: 0x000C0000, bytes: [0x55, 0xAA, 0x40] },
 ]);

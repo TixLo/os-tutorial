@@ -82,6 +82,12 @@ button is pressed, and the bar starts at A1 (standby comes before power).
 |---|---|---|
 | A · Power on | A0–A4 | Standby, power button, `PS_ON#`, voltage ramp, `PWR_OK` and reset release |
 | B · CPU reset | B1–B3 | Register reset values, reset vector `0xFFFFFFF0`, far jump to `F000:E05B` |
+| C · Power-on self test | C1–C10 | ROM checksum, support chips, RAM tests, interrupt vector table, BIOS data area, video BIOS and the first text screen, keyboard controller, drives, beep |
+| D · Load the boot sector | D1–D4 | INT 19h, read sector 1 to `0x7C00`, check `55 AA`, jump to `0000:7C00` where day 1 begins |
+
+Steps can also fill memory (`writes`), mark RAM as tested (`ranges`), and put
+text on the 80 × 25 screen (`screen`); the text is written into video memory
+at `0xB8000` too, so it shows up in the memory grid.
 
 The memory panel is a true-scale 16 × 16 grid with three zoom levels: 4 KiB
 pages over the whole map, 16-byte blocks inside one page, and single bytes
@@ -112,10 +118,10 @@ The memory map panel was added this way:
 5. Put panel-specific styles in a new `css/memory.css` and link it from
    `index.html`
 
-Next phases: C · POST (BIOS self test) and D · loading the boot sector to
-`0x7C00`, where day 1 of the book begins. See [ROADMAP.md](ROADMAP.md) for
-the plan covering the whole book. New physical controls (reset
-button, disk LED, ...) go on the front panel in `FrontPanelView`.
+Next: day 1 of the book, the contents of the boot sector. See
+[ROADMAP.md](ROADMAP.md) for the plan covering the whole book. New physical
+controls (reset button, disk LED, ...) go on the front panel in
+`FrontPanelView`.
 
 ## Analytics
 

@@ -29,6 +29,12 @@
   --mem-rom-border: #b3862a;
   --mem-rom-text: #f0cf86;
   --mem-unmapped-border: #3a414e;
+  --mem-tested-bg: #17301f;
+  --mem-tested-border: #3a8a55;
+  --mem-tested-text: #9ee0b2;
+  --mem-written-bg: #2a2452;
+  --mem-written-border: #7d6ee6;
+  --mem-written-text: #c9c0ff;
 
   /* Defaults before JS runs; LayoutModel owns the live values */
   --boot-width: 50%;      /* width of the boot panel (left column) */

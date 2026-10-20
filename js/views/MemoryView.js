@@ -1,6 +1,8 @@
 const STATE_LABELS = Object.freeze({
   off: 'Off',
   undefined: 'Undefined',
+  tested: 'Tested',
+  written: 'Written',
   rom: 'ROM',
   unmapped: 'Unmapped',
 });
@@ -39,7 +41,7 @@ export class MemoryView {
   #grid;
   #detail;
   #cells = [];         // { start, end, el }
-  #snapshot = { regions: [], focus: null, readByte: () => undefined };
+  #snapshot = { regions: [], overlays: [], focus: null, readByte: () => undefined };
   #zoom = { level: 0, start: 0 };
   #focusKey;
   #hovered = null;
@@ -61,7 +63,7 @@ export class MemoryView {
   render(snapshot) {
     this.#snapshot = snapshot;
     const { focus } = snapshot;
-    const focusKey = focus ? `${focus.id}:${focus.bytes || ''}` : '';
+    const focusKey = focus ? `${focus.id}:${focus.bytes || ''}:${focus.range || ''}` : '';
     if (focusKey !== this.#focusKey) {
       // A step pointing somewhere new picks the zoom and clears any tapped cell
       this.#focusKey = focusKey;
@@ -88,7 +90,8 @@ export class MemoryView {
   #focusRange() {
     const { focus, regions } = this.#snapshot;
     if (!focus) return null;
-    if (focus.bytes) return { start: focus.bytes[0], end: focus.bytes[1] };
+    const span = focus.bytes || focus.range;
+    if (span) return { start: span[0], end: span[1] };
     return regions.find((region) => region.id === focus.id) || null;
   }
 
@@ -159,8 +162,7 @@ export class MemoryView {
     const isBytes = this.#zoom.level === BYTE_LEVEL;
     for (const cell of this.#cells) {
       const inside = this.#regionsIn(cell);
-      const main = inside.reduce((best, r) => (overlap(r, cell) > overlap(best, cell) ? r : best), inside[0]);
-      const state = main ? main.state : 'off';
+      const state = this.#cellState(cell, inside);
       cell.el.dataset.state = state;
       cell.el.dataset.mixed = String(inside.length > 1);
       cell.el.dataset.focus = String(Boolean(focusRange && overlap(focusRange, cell) > 0));
@@ -171,12 +173,20 @@ export class MemoryView {
     this.#renderDetail();
   }
 
-  // Two hex digits when known, ?? for random RAM, ·· for ROM contents not shown
+  // The strongest RAM state laid over any part of the cell, else its main region's state
+  #cellState(cell, inside) {
+    const overlays = this.#snapshot.overlays.filter((overlay) => overlap(overlay, cell) > 0);
+    if (overlays.length) return overlays[overlays.length - 1].state;
+    const main = inside.reduce((best, r) => (overlap(r, cell) > overlap(best, cell) ? r : best), inside[0]);
+    return main ? main.state : 'off';
+  }
+
+  // Two hex digits when known, ?? for random RAM, ·· for contents not shown
   #byteText(address, state) {
     const value = this.#snapshot.readByte(address);
     if (typeof value === 'number') return hexByte(value);
-    if (state === 'undefined') return '??';
-    if (state === 'rom') return '··';
+    if (state === 'undefined' || state === 'tested') return '??';
+    if (state === 'rom' || state === 'written') return '··';
     return '';
   }
 
@@ -255,7 +265,7 @@ export class MemoryView {
       const hints = [
         'Each cell is a 4 KiB page. Row = address, column = next hex digit. Tap a cell to zoom in.',
         'Each cell is 16 bytes of this page. Tap a cell to see the bytes.',
-        'Each cell is one byte. ?? = random RAM contents, ·· = ROM contents not shown.',
+        'Each cell is one byte. ?? = random RAM contents, ·· = contents not shown.',
       ];
       detail.appendChild(this.#line('mem-detail-hint', hints[level]));
     }
@@ -263,7 +273,7 @@ export class MemoryView {
 
   #cellTitle(cell) {
     if (this.#zoom.level === BYTE_LEVEL) {
-      const state = this.#regionsIn(cell)[0]?.state || 'off';
+      const state = this.#cellState(cell, this.#regionsIn(cell));
       const text = this.#byteText(cell.start, state) || '—';
       return `Byte ${hex(cell.start)} = ${text}`;
     }

@@ -89,7 +89,7 @@
       <p class="step-summary"></p>
 
       <svg id="board" class="board" viewBox="0 0 340 162" role="img"
-           aria-label="Motherboard diagram showing power and reset signals">
+           aria-label="Motherboard diagram showing power, reset, and disk signals">
         <path class="wire" data-wire="pwrsw" d="M30 92 H62"/>
         <path class="wire" data-wire="pson" d="M82 76 V20 H140"/>
         <path class="wire" data-wire="pwrok" d="M140 34 H112 V76"/>
@@ -97,6 +97,7 @@
         <path class="wire wire-rail" d="M245 42 V76"/>
         <path class="wire" data-wire="reset" d="M142 92 H240"/>
         <path class="wire" data-wire="bus" d="M280 108 V126"/>
+        <path class="wire" data-wire="disk" d="M138 108 V136"/>
 
         <text class="bd-wire-label" x="47" y="86" text-anchor="middle">PWR_SW</text>
         <text class="bd-wire-label" x="78" y="52" text-anchor="end">PS_ON#</text>
@@ -128,6 +129,10 @@
         <g class="bd-part bd-ram">
           <rect x="150" y="126" width="60" height="26" rx="4"/>
           <text x="180" y="143" text-anchor="middle">RAM</text>
+        </g>
+        <g class="bd-part bd-floppy">
+          <rect x="62" y="136" width="80" height="20" rx="4"/>
+          <text x="102" y="150" text-anchor="middle">Floppy A:</text>
         </g>
         <g class="bd-part bd-rom">
           <rect x="240" y="126" width="80" height="26" rx="4"/>
@@ -178,6 +183,8 @@
       <div class="mem-legend">
         <span data-state="off">Off</span>
         <span data-state="undefined">Undefined RAM</span>
+        <span data-state="tested">Tested</span>
+        <span data-state="written">Written</span>
         <span data-state="rom">ROM</span>
         <span data-state="unmapped">Unmapped</span>
         <span data-state="mixed">Several regions in one page</span>

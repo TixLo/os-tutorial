@@ -32,6 +32,7 @@ export class BoardView {
     data.pwrok = signals.pwrok;
     data.reset = signals.reset;
     data.bus = signals.bus;
+    data.disk = signals.disk;
     data.cpu = cpu;
     this.#cpuState.textContent = CPU_LABELS[cpu];
     this.#resetState.textContent = RESET_LABELS[signals.reset];

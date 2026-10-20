@@ -4,7 +4,7 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 done.** Everything else is a draft waiting for the open questions
+Status: **M0 and M1 done** (all of day 0). Everything else is a draft waiting for the open questions
 at the bottom to be settled.
 
 ## 1. Book outline
@@ -54,7 +54,7 @@ and nothing is copied from the book.
 | # | Milestone | Content | New features needed |
 |---|---|---|---|
 | **M0** | ✅ Done | First half of day 0: power-on to the CPU's first instruction (phases A and B) | — |
-| **M1** | Finish day 0 | Phase C, POST (memory test, IVT, BDA, video BIOS puts up the first screen); phase D, load the boot sector to `0x7C00` | Display shows the BIOS text screen; memory gets real byte contents |
+| **M1** | ✅ Done: finish day 0 | Phase C, POST (memory test, IVT, BDA, video BIOS puts up the first screen); phase D, load the boot sector to `0x7C00` | Display shows the BIOS text screen; memory gets real byte contents |
 | **M2** | Chapter framework | Split step data into one file per day, add a chapter picker, link straight to any chapter and step | Chapter system |
 | **M3** | Days 1–2 | What every byte of the boot sector means (BPB, code, `55 AA`), printing with INT 10h, how assembly maps to machine code | **Code panel** that highlights the line being run; **floppy panel** (cylinders, heads, sectors) |
 | **M4** | Day 3 | The disk read loop, video mode switch, GDT and CR0, moving from real mode to protected mode | CPU mode and segment visualization; start wiring in the emulator |

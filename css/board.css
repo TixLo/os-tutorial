@@ -36,7 +36,8 @@
 #board[data-pwrsw="true"] [data-wire="pwrsw"],
 #board[data-pson="true"] [data-wire="pson"],
 #board[data-pwrok="true"] [data-wire="pwrok"],
-#board[data-bus="true"] [data-wire="bus"] {
+#board[data-bus="true"] [data-wire="bus"],
+#board[data-disk="true"] [data-wire="disk"] {
   stroke: var(--sig-on);
   stroke-dasharray: 5 3;
   animation: wire-flow 0.6s linear infinite;
@@ -76,6 +77,7 @@
   stroke: var(--mem-rom-border);
 }
 #board[data-bus="true"] .bd-rom rect { stroke: var(--sig-on); }
+#board[data-disk="true"] .bd-floppy rect { stroke: var(--sig-on); }
 
 @keyframes wire-flow {
   to { stroke-dashoffset: -16; }

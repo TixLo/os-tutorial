@@ -97,11 +97,16 @@ export class MachineController {
   #render({ index, step, state, previous }) {
     const { frontPanel, lesson, board, registers, display, status } = this.views;
     frontPanel.render({ powered: this.machine.powered, led: state.led, time: step.time });
-    this.memory.apply(state.memory);
+    this.memory.apply({
+      ...state.memory,
+      ranges: state.ranges,
+      writes: state.writes,
+      screen: state.screen,
+    });
     lesson.render(step);
     board.render(state);
     registers.render(state.regs, previous && previous.regs, state.cpu);
-    display.render(state.monitor);
+    display.render({ monitor: state.monitor, screen: state.screen });
     status.render({ cpu: state.cpu, csip: state.csip });
     this.#renderPlayer();
   }
