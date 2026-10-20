@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="css/memory.css">
 <link rel="stylesheet" href="css/lesson.css">
 <link rel="stylesheet" href="css/board.css">
+<link rel="stylesheet" href="css/about.css">
 <script type="module" src="js/main.js"></script>
 </head>
 <body>
@@ -30,6 +31,18 @@
     </button>
     <span class="fp-led" data-led="power"></span>
     <span class="fp-label">POWER</span>
+  </div>
+
+  <div class="fp-group">
+    <button class="fp-about" type="button" data-action="about"
+            aria-haspopup="dialog" aria-controls="about" aria-label="About this site">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" aria-hidden="true">
+        <path d="M12 11v6"/>
+        <path d="M12 7.5v.01"/>
+      </svg>
+    </button>
+    <span class="fp-label">ABOUT</span>
   </div>
 
   <div id="player" class="player" data-playing="false" data-enabled="false">
@@ -210,6 +223,41 @@
     <span class="credit-note">· unofficial companion</span>
   </p>
 </footer>
+
+<dialog id="about" class="about" aria-labelledby="about-title">
+  <form method="dialog">
+    <button class="about-close" value="close" aria-label="Close">✕</button>
+  </form>
+  <h2 id="about-title">About this site</h2>
+  <p>
+    This site helps you study <cite>30日でできる! OS自作入門</cite> by Hidemi Kawai
+    (Chinese edition: <cite>30天自制操作系统</cite>), where you build a small operating
+    system from scratch. Registers, interrupts, and memory addresses are hard to picture
+    from text alone, so here you step through what the computer does and watch the
+    hardware, the memory, and the screen change. Read it alongside the book, not instead
+    of it.
+  </p>
+  <h3>Day 0</h3>
+  <p>
+    The book begins on day 1 with the boot sector already in memory. To make that
+    starting point make sense, this site adds a day 0 that the book does not have: what
+    happens between pressing the power button and the boot sector taking over at
+    0x7C00.
+  </p>
+  <h3>How to use it</h3>
+  <p>
+    Press the power button, then play or step through with the buttons next to it.
+    Blue addresses and register values are links: click one to see that byte in the
+    memory panel.
+  </p>
+  <p class="about-note">
+    An unofficial companion, not affiliated with the author or the publishers.
+    Source code on <a href="https://github.com/TixLo/os-tutorial" target="_blank" rel="noopener">GitHub</a>.
+  </p>
+  <form method="dialog" class="about-actions">
+    <button class="about-ok" value="ok">Got it</button>
+  </form>
+</dialog>
 
 <!-- Page view counts (GoatCounter: no cookies, no personal data) -->
 <script data-goatcounter="https://tixlo.goatcounter.com/count"

@@ -1,0 +1,94 @@
+/* ABOUT button on the front panel and the dialog it opens */
+
+/* A smaller, quieter sibling of the power button */
+.fp-about {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 2px solid #3a414e;
+  background: #1f242d;
+  color: #8a93a3;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #0a0c10;
+}
+.fp-about:hover { border-color: #566070; color: var(--text); }
+.fp-about:active { transform: translateY(2px); box-shadow: none; }
+.fp-about:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.fp-about svg { width: 14px; height: 14px; }
+
+/* Dialog */
+.about {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.about::backdrop { background: rgba(5, 6, 8, 0.7); }
+
+.about h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.about h3 {
+  margin: 16px 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+.about p { margin: 0; }
+.about cite { font-style: normal; font-weight: 600; }
+.about a { color: var(--accent); }
+
+.about-note {
+  margin-top: 16px !important;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.about-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 14px;
+  cursor: pointer;
+}
+.about-close:hover { background: var(--panel-head); color: var(--text); }
+
+.about-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+.about-ok {
+  height: 32px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.about-ok:hover { background: #6aa1ff; }
+.about-close:focus-visible,
+.about-ok:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }

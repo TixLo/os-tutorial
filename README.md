@@ -58,6 +58,7 @@ css/
   memory.css               Zoomable page grid, zoom trail, detail line, legend
   lesson.css               Step explanation and register table
   board.css                Motherboard diagram signal states
+  about.css                ABOUT button and dialog
 js/
   main.js                  Entry point: builds and starts each trio
   core/
@@ -69,6 +70,7 @@ js/
     LayoutModel.js         Panel sizes, limits, persistence
     MachineModel.js        Current boot step and the merged hardware state
     MemoryModel.js         Regions, their state, known bytes, and the step focus
+    AboutModel.js          Whether this visitor has seen the About dialog
   views/                   DOM rendering and user input. No app state.
     LayoutView.js          Splitter drag/keyboard input, CSS variable output
     FrontPanelView.js      Power button and LEDs
@@ -79,10 +81,12 @@ js/
     DisplayView.js         Monitor
     StatusView.js          Status bar
     MemoryView.js          Zoomable grid (pages / 16-byte blocks / bytes) and detail
+    AboutView.js           ABOUT button and dialog
   controllers/             Connect views to models. No DOM, no state.
     LayoutController.js
     MachineController.js   Input -> machine steps; step -> every view; playback timing
     MemoryController.js
+    AboutController.js     Opens About on request and once on the first visit
 ```
 
 ## Boot sequence

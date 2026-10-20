@@ -114,7 +114,7 @@ export class PlayerView extends EventEmitter {
   #bindKeyboard() {
     document.addEventListener('keydown', (e) => {
       if (!this.#enabled || e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.target.closest('input, textarea, select, .gutter')) return;
+      if (e.target.closest('input, textarea, select, .gutter, dialog')) return;
       if (e.key === ' ' && !e.target.closest('button')) {
         e.preventDefault();
         this.emit('play');
