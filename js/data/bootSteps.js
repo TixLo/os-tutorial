@@ -131,7 +131,7 @@ export const BOOT_STEPS = Object.freeze([
     time: '≈ 300 ms + a few ns',
     state: {
       signals: { bus: true },
-      memory: { focus: { id: 'bios_alias', note: '← CPU reads 0xFFFFFFF0' } },
+      memory: { focus: { id: 'bios_alias', note: 'CPU reads its first instruction at 0xFFFFFFF0' } },
     },
   },
   {
@@ -152,7 +152,7 @@ export const BOOT_STEPS = Object.freeze([
         'CS base': { value: '000F0000', note: 'Reloaded by the far jump: F000 × 16' },
         'EIP':     { value: '0000E05B', note: 'Entry point of the BIOS startup code' },
       },
-      memory: { focus: { id: 'system_bios', note: '← CPU now runs at 0xFE05B' } },
+      memory: { focus: { id: 'system_bios', note: 'CPU now runs BIOS code at 0xFE05B' } },
       csip: 'F000:E05B',
     },
   },

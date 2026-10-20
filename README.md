@@ -33,7 +33,7 @@ css/
   front-panel.css          Power button and LEDs
   display.css              Display panel drawn as a monitor
   terminal.css             Terminal panel (placeholder)
-  memory.css               Memory map rows, region states, legend
+  memory.css               4 KiB page grid, region states, detail line, legend
   lesson.css               Step explanation and register table
   board.css                Motherboard diagram signal states
 js/
@@ -56,7 +56,7 @@ js/
     RegisterView.js        CPU register table
     DisplayView.js         Monitor
     StatusView.js          Status bar
-    MemoryView.js          Memory map rows
+    MemoryView.js          Page grid (true scale) and hover/tap detail
   controllers/             Connect views to models. No DOM, no state.
     LayoutController.js
     MachineController.js   Input -> machine steps; step -> every view; playback timing
