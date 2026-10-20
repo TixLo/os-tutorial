@@ -1,0 +1,28 @@
+/* Design tokens and global resets */
+
+:root {
+  --bg: #0f1115;
+  --panel: #161a21;
+  --panel-head: #1d222b;
+  --border: #2a303b;
+  --gutter: #2a303b;
+  --gutter-hover: #4c8dff;
+  --text: #d7dce4;
+  --text-dim: #8a93a3;
+
+  /* Defaults before JS runs; LayoutModel owns the live values */
+  --console-width: 60%;  /* width of the console column */
+  --memory-height: 50%;  /* height of the memory panel */
+  --gutter-size: 6px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+}
