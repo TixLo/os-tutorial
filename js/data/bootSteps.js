@@ -11,8 +11,9 @@
 // In summary, detail, and formula text, a memory address in braces, like {0x7C00} or
 // {F000:E05B}, becomes a link that shows that byte in the memory panel.
 //
-// A step with `milestone` marks an important point; it gets a marker on the progress bar
-// and a badge above its title.
+// A step with `milestone` marks an important point: { label, text }. The short label sits
+// next to a marker on the progress bar (keep it to a word or two so it fits on phones);
+// the full text shows in the marker's tooltip and in a badge above the step's title.
 
 export const PHASES = Object.freeze({
   A: 'Power on',
@@ -429,7 +430,7 @@ export const BOOT_STEPS = Object.freeze([
     id: 'D4',
     phase: 'D',
     title: 'Jump to 0x7C00',
-    milestone: 'Day 0 complete: the boot sector takes over',
+    milestone: { label: 'BIOS done', text: 'The BIOS hands control to the boot sector' },
     summary: 'The BIOS jumps to {0000:7C00}. From now on, the boot sector is in charge.',
     detail: 'DL holds the drive number the sector came from (00 = floppy A:), so the boot ' +
       'code knows where to read the rest of the OS. The first bytes, EB 4E 90, jump over a ' +

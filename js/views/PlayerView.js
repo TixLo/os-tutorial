@@ -5,8 +5,8 @@ const STEP_TRANSITION_MS = 200;  // smooth jump when stepping by hand
 // Video-player style controls for the boot sequence, on the front panel next to power.
 // The progress bar runs from A1 (just after the power button) to the last step, and
 // every control stays disabled until the machine is powered on. Milestone steps get a
-// diamond marker on the bar; hover it for its name, click it to jump there.
-// Events: 'restart', 'prev', 'play' (toggle), 'next', 'speed' (cycle), 'seek' (step index)
+// diamond marker with a short label on the bar; hover it for the full text.
+// Events: 'restart', 'prev', 'play' (toggle), 'next', 'seek' (step index)
 // Keyboard: Space plays/pauses, Left/Right step back/forward.
 export class PlayerView extends EventEmitter {
   #root;
@@ -27,7 +27,7 @@ export class PlayerView extends EventEmitter {
     this.#count = root.querySelector('.pl-count');
     this.#track.setAttribute('aria-valuemax', String(this.#lastIndex));
 
-    for (const action of ['restart', 'prev', 'play', 'next', 'speed']) {
+    for (const action of ['restart', 'prev', 'play', 'next']) {
       const button = root.querySelector(`[data-action="${action}"]`);
       button.addEventListener('click', () => this.emit(action));
       this.#buttons[action] = button;
@@ -42,11 +42,17 @@ export class PlayerView extends EventEmitter {
     const rail = this.#fill.parentElement;
     this.#steps.forEach((step, index) => {
       if (!step.milestone || index === 0) return;
+      const position = this.#position(index);
       const el = document.createElement('span');
       el.className = 'pl-milestone';
-      el.style.left = `${this.#position(index) * 100}%`;
-      el.title = `Milestone: ${step.milestone}`;
-      el.setAttribute('aria-hidden', 'true');
+      el.style.left = `${position * 100}%`;
+      el.title = `${step.milestone.label}: ${step.milestone.text}`;
+      // Keep the label inside the bar near either end
+      el.dataset.align = position > 0.85 ? 'end' : position < 0.15 ? 'start' : 'center';
+      const label = document.createElement('span');
+      label.className = 'pl-milestone-label';
+      label.textContent = step.milestone.label;
+      el.append(document.createElement('i'), label);
       rail.appendChild(el);
       this.#markers.push({ index, el });
     });
@@ -61,8 +67,8 @@ export class PlayerView extends EventEmitter {
     return Math.min(1, Math.max(0, (index - 1) / (this.#lastIndex - 1)));
   }
 
-  // duration: ms per step at the current speed; elapsed: ms already spent on this step
-  render({ enabled, index, playing, duration, elapsed, speed, canPrev, canNext }) {
+  // duration: ms per step during auto play; elapsed: ms already spent on this step
+  render({ enabled, index, playing, duration, elapsed, canPrev, canNext }) {
     const step = this.#steps[index];
     this.#enabled = enabled;
     this.#root.dataset.enabled = String(enabled);
@@ -72,8 +78,6 @@ export class PlayerView extends EventEmitter {
     this.#buttons.prev.disabled = !enabled || !canPrev;
     this.#buttons.restart.disabled = !enabled || !canPrev;
     this.#buttons.next.disabled = !enabled || !canNext;
-    this.#buttons.speed.disabled = !enabled;
-    this.#buttons.speed.textContent = speed + '×';
     this.#count.textContent = `${index} / ${this.#lastIndex}`;
     this.#track.setAttribute('aria-disabled', String(!enabled));
     this.#track.setAttribute('aria-valuenow', String(index));

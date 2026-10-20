@@ -74,7 +74,7 @@ js/
   views/                   DOM rendering and user input. No app state.
     LayoutView.js          Splitter drag/keyboard input, CSS variable output
     FrontPanelView.js      Power button and LEDs
-    PlayerView.js          Play/pause, step buttons, progress track, speed, keys
+    PlayerView.js          Play/pause, step buttons, progress bar, milestones, keys
     LessonView.js          Current step explanation
     BoardView.js           Motherboard diagram (signals, CPU state)
     RegisterView.js        CPU register table
@@ -98,11 +98,12 @@ technical detail paragraph, an approximate time, and a `state` patch.
 own.
 
 Next to the power button, the front panel has a video-player style control:
-play/pause advances one step every 5 seconds (0.5×, 1×, or 2× speed), the
+play/pause advances one step every 2.5 seconds, the
 step buttons move one step at a time, and the single progress bar can be clicked
 or dragged to jump to any step. Keyboard: Space plays or pauses, Left and
-Right step back and forward. Steps with a `milestone` (such as the
-end of day 0) get a diamond marker on the bar and a badge above their title. The player stays disabled until the power
+Right step back and forward. Steps with a `milestone` (such as
+"BIOS done" at the end of day 0) get a labeled diamond on the bar and a badge
+above their title. The player stays disabled until the power
 button is pressed, and the bar starts at A1 (standby comes before power).
 
 | Phase | Steps | What happens |

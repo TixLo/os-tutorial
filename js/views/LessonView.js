@@ -29,7 +29,8 @@ export class LessonView extends EventEmitter {
 
   render(step) {
     const f = this.#fields;
-    f.milestone.textContent = step.milestone ? `Milestone · ${step.milestone}` : '';
+    const { milestone } = step;
+    f.milestone.textContent = milestone ? `Milestone · ${milestone.label}: ${milestone.text}` : '';
     f.milestone.hidden = !step.milestone;
     f.title.textContent = step.title;
     this.#fill(f.summary, step.summary);

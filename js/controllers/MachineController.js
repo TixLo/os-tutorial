@@ -1,5 +1,4 @@
-const STEP_MS = 5000;  // time per step at 1× speed
-const SPEEDS = [0.5, 1, 2];
+const STEP_MS = 2500;  // time per step during auto play
 const FIRST_STEP = 1;  // the step right after the power button is pressed
 
 // Drives the boot sequence: the power button turns the machine on or off, the player
@@ -7,7 +6,6 @@ const FIRST_STEP = 1;  // the step right after the power button is pressed
 // all the views that show machine state, and auto play advances one step at a time.
 export class MachineController {
   #playing = false;
-  #speedIndex = 1;
   #timer = null;
   #deadline = 0;           // when auto play moves on, while playing
   #remaining = STEP_MS;    // ms left on the current step, while paused
@@ -33,18 +31,17 @@ export class MachineController {
     player.on('seek', (index) => {
       if (machine.powered) machine.goto(Math.max(FIRST_STEP, index));
     });
-    player.on('speed', () => this.#cycleSpeed());
     player.on('restart', () => {
       if (machine.powered) machine.goto(FIRST_STEP);
     });
 
     machine.on('step', (event) => {
-      this.#remaining = this.#stepMs;
+      this.#remaining = STEP_MS;
       if (this.#playing && machine.isLast) {
         clearTimeout(this.#timer);
         this.#playing = false;  // reached the end
       } else if (this.#playing) {
-        this.#schedule(this.#stepMs);
+        this.#schedule(STEP_MS);
       }
       this.#render(event);
     });
@@ -53,10 +50,6 @@ export class MachineController {
   init() {
     const { index, step, state } = this.machine;
     this.#render({ index, step, state, previous: null });
-  }
-
-  get #stepMs() {
-    return STEP_MS / SPEEDS[this.#speedIndex];
   }
 
   get #timeLeft() {
@@ -85,15 +78,6 @@ export class MachineController {
     this.#timer = setTimeout(() => this.machine.next(), ms);
   }
 
-  // Keep the same fraction of the step left when the speed changes
-  #cycleSpeed() {
-    const fractionLeft = this.#timeLeft / this.#stepMs;
-    this.#speedIndex = (this.#speedIndex + 1) % SPEEDS.length;
-    this.#remaining = fractionLeft * this.#stepMs;
-    if (this.#playing) this.#schedule(this.#remaining);
-    this.#renderPlayer();
-  }
-
   #render({ index, step, state, previous }) {
     const { frontPanel, lesson, board, registers, display, status } = this.views;
     frontPanel.render({ powered: this.machine.powered, led: state.led, time: step.time });
@@ -112,14 +96,13 @@ export class MachineController {
   }
 
   #renderPlayer() {
-    const duration = this.#stepMs;
+    const duration = STEP_MS;
     this.views.player.render({
       enabled: this.machine.powered,
       index: this.machine.index,
       playing: this.#playing,
       duration,
       elapsed: duration - this.#timeLeft,
-      speed: SPEEDS[this.#speedIndex],
       canPrev: this.machine.index > FIRST_STEP,
       canNext: !this.machine.isLast,
     });
