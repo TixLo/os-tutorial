@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,8 +15,8 @@
     --text: #d7dce4;
     --text-dim: #8a93a3;
 
-    --console-width: 60%;  /* 左欄 console 的寬度 */
-    --memory-height: 50%;  /* 右欄內存區的高度 */
+    --console-width: 60%;  /* width of the console column */
+    --memory-height: 50%;  /* height of the memory panel */
     --gutter-size: 6px;
   }
 
@@ -27,7 +27,7 @@
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     font-size: 14px;
   }
 
@@ -36,7 +36,7 @@
     flex-direction: column;
   }
 
-  /* 標題欄 */
+  /* Top bar */
   #topbar {
     flex: none;
     height: 40px;
@@ -50,7 +50,7 @@
   #topbar .title { font-weight: 600; }
   #topbar .spacer { flex: 1; }
 
-  /* 主區域：左 console，右 side */
+  /* Main area: console on the left, side column on the right */
   #main {
     flex: 1;
     min-height: 0;
@@ -66,7 +66,7 @@
   #memory { flex: 0 0 var(--memory-height); }
   #boot { flex: 1; }
 
-  /* 面板 */
+  /* Panels */
   .panel {
     min-width: 0;
     min-height: 0;
@@ -98,7 +98,7 @@
     font-family: ui-monospace, Menlo, Consolas, monospace;
   }
 
-  /* 分隔條 */
+  /* Splitters */
   .gutter {
     flex: none;
     background: var(--gutter);
@@ -117,7 +117,7 @@
   body.resizing-v { cursor: col-resize; }
   body.resizing-h { cursor: row-resize; }
 
-  /* 狀態欄 */
+  /* Status bar */
   #statusbar {
     flex: none;
     height: 24px;
@@ -131,7 +131,7 @@
     font-size: 12px;
   }
 
-  /* 窄螢幕：改成上下排列，不顯示分隔條 */
+  /* Narrow screens: stack panels vertically and hide splitters */
   @media (max-width: 767px) {
     body { height: auto; min-height: 100%; }
     #main, #side { flex-direction: column; }
@@ -146,45 +146,45 @@
 <header id="topbar">
   <span class="title">OS Tutorial</span>
   <span class="spacer"></span>
-  <span class="placeholder">Day 選擇 · 執行 / 暫停 / 單步</span>
+  <span class="placeholder">Day select · Run / Pause / Step</span>
 </header>
 
 <main id="main">
   <section id="console" class="panel">
     <div class="panel-head">CONSOLE</div>
-    <div class="panel-body">console 區域</div>
+    <div class="panel-body">Console area</div>
   </section>
 
   <div class="gutter gutter-v" role="separator" aria-orientation="vertical"
-       aria-label="調整 console 寬度" tabindex="0"
+       aria-label="Resize console width" tabindex="0"
        data-var="--console-width" data-axis="x" data-target="main"></div>
 
   <div id="side">
     <section id="memory" class="panel">
       <div class="panel-head">MEMORY</div>
-      <div class="panel-body">內存地圖區域</div>
+      <div class="panel-body">Memory map area</div>
     </section>
 
     <div class="gutter gutter-h" role="separator" aria-orientation="horizontal"
-         aria-label="調整內存區高度" tabindex="0"
+         aria-label="Resize memory panel height" tabindex="0"
          data-var="--memory-height" data-axis="y" data-target="side"></div>
 
     <section id="boot" class="panel">
       <div class="panel-head">BOOT · PROCESS · TIME</div>
-      <div class="panel-body">開機步驟、程序、時間區域</div>
+      <div class="panel-body">Boot steps, processes, and time area</div>
     </section>
   </div>
 </main>
 
 <footer id="statusbar">
-  <span>運行時間 --</span>
-  <span>CPU 模式 --</span>
+  <span>Uptime --</span>
+  <span>CPU mode --</span>
   <span>tick --</span>
 </footer>
 
 <script>
 (function () {
-  const MIN = 15, MAX = 85;          // 每塊至少佔 15%
+  const MIN = 15, MAX = 85;          // each panel keeps at least 15%
   const STORAGE_KEY = 'os-tutorial.layout';
   const root = document.documentElement;
   const defaults = {
@@ -251,13 +251,13 @@
     gutter.addEventListener('pointerup', stop);
     gutter.addEventListener('pointercancel', stop);
 
-    // 雙擊恢復預設大小
+    // Double-click resets to the default size
     gutter.addEventListener('dblclick', () => {
       root.style.setProperty(name, defaults[name]);
       save();
     });
 
-    // 鍵盤：方向鍵每次調 2%
+    // Keyboard: arrow keys adjust by 2% per press
     gutter.addEventListener('keydown', (e) => {
       const keys = axis === 'x' ? ['ArrowLeft', 'ArrowRight'] : ['ArrowUp', 'ArrowDown'];
       const i = keys.indexOf(e.key);
