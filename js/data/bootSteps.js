@@ -131,7 +131,13 @@ export const BOOT_STEPS = Object.freeze([
     time: '≈ 300 ms + a few ns',
     state: {
       signals: { bus: true },
-      memory: { focus: { id: 'bios_alias', note: 'CPU reads its first instruction at 0xFFFFFFF0' } },
+      memory: {
+        focus: {
+          id: 'bios_alias',
+          note: 'The CPU fetches from the last 16 bytes below 4 GiB',
+          bytes: [0xFFFFFFF0, 0xFFFFFFFF],
+        },
+      },
     },
   },
   {
@@ -143,7 +149,9 @@ export const BOOT_STEPS = Object.freeze([
     detail: 'Sixteen bytes are too few for real work, so the ROM puts one far jump there. ' +
       'A far jump reloads CS, and in real mode that sets the CS base to CS × 16. The CPU ' +
       'continues at 0xFE05B, inside the normal 1 MiB BIOS area (the same ROM appears at ' +
-      'both addresses). From here on it runs like an 8086.',
+      'both addresses). From here on it runs like an 8086. In the ROM the jump is five ' +
+      'bytes: EA is the far-jump opcode, 5B E0 is the offset 0xE05B, and 00 F0 is the ' +
+      'segment 0xF000. x86 stores numbers low byte first, which is why they look reversed.',
     formula: 'CS base = 0xF000 × 16 = 0xF0000      0xF0000 + 0xE05B = 0xFE05B',
     hint: 'Next chapter: the BIOS power-on self test (POST). Coming soon.',
     time: '≈ 300 ms + a few ns',
@@ -152,7 +160,13 @@ export const BOOT_STEPS = Object.freeze([
         'CS base': { value: '000F0000', note: 'Reloaded by the far jump: F000 × 16' },
         'EIP':     { value: '0000E05B', note: 'Entry point of the BIOS startup code' },
       },
-      memory: { focus: { id: 'system_bios', note: 'CPU now runs BIOS code at 0xFE05B' } },
+      memory: {
+        focus: {
+          id: 'bios_alias',
+          note: 'EA 5B E0 00 F0 is jmp F000:E05B',
+          bytes: [0xFFFFFFF0, 0xFFFFFFF4],
+        },
+      },
       csip: 'F000:E05B',
     },
   },

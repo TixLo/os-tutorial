@@ -33,7 +33,7 @@ css/
   front-panel.css          Power button and LEDs
   display.css              Display panel drawn as a monitor
   terminal.css             Terminal panel (placeholder)
-  memory.css               4 KiB page grid, region states, detail line, legend
+  memory.css               Zoomable page grid, zoom trail, detail line, legend
   lesson.css               Step explanation and register table
   board.css                Motherboard diagram signal states
 js/
@@ -42,11 +42,11 @@ js/
     EventEmitter.js        Shared pub/sub for models and views
   data/                    Static facts the models load (no logic)
     bootSteps.js           Boot steps: text, timing, and hardware state patches
-    memoryMap.js           Memory map regions (1 MiB plus the reset vector area)
+    memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
   models/                  State and rules. No DOM access.
     LayoutModel.js         Panel sizes, limits, persistence
     MachineModel.js        Current boot step and the merged hardware state
-    MemoryModel.js         Memory regions, their state, and focus notes
+    MemoryModel.js         Regions, their state, known bytes, and the step focus
   views/                   DOM rendering and user input. No app state.
     LayoutView.js          Splitter drag/keyboard input, CSS variable output
     FrontPanelView.js      Power button and LEDs
@@ -56,7 +56,7 @@ js/
     RegisterView.js        CPU register table
     DisplayView.js         Monitor
     StatusView.js          Status bar
-    MemoryView.js          Page grid (true scale) and hover/tap detail
+    MemoryView.js          Zoomable grid (pages / 16-byte blocks / bytes) and detail
   controllers/             Connect views to models. No DOM, no state.
     LayoutController.js
     MachineController.js   Input -> machine steps; step -> every view; playback timing
@@ -82,6 +82,12 @@ button is pressed, and the bar starts at A1 (standby comes before power).
 |---|---|---|
 | A · Power on | A0–A4 | Standby, power button, `PS_ON#`, voltage ramp, `PWR_OK` and reset release |
 | B · CPU reset | B1–B3 | Register reset values, reset vector `0xFFFFFFF0`, far jump to `F000:E05B` |
+
+The memory panel is a true-scale 16 × 16 grid with three zoom levels: 4 KiB
+pages over the whole map, 16-byte blocks inside one page, and single bytes
+(a hex dump) inside a 256-byte block. Tapping a cell zooms in and the trail
+above the grid zooms back out. A step's memory focus can name a byte range
+(`focus.bytes`), and the panel zooms to it on its own.
 
 To add steps, append them to `BOOT_STEPS`. A new kind of hardware state needs
 a field in the A0 base state and a view that renders it.

@@ -15,3 +15,14 @@ export const MEMORY_MAP = Object.freeze([
   // where the CPU fetches its first instruction after reset.
   { id: 'bios_alias',  start: 0xFFFF0000, end: 0xFFFFFFFF, name: 'BIOS ROM (top of 4 GiB)', kind: 'rom' },
 ]);
+
+// ROM bytes the tutorial shows. Everything else in ROM is real firmware we don't model.
+// The first instruction after reset is a far jump, jmp F000:E05B: opcode EA, then the
+// offset 0xE05B and the segment 0xF000, each stored low byte first. The same ROM
+// appears at the reset vector and at 0xFFFF0 in the 1 MiB view.
+const RESET_JUMP = Object.freeze([0xEA, 0x5B, 0xE0, 0x00, 0xF0]);
+
+export const ROM_BYTES = Object.freeze([
+  { address: 0xFFFFFFF0, bytes: RESET_JUMP },
+  { address: 0x000FFFF0, bytes: RESET_JUMP },
+]);
