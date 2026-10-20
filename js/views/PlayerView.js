@@ -1,28 +1,29 @@
 import { EventEmitter } from '../core/EventEmitter.js';
 
+const STEP_TRANSITION_MS = 200;  // smooth jump when stepping by hand
+
 // Video-player style controls for the boot sequence, on the front panel next to power.
-// The track covers the steps after standby, and every control stays disabled until
-// the machine is powered on.
+// The progress bar runs from A1 (just after the power button) to the last step, and
+// every control stays disabled until the machine is powered on.
 // Events: 'restart', 'prev', 'play' (toggle), 'next', 'speed' (cycle), 'seek' (step index)
 // Keyboard: Space plays/pauses, Left/Right step back/forward.
 export class PlayerView extends EventEmitter {
   #root;
   #buttons = {};
   #track;
-  #segments = [];
+  #fill;
   #count;
-  #title;
   #steps;
   #enabled = false;
 
-  constructor(steps, phases, root = document.getElementById('player')) {
+  constructor(steps, root = document.getElementById('player')) {
     super();
     this.#root = root;
     this.#steps = steps;
     this.#track = root.querySelector('.pl-track');
+    this.#fill = root.querySelector('.pl-fill');
     this.#count = root.querySelector('.pl-count');
-    this.#title = root.querySelector('.pl-title');
-    this.#track.setAttribute('aria-valuemax', String(steps.length - 1));
+    this.#track.setAttribute('aria-valuemax', String(this.#lastIndex));
 
     for (const action of ['restart', 'prev', 'play', 'next', 'speed']) {
       const button = root.querySelector(`[data-action="${action}"]`);
@@ -30,15 +31,22 @@ export class PlayerView extends EventEmitter {
       this.#buttons[action] = button;
     }
 
-    this.#buildTrack(steps, phases);
     this.#bindScrubbing();
     this.#bindKeyboard();
+  }
+
+  get #lastIndex() {
+    return this.#steps.length - 1;
+  }
+
+  // Position on the bar (0..1) of the start of a step; step 1 is the left end
+  #position(index) {
+    return Math.min(1, Math.max(0, (index - 1) / (this.#lastIndex - 1)));
   }
 
   // duration: ms per step at the current speed; elapsed: ms already spent on this step
   render({ enabled, index, playing, duration, elapsed, speed, canPrev, canNext }) {
     const step = this.#steps[index];
-    const total = this.#steps.length - 1;
     this.#enabled = enabled;
     this.#root.dataset.enabled = String(enabled);
     this.#root.dataset.playing = String(playing);
@@ -49,61 +57,46 @@ export class PlayerView extends EventEmitter {
     this.#buttons.next.disabled = !enabled || !canNext;
     this.#buttons.speed.disabled = !enabled;
     this.#buttons.speed.textContent = speed + '×';
-    this.#count.textContent = `${index} / ${total}`;
-    this.#title.textContent = enabled ? `${step.id} ${step.title}` : 'Press power to start';
+    this.#count.textContent = `${index} / ${this.#lastIndex}`;
     this.#track.setAttribute('aria-disabled', String(!enabled));
     this.#track.setAttribute('aria-valuenow', String(index));
     this.#track.setAttribute('aria-valuetext', `${step.id} ${step.title}`);
-
-    this.#segments.forEach((segment) => {
-      const i = Number(segment.dataset.index);
-      const fill = segment.firstElementChild;
-      segment.classList.toggle('done', i < index || (i === index && !canNext));
-      segment.classList.toggle('current', i === index);
-      fill.style.animation = '';
-      if (i !== index || !canNext) return;
-      // Fill the current segment over the time left until the next step
-      void fill.offsetWidth;
-      fill.style.animation = `pl-fill ${duration}ms linear ${-elapsed}ms forwards`;
-      fill.style.animationPlayState = playing ? 'running' : 'paused';
-    });
+    this.#renderFill(enabled, index, playing, duration, elapsed, canNext);
   }
 
-  #buildTrack(steps, phases) {
-    let group = null;
-    steps.forEach((step, i) => {
-      if (i === 0) return;  // standby is before the power button, not part of playback
-      if (!group || group.dataset.phase !== step.phase) {
-        group = document.createElement('div');
-        group.className = 'pl-phase';
-        group.dataset.phase = step.phase;
-        group.dataset.label = `${step.phase} · ${phases[step.phase]}`;
-        this.#track.appendChild(group);
-      }
-      const segment = document.createElement('div');
-      segment.className = 'pl-seg';
-      segment.dataset.index = i;
-      segment.title = `${step.id} ${step.title}`;
-      segment.appendChild(document.createElement('span')).className = 'pl-fill';
-      group.appendChild(segment);
-      group.style.flexGrow = group.children.length;  // width follows the step count
-      this.#segments.push(segment);
-    });
+  // While playing, the bar glides toward the next step over the time left on this one
+  #renderFill(enabled, index, playing, duration, elapsed, canNext) {
+    const fill = this.#fill;
+    if (!enabled) {
+      fill.style.transition = 'none';
+      fill.style.width = '0%';
+      return;
+    }
+    const start = this.#position(index);
+    const end = canNext ? this.#position(index + 1) : start;
+    const now = start + (end - start) * (elapsed / duration);
+
+    if (!playing || !canNext) {
+      fill.style.transition = `width ${STEP_TRANSITION_MS}ms ease-out`;
+      fill.style.width = `${now * 100}%`;
+      return;
+    }
+    fill.style.transition = 'none';
+    fill.style.width = `${now * 100}%`;
+    void fill.offsetWidth;
+    fill.style.transition = `width ${duration - elapsed}ms linear`;
+    fill.style.width = `${end * 100}%`;
   }
 
-  // Click or drag along the track to jump between steps
+  // Click or drag along the bar to jump to the nearest step
   #bindScrubbing() {
     const track = this.#track;
     let last = null;
     const seekAt = (e) => {
       if (!this.#enabled) return;
       const rect = track.getBoundingClientRect();
-      const segmentRect = this.#segments[0].getBoundingClientRect();
-      const y = segmentRect.top + segmentRect.height / 2;
-      const x = Math.min(rect.right - 1, Math.max(rect.left + 1, e.clientX));
-      const segment = document.elementFromPoint(x, y)?.closest('.pl-seg');
-      if (!segment) return;
-      const index = Number(segment.dataset.index);
+      const fraction = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
+      const index = 1 + Math.round(fraction * (this.#lastIndex - 1));
       if (index === last) return;
       last = index;
       this.emit('seek', index);

@@ -71,10 +71,10 @@ own.
 
 Next to the power button, the front panel has a video-player style control:
 play/pause advances one step every 5 seconds (0.5×, 1×, or 2× speed), the
-step buttons move one step at a time, and the progress track can be clicked
+step buttons move one step at a time, and the single progress bar can be clicked
 or dragged to jump to any step. Keyboard: Space plays or pauses, Left and
 Right step back and forward. The player stays disabled until the power
-button is pressed, and the track starts at A1 (standby comes before power).
+button is pressed, and the bar starts at A1 (standby comes before power).
 
 | Phase | Steps | What happens |
 |---|---|---|

@@ -1,5 +1,5 @@
 // Entry point: build each model/view/controller trio and start it.
-import { BOOT_STEPS, PHASES } from './data/bootSteps.js';
+import { BOOT_STEPS } from './data/bootSteps.js';
 import { LayoutModel } from './models/LayoutModel.js';
 import { MachineModel } from './models/MachineModel.js';
 import { MemoryModel } from './models/MemoryModel.js';
@@ -24,7 +24,7 @@ const controllers = [
   new MemoryController(memory, new MemoryView()),
   new MachineController(machine, memory, {
     frontPanel: new FrontPanelView(),
-    player: new PlayerView(BOOT_STEPS, PHASES),
+    player: new PlayerView(BOOT_STEPS),
     lesson: new LessonView(),
     board: new BoardView(),
     registers: new RegisterView(),
