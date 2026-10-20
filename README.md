@@ -1,11 +1,33 @@
 # os-tutorial
 
-A browser-based visualizer for following along with Hidemi Kawai's book
-*30日でできる! OS自作入門* (Chinese edition: *30天自制操作系统*). The boot
-explanation (steps, motherboard diagram, CPU registers) fills the left half. The right half stacks a display (the
-machine's screen), a memory map, and a terminal (reserved for typing CPU
-commands in a later chapter) at a 1 : 2 : 1 ratio. Every splitter can be
-dragged.
+**Live site: <https://tixlo.github.io/os-tutorial/>**
+
+## About
+
+This site was made to help people study Hidemi Kawai's book
+*30日でできる! OS自作入門* (Chinese edition: *30天自制操作系统*), in which you
+build a small operating system from scratch in 30 days. Reading about
+registers, interrupts, and memory addresses is hard to picture, so the site
+shows them: you step through what the computer does and watch the hardware,
+the memory, and the screen change at each step. It is meant to be read
+alongside the book, not instead of it.
+
+The book starts on day 1 with the boot sector already loaded into memory.
+To make that starting point make sense, the site adds a **day 0** that the
+book does not have: what happens between pressing the power button and the
+boot sector taking over at `0x7C00`. It covers the power supply and reset
+signals, the CPU's reset state and first instruction, the BIOS power-on self
+test, and how the first sector of the floppy gets loaded and run.
+
+It is an unofficial companion, not affiliated with the author or the
+publishers; see [Credits](#credits).
+
+## Layout
+
+The boot explanation (steps, motherboard diagram, CPU registers) fills the
+left half. The right half stacks a display (the machine's screen), a memory
+map, and a terminal (reserved for typing CPU commands in a later chapter) at
+a 1 : 2 : 1 ratio. Every splitter can be dragged.
 
 ## Running locally
 
