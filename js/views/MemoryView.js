@@ -35,7 +35,7 @@ const overlap = (a, b) => Math.max(0, Math.min(a.end, b.end) - Math.max(a.start,
 // 4 KiB pages over the whole map, 16-byte blocks inside one page, and single bytes
 // (a hex dump) inside a 256-byte block. Row labels are addresses and the column is the
 // next hex digit, at every level. Tap a cell to zoom in; the trail above zooms back out.
-// A step that points at specific bytes zooms there on its own.
+// A step that points at specific bytes zooms there on its own, and locate() jumps to one.
 export class MemoryView {
   #trail;
   #grid;
@@ -74,6 +74,14 @@ export class MemoryView {
     } else {
       this.#paint();
     }
+  }
+
+  // Zoom to the byte at an address and select it
+  locate(address) {
+    this.#zoomTo({ level: BYTE_LEVEL, start: alignDown(address, LEVELS[BYTE_LEVEL].row * 16) });
+    this.#selected = this.#cells.find((cell) => cell.start === address) || null;
+    this.#paint();
+    if (this.#selected) this.#selected.el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
   #zoomTo(zoom) {

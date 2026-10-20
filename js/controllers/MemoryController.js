@@ -7,6 +7,11 @@ export class MemoryController {
     memory.on('change', (snapshot) => view.render(snapshot));
   }
 
+  // Show one byte, e.g. when an address in the explanation is clicked
+  locate(address) {
+    this.view.locate(address);
+  }
+
   init() {
     this.view.render(this.memory.snapshot);
   }

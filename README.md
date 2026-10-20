@@ -87,7 +87,9 @@ button is pressed, and the bar starts at A1 (standby comes before power).
 
 Steps can also fill memory (`writes`), mark RAM as tested (`ranges`), and put
 text on the 80 × 25 screen (`screen`); the text is written into video memory
-at `0xB8000` too, so it shows up in the memory grid.
+at `0xB8000` too, so it shows up in the memory grid. In step text, an address
+in braces such as `{0x7C00}` or `{F000:E05B}` becomes a link that zooms the
+memory panel to that byte.
 
 The memory panel is a true-scale 16 × 16 grid with three zoom levels: 4 KiB
 pages over the whole map, 16-byte blocks inside one page, and single bytes

@@ -77,3 +77,20 @@
   from { background: rgba(240, 207, 134, 0.18); }
   to { background: transparent; }
 }
+
+/* Addresses in the explanation: click to show them in the memory panel */
+.addr-link {
+  padding: 0 2px;
+  border: none;
+  border-bottom: 1px dotted currentColor;
+  border-radius: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.95em;
+  cursor: pointer;
+}
+.addr-link:hover { background: var(--accent-bg); }
+.addr-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.step-formula .addr-link { color: inherit; }

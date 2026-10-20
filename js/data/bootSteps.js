@@ -7,6 +7,9 @@
 //   writes  memory the BIOS fills in: { start, end, data: [[address, [bytes]], ...] }
 //   ranges  RAM marked with a state over an address range, e.g. tested by POST
 //   screen  lines of text on the 80 x 25 text screen
+//
+// In summary, detail, and formula text, a memory address in braces, like {0x7C00} or
+// {F000:E05B}, becomes a link that shows that byte in the memory panel.
 
 export const PHASES = Object.freeze({
   A: 'Power on',
@@ -147,13 +150,13 @@ export const BOOT_STEPS = Object.freeze([
     id: 'B2',
     phase: 'B',
     title: 'The reset vector',
-    summary: 'The CPU fetches its first instruction from 0xFFFFFFF0, 16 bytes below ' +
+    summary: 'The CPU fetches its first instruction from {0xFFFFFFF0}, 16 bytes below ' +
       'the top of 4 GiB.',
     detail: 'The address comes from the registers: CS base plus EIP. Nothing in RAM is ' +
       'ready yet, so the first code must come from a chip that already holds data at ' +
       'power-on: the BIOS ROM. The chipset routes this address to the ROM. A fixed ' +
       'starting address like this is called the reset vector.',
-    formula: 'CS base 0xFFFF0000 + EIP 0xFFF0 = 0xFFFFFFF0',
+    formula: 'CS base {0xFFFF0000} + EIP 0xFFF0 = {0xFFFFFFF0}',
     time: '≈ 300 ms + a few ns',
     state: {
       signals: { bus: true },
@@ -171,14 +174,14 @@ export const BOOT_STEPS = Object.freeze([
     phase: 'B',
     title: 'Jump into the BIOS',
     summary: 'Only 16 bytes fit before the top of memory, so the first instruction is ' +
-      'a jump: jmp F000:E05B.',
+      'a jump: jmp {F000:E05B}.',
     detail: 'Sixteen bytes are too few for real work, so the ROM puts one far jump there. ' +
       'A far jump reloads CS, and in real mode that sets the CS base to CS × 16. The CPU ' +
-      'continues at 0xFE05B, inside the normal 1 MiB BIOS area (the same ROM appears at ' +
+      'continues at {0xFE05B}, inside the normal 1 MiB BIOS area (the same ROM appears at ' +
       'both addresses). From here on it runs like an 8086. In the ROM the jump is five ' +
       'bytes: EA is the far-jump opcode, 5B E0 is the offset 0xE05B, and 00 F0 is the ' +
       'segment 0xF000. x86 stores numbers low byte first, which is why they look reversed.',
-    formula: 'CS base = 0xF000 × 16 = 0xF0000      0xF0000 + 0xE05B = 0xFE05B',
+    formula: 'CS base = 0xF000 × 16 = {0xF0000}      {0xF0000} + 0xE05B = {0xFE05B}',
     time: '≈ 300 ms + a few ns',
     state: {
       regs: {
@@ -254,9 +257,9 @@ export const BOOT_STEPS = Object.freeze([
       'interrupt number.',
     detail: 'In real mode, interrupt n makes the CPU read 4 bytes at address n × 4 and ' +
       'jump there. Each entry is an offset and a segment, low byte first. INT 13h, the ' +
-      'disk service the boot sector will use, sits at 0x4C and points to F000:E3FE in the ' +
-      'BIOS. Numbers nobody handles point at F000:FF53, a single "return" instruction.',
-    formula: 'INT 13h → address 0x13 × 4 = 0x4C → FE E3 00 F0 → F000:E3FE',
+      'disk service the boot sector will use, sits at {0x4C} and points to {F000:E3FE} in the ' +
+      'BIOS. Numbers nobody handles point at {F000:FF53}, a single "return" instruction.',
+    formula: 'INT 13h → address 0x13 × 4 = {0x4C} → FE E3 00 F0 → {F000:E3FE}',
     time: '≈ 0.45 s',
     state: {
       writes: { ivt: { start: 0x00000, end: 0x003FF, data: [[0x00000, IVT_BYTES]] } },
@@ -268,11 +271,11 @@ export const BOOT_STEPS = Object.freeze([
     phase: 'C',
     title: 'Fill in the BIOS data area',
     summary: 'Right after the vector table, the BIOS writes down what hardware it found.',
-    detail: 'The 256 bytes at 0x400 are the BIOS data area: serial port addresses, ' +
-      'keyboard state, screen mode, and more. At 0x413 it stores the base memory size in ' +
+    detail: 'The 256 bytes at {0x400} are the BIOS data area: serial port addresses, ' +
+      'keyboard state, screen mode, and more. At {0x413} it stores the base memory size in ' +
       'KiB: 0x027F = 639. That is 640 KiB minus the 1 KiB the BIOS keeps for itself at ' +
-      '0x9FC00 (the extended BIOS data area), whose segment, 0x9FC0, is stored at 0x40E.',
-    formula: '0x413: 7F 02 → 0x027F = 639 KiB',
+      '{0x9FC00} (the extended BIOS data area), whose segment, 0x9FC0, is stored at {0x40E}.',
+    formula: '{0x413}: 7F 02 → 0x027F = 639 KiB',
     time: '≈ 0.5 s',
     state: {
       writes: {
@@ -288,13 +291,13 @@ export const BOOT_STEPS = Object.freeze([
     id: 'C6',
     phase: 'C',
     title: 'Start the video card',
-    summary: 'The BIOS finds the video card\'s own ROM at 0xC0000 and runs it. ' +
+    summary: 'The BIOS finds the video card\'s own ROM at {0xC0000} and runs it. ' +
       'The screen shows text for the first time.',
     detail: 'Expansion cards can carry their own small BIOS, called an option ROM. The ' +
-      'BIOS looks for one at 0xC0000 by checking for the bytes 55 AA; the next byte is its ' +
+      'BIOS looks for one at {0xC0000} by checking for the bytes 55 AA; the next byte is its ' +
       'size in 512-byte blocks. The video BIOS sets the screen to 80 × 25 text mode, where ' +
-      'each character on screen is 2 bytes at 0xB8000: the character code and its color. ' +
-      'It also points INT 10h (the vector at 0x40) at its own code in segment C000.',
+      'each character on screen is 2 bytes at {0xB8000}: the character code and its color. ' +
+      'It also points INT 10h (the vector at {0x40}) at its own code in segment C000.',
     formula: '55 AA = option ROM signature      40 = 64 × 512 bytes = 32 KiB',
     time: '≈ 0.6 s',
     state: {
@@ -310,8 +313,8 @@ export const BOOT_STEPS = Object.freeze([
     title: 'Test the rest of memory',
     summary: 'With a screen available, the BIOS tests the remaining base memory and ' +
       'shows the count as it goes.',
-    detail: 'The same write-and-read-back test now covers everything up to 0x9FFFF. The ' +
-      'text on screen is itself just memory: each letter is a byte at 0xB8000 followed by ' +
+    detail: 'The same write-and-read-back test now covers everything up to {0x9FFFF}. The ' +
+      'text on screen is itself just memory: each letter is a byte at {0xB8000} followed by ' +
       'a color byte (07 = light gray on black). Tap the video memory row to find it.',
     time: '≈ 1.0 s',
     state: {
@@ -386,12 +389,12 @@ export const BOOT_STEPS = Object.freeze([
     phase: 'D',
     title: 'Read the first sector',
     summary: 'The floppy motor spins up and INT 13h reads cylinder 0, head 0, sector 1 ' +
-      'into memory at 0x7C00.',
-    detail: 'That is 512 bytes, from 0x7C00 to 0x7DFF. Why 0x7C00? The original IBM PC ' +
+      'into memory at {0x7C00}.',
+    detail: 'That is 512 bytes, from {0x7C00} to {0x7DFF}. Why 0x7C00? The original IBM PC ' +
       'had as little as 32 KiB of RAM, and 0x7C00 left 1 KiB at the very top of it for the ' +
       'boot sector and its data, out of the way of the BIOS tables at the bottom. Every PC ' +
       'since has kept the same address.',
-    formula: '0x7C00 + 512 bytes (0x200) = 0x7E00, so the sector fills 0x7C00–0x7DFF',
+    formula: '{0x7C00} + 512 bytes (0x200) = {0x7E00}, so the sector fills {0x7C00}–{0x7DFF}',
     time: '≈ 2.3 s',
     state: {
       signals: { disk: true },
@@ -409,7 +412,7 @@ export const BOOT_STEPS = Object.freeze([
     phase: 'D',
     title: 'Check the boot signature',
     summary: 'A bootable sector ends with the two bytes 55 AA.',
-    detail: 'These are the last two bytes of the sector, at 0x7DFE and 0x7DFF. Most BIOSes ' +
+    detail: 'These are the last two bytes of the sector, at {0x7DFE} and {0x7DFF}. Most BIOSes ' +
       'refuse to run a sector without them, so random data is not executed by mistake ' +
       '(some skip the check for floppies). The other bytes are the book\'s day 1: they ' +
       'are shown as ·· until then.',
@@ -423,12 +426,12 @@ export const BOOT_STEPS = Object.freeze([
     id: 'D4',
     phase: 'D',
     title: 'Jump to 0x7C00',
-    summary: 'The BIOS jumps to 0000:7C00. From now on, the boot sector is in charge.',
+    summary: 'The BIOS jumps to {0000:7C00}. From now on, the boot sector is in charge.',
     detail: 'DL holds the drive number the sector came from (00 = floppy A:), so the boot ' +
       'code knows where to read the rest of the OS. The first bytes, EB 4E 90, jump over a ' +
       'description of the disk (its size, sectors, and file system) to the real code at ' +
-      '0x7C50. This is exactly where day 1 of the book begins.',
-    formula: 'EB 4E → jump ahead 0x4E bytes from 0x7C02 → 0x7C50',
+      '{0x7C50}. This is exactly where day 1 of the book begins.',
+    formula: 'EB 4E → jump ahead 0x4E bytes from {0x7C02} → {0x7C50}',
     hint: 'Day 1 starts here: what goes inside these 512 bytes.',
     time: '≈ 2.4 s',
     state: {

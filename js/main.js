@@ -18,14 +18,19 @@ import { MachineController } from './controllers/MachineController.js';
 
 const machine = new MachineModel(BOOT_STEPS);
 const memory = new MemoryModel();
+const lesson = new LessonView();
+const memoryController = new MemoryController(memory, new MemoryView());
+
+// Clicking an address in the explanation shows it in the memory panel
+lesson.on('locate', (address) => memoryController.locate(address));
 
 const controllers = [
   new LayoutController(new LayoutModel(), new LayoutView()),
-  new MemoryController(memory, new MemoryView()),
+  memoryController,
   new MachineController(machine, memory, {
     frontPanel: new FrontPanelView(),
     player: new PlayerView(BOOT_STEPS),
-    lesson: new LessonView(),
+    lesson,
     board: new BoardView(),
     registers: new RegisterView(),
     display: new DisplayView(),
