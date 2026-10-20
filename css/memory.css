@@ -1,0 +1,74 @@
+/* Memory map panel */
+
+.memory-map {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mem-region {
+  flex: var(--grow, 1) 0 26px;
+  display: grid;
+  grid-template-columns: 9.5em minmax(0, 1fr) auto 6.5em;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 12px;
+  background: var(--mem-off-bg);
+  color: var(--mem-off-text);
+  /* Rows light up one after another on power-on */
+  transition: background 0.35s, border-color 0.35s, color 0.35s;
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.mem-range { font-family: ui-monospace, Menlo, Consolas, monospace; }
+.mem-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mem-size { opacity: 0.8; }
+.mem-state { text-align: right; }
+
+.mem-region[data-state="off"] {
+  transition-delay: 0s;
+}
+.mem-region[data-state="undefined"] {
+  background: repeating-linear-gradient(-45deg,
+    var(--mem-ram-bg) 0 6px, #1a3746 6px 12px);
+  border-color: var(--mem-ram-border);
+  color: var(--mem-ram-text);
+}
+.mem-region[data-state="rom"] {
+  background: var(--mem-rom-bg);
+  border-color: var(--mem-rom-border);
+  color: var(--mem-rom-text);
+}
+.mem-region[data-state="unmapped"] {
+  border-color: var(--mem-unmapped-border);
+  border-style: dashed;
+  color: var(--text-dim);
+}
+
+/* Legend */
+.mem-legend {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 6px 10px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.mem-legend span::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  vertical-align: -1px;
+  border-radius: 2px;
+  border: 1px solid transparent;
+}
+.mem-legend [data-state="off"]::before { background: var(--mem-off-bg); border-color: var(--border); }
+.mem-legend [data-state="undefined"]::before { background: var(--mem-ram-bg); border-color: var(--mem-ram-border); }
+.mem-legend [data-state="rom"]::before { background: var(--mem-rom-bg); border-color: var(--mem-rom-border); }
+.mem-legend [data-state="unmapped"]::before { border: 1px dashed var(--mem-unmapped-border); }

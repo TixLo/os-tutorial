@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/panels.css">
+<link rel="stylesheet" href="css/front-panel.css">
+<link rel="stylesheet" href="css/memory.css">
 <script type="module" src="js/main.js"></script>
 </head>
 <body>
@@ -16,6 +18,21 @@
   <span class="spacer"></span>
   <span class="placeholder">Day select · Run / Pause / Step</span>
 </header>
+
+<div id="front-panel" data-power="off">
+  <div class="fp-group">
+    <button class="fp-power" type="button" data-action="power"
+            aria-pressed="false" aria-label="Power">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" aria-hidden="true">
+        <path d="M12 3v8"/>
+        <path d="M17.5 6.5a8 8 0 1 1-11 0"/>
+      </svg>
+    </button>
+    <span class="fp-led" data-led="power"></span>
+    <span class="fp-label">POWER</span>
+  </div>
+</div>
 
 <main id="main">
   <section id="console" class="panel">
@@ -31,7 +48,13 @@
   <div id="side">
     <section id="memory" class="panel">
       <div class="panel-head">MEMORY</div>
-      <div class="panel-body">Memory map area</div>
+      <div class="panel-body memory-map" id="memory-map"></div>
+      <div class="mem-legend">
+        <span data-state="off">Off</span>
+        <span data-state="undefined">Undefined RAM</span>
+        <span data-state="rom">ROM</span>
+        <span data-state="unmapped">Unmapped</span>
+      </div>
     </section>
 
     <div class="gutter gutter-h" role="separator" aria-orientation="horizontal"

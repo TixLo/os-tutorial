@@ -9,6 +9,19 @@
   --gutter-hover: #4c8dff;
   --text: #d7dce4;
   --text-dim: #8a93a3;
+  --bezel: #12151b;
+  --led-on: #4ade80;
+
+  /* Memory region states */
+  --mem-off-bg: #181b21;
+  --mem-off-text: #4a5160;
+  --mem-ram-bg: #16303d;
+  --mem-ram-border: #2b6a85;
+  --mem-ram-text: #9fd3e8;
+  --mem-rom-bg: #3a2e14;
+  --mem-rom-border: #b3862a;
+  --mem-rom-text: #f0cf86;
+  --mem-unmapped-border: #3a414e;
 
   /* Defaults before JS runs; LayoutModel owns the live values */
   --console-width: 60%;  /* width of the console column */
