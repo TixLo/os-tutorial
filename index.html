@@ -72,6 +72,11 @@
     <button type="button" class="pl-speed" data-action="speed" aria-label="Playback speed"
             title="Playback speed">1×</button>
   </div>
+
+  <div class="fp-clock" role="timer" aria-label="Time since the power button was pressed">
+    <span class="fp-clock-label">TIME SINCE POWER</span>
+    <span class="fp-clock-value">—</span>
+  </div>
 </div>
 
 <main id="main">
@@ -129,11 +134,7 @@
     <section id="boot" class="panel">
       <div class="panel-head">BOOT · PROCESS · TIME</div>
       <div class="panel-body lesson" id="lesson" aria-live="polite">
-        <div class="lesson-head">
-          <span class="step-id"></span>
-          <h2 class="step-title"></h2>
-          <span class="step-time"></span>
-        </div>
+        <h2 class="step-title"></h2>
         <p class="step-summary"></p>
 
         <svg id="board" class="board" viewBox="0 0 340 162" role="img"
@@ -201,7 +202,6 @@
 </main>
 
 <footer id="statusbar">
-  <span>Time <b data-status="time">—</b></span>
   <span>CPU <b data-status="cpu">Off</b></span>
   <span>CS:IP <b data-status="csip">—</b></span>
 </footer>

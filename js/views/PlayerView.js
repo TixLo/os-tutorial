@@ -60,7 +60,7 @@ export class PlayerView extends EventEmitter {
     this.#count.textContent = `${index} / ${this.#lastIndex}`;
     this.#track.setAttribute('aria-disabled', String(!enabled));
     this.#track.setAttribute('aria-valuenow', String(index));
-    this.#track.setAttribute('aria-valuetext', `${step.id} ${step.title}`);
+    this.#track.setAttribute('aria-valuetext', step.title);
     this.#renderFill(enabled, index, playing, duration, elapsed, canNext);
   }
 

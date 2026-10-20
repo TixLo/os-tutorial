@@ -69,3 +69,32 @@
   background: var(--led-on);
   box-shadow: 0 0 6px var(--led-on);
 }
+
+/* Time since power: the clock the whole boot sequence is measured against */
+.fp-clock {
+  flex: none;
+  min-width: 230px;  /* fits the longest time text, so the player never shifts */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #07090c;
+}
+.fp-clock-label {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+.fp-clock-value {
+  font: 600 17px ui-monospace, Menlo, Consolas, monospace;
+  color: #3a414e;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+/* The clock starts the moment the power button is pressed */
+.fp-clock[data-running="true"] .fp-clock-value {
+  color: var(--led-on);
+}

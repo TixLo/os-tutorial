@@ -49,7 +49,7 @@ export const BOOT_STEPS = Object.freeze([
       'connected to two pins on the motherboard labeled PWR_SW. Pressing it sends a short ' +
       'pulse to the chipset, the motherboard\'s traffic controller, which is running on ' +
       'standby power.',
-    time: 't = 0 ms',
+    time: '0 ms',
     state: {
       signals: { pwrsw: true },
     },
