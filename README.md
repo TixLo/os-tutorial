@@ -1,9 +1,11 @@
 # os-tutorial
 
 A browser-based visualizer for following along with *30 Days to Build an OS*
-(Hidemi Kawai). Four resizable panels sit side by side: a display (the
-machine's screen), a terminal (reserved for typing CPU commands in a later
-chapter), a memory map, and the boot steps with a motherboard diagram.
+(Hidemi Kawai). The boot explanation (steps, motherboard diagram, CPU
+registers) fills the left half. The right half stacks a display (the
+machine's screen), a memory map, and a terminal (reserved for typing CPU
+commands in a later chapter) at a 1 : 2 : 1 ratio. Every splitter can be
+dragged.
 
 ## Running locally
 

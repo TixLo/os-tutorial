@@ -79,7 +79,80 @@
 </div>
 
 <main id="main">
-  <div id="left">
+  <section id="boot" class="panel">
+    <div class="panel-head">BOOT · PROCESS · TIME</div>
+    <div class="panel-body lesson" id="lesson" aria-live="polite">
+      <h2 class="step-title"></h2>
+      <p class="step-summary"></p>
+
+      <svg id="board" class="board" viewBox="0 0 340 162" role="img"
+           aria-label="Motherboard diagram showing power and reset signals">
+        <path class="wire" data-wire="pwrsw" d="M30 92 H62"/>
+        <path class="wire" data-wire="pson" d="M82 76 V20 H140"/>
+        <path class="wire" data-wire="pwrok" d="M140 34 H112 V76"/>
+        <path class="wire wire-rail" d="M180 42 V126"/>
+        <path class="wire wire-rail" d="M245 42 V76"/>
+        <path class="wire" data-wire="reset" d="M142 92 H240"/>
+        <path class="wire" data-wire="bus" d="M280 108 V126"/>
+
+        <text class="bd-wire-label" x="47" y="86" text-anchor="middle">PWR_SW</text>
+        <text class="bd-wire-label" x="78" y="52" text-anchor="end">PS_ON#</text>
+        <text class="bd-wire-label" x="116" y="60">PWR_OK</text>
+        <text class="bd-wire-label" x="210" y="86" text-anchor="middle">RESET#</text>
+        <text class="bd-reset-state" x="210" y="105" text-anchor="middle"></text>
+        <text class="bd-wire-label" x="286" y="121">fetch</text>
+
+        <g class="bd-part bd-button">
+          <circle cx="20" cy="92" r="10"/>
+          <text x="20" y="118" text-anchor="middle">Power</text>
+          <text x="20" y="128" text-anchor="middle">button</text>
+        </g>
+        <g class="bd-part bd-chipset">
+          <rect x="62" y="76" width="80" height="32" rx="4"/>
+          <text x="102" y="96" text-anchor="middle">Chipset</text>
+          <text class="bd-sub" x="102" y="120" text-anchor="middle">on +5V standby</text>
+        </g>
+        <g class="bd-part bd-psu">
+          <rect x="140" y="8" width="110" height="34" rx="4"/>
+          <text x="195" y="22" text-anchor="middle">Power supply</text>
+          <text class="bd-sub bd-rails" x="195" y="35" text-anchor="middle">12 V · 5 V · 3.3 V</text>
+        </g>
+        <g class="bd-part bd-cpu">
+          <rect x="240" y="76" width="80" height="32" rx="4"/>
+          <text x="280" y="90" text-anchor="middle">CPU</text>
+          <text class="bd-sub bd-cpu-state" x="280" y="102" text-anchor="middle"></text>
+        </g>
+        <g class="bd-part bd-ram">
+          <rect x="150" y="126" width="60" height="26" rx="4"/>
+          <text x="180" y="143" text-anchor="middle">RAM</text>
+        </g>
+        <g class="bd-part bd-rom">
+          <rect x="240" y="126" width="80" height="26" rx="4"/>
+          <text x="280" y="143" text-anchor="middle">BIOS ROM</text>
+        </g>
+      </svg>
+
+      <p class="step-detail"></p>
+      <div class="step-formula" hidden></div>
+
+      <div id="registers" class="registers">
+        <h3>CPU registers</h3>
+        <p class="regs-empty"></p>
+        <table class="regs" hidden>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <p class="step-hint" hidden></p>
+    </div>
+  </section>
+
+  <div class="gutter gutter-v" role="separator" aria-orientation="vertical"
+       aria-label="Resize boot panel width" tabindex="0"
+       data-size="bootWidth" data-css-var="--boot-width"
+       data-axis="x" data-target="main"></div>
+
+  <div id="side">
     <section id="display" class="panel">
       <div class="panel-head">DISPLAY</div>
       <div class="panel-body monitor" id="monitor" data-monitor="off">
@@ -94,26 +167,8 @@
     <div class="gutter gutter-h" role="separator" aria-orientation="horizontal"
          aria-label="Resize display height" tabindex="0"
          data-size="displayHeight" data-css-var="--display-height"
-         data-axis="y" data-target="left"></div>
+         data-axis="y" data-target="side"></div>
 
-    <section id="terminal" class="panel">
-      <div class="panel-head">TERMINAL</div>
-      <div class="panel-body terminal" id="terminal-body">
-        <p class="term-note">Reserved for a later chapter: you will type commands here
-          to drive the CPU step by step.</p>
-        <div class="term-line" aria-hidden="true">
-          <span class="term-prompt">&gt;</span><span class="term-cursor"></span>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="gutter gutter-v" role="separator" aria-orientation="vertical"
-       aria-label="Resize left column width" tabindex="0"
-       data-size="leftWidth" data-css-var="--left-width"
-       data-axis="x" data-target="main"></div>
-
-  <div id="side">
     <section id="memory" class="panel">
       <div class="panel-head">MEMORY</div>
       <div class="panel-body memory-map" id="memory-map"></div>
@@ -130,71 +185,14 @@
          data-size="memoryHeight" data-css-var="--memory-height"
          data-axis="y" data-target="side"></div>
 
-    <section id="boot" class="panel">
-      <div class="panel-head">BOOT · PROCESS · TIME</div>
-      <div class="panel-body lesson" id="lesson" aria-live="polite">
-        <h2 class="step-title"></h2>
-        <p class="step-summary"></p>
-
-        <svg id="board" class="board" viewBox="0 0 340 162" role="img"
-             aria-label="Motherboard diagram showing power and reset signals">
-          <path class="wire" data-wire="pwrsw" d="M30 92 H62"/>
-          <path class="wire" data-wire="pson" d="M82 76 V20 H140"/>
-          <path class="wire" data-wire="pwrok" d="M140 34 H112 V76"/>
-          <path class="wire wire-rail" d="M180 42 V126"/>
-          <path class="wire wire-rail" d="M245 42 V76"/>
-          <path class="wire" data-wire="reset" d="M142 92 H240"/>
-          <path class="wire" data-wire="bus" d="M280 108 V126"/>
-
-          <text class="bd-wire-label" x="47" y="86" text-anchor="middle">PWR_SW</text>
-          <text class="bd-wire-label" x="78" y="52" text-anchor="end">PS_ON#</text>
-          <text class="bd-wire-label" x="116" y="60">PWR_OK</text>
-          <text class="bd-wire-label" x="210" y="86" text-anchor="middle">RESET#</text>
-          <text class="bd-reset-state" x="210" y="105" text-anchor="middle"></text>
-          <text class="bd-wire-label" x="286" y="121">fetch</text>
-
-          <g class="bd-part bd-button">
-            <circle cx="20" cy="92" r="10"/>
-            <text x="20" y="118" text-anchor="middle">Power</text>
-            <text x="20" y="128" text-anchor="middle">button</text>
-          </g>
-          <g class="bd-part bd-chipset">
-            <rect x="62" y="76" width="80" height="32" rx="4"/>
-            <text x="102" y="96" text-anchor="middle">Chipset</text>
-            <text class="bd-sub" x="102" y="120" text-anchor="middle">on +5V standby</text>
-          </g>
-          <g class="bd-part bd-psu">
-            <rect x="140" y="8" width="110" height="34" rx="4"/>
-            <text x="195" y="22" text-anchor="middle">Power supply</text>
-            <text class="bd-sub bd-rails" x="195" y="35" text-anchor="middle">12 V · 5 V · 3.3 V</text>
-          </g>
-          <g class="bd-part bd-cpu">
-            <rect x="240" y="76" width="80" height="32" rx="4"/>
-            <text x="280" y="90" text-anchor="middle">CPU</text>
-            <text class="bd-sub bd-cpu-state" x="280" y="102" text-anchor="middle"></text>
-          </g>
-          <g class="bd-part bd-ram">
-            <rect x="150" y="126" width="60" height="26" rx="4"/>
-            <text x="180" y="143" text-anchor="middle">RAM</text>
-          </g>
-          <g class="bd-part bd-rom">
-            <rect x="240" y="126" width="80" height="26" rx="4"/>
-            <text x="280" y="143" text-anchor="middle">BIOS ROM</text>
-          </g>
-        </svg>
-
-        <p class="step-detail"></p>
-        <div class="step-formula" hidden></div>
-
-        <div id="registers" class="registers">
-          <h3>CPU registers</h3>
-          <p class="regs-empty"></p>
-          <table class="regs" hidden>
-            <tbody></tbody>
-          </table>
+    <section id="terminal" class="panel">
+      <div class="panel-head">TERMINAL</div>
+      <div class="panel-body terminal" id="terminal-body">
+        <p class="term-note">Reserved for a later chapter: you will type commands here
+          to drive the CPU step by step.</p>
+        <div class="term-line" aria-hidden="true">
+          <span class="term-prompt">&gt;</span><span class="term-cursor"></span>
         </div>
-
-        <p class="step-hint" hidden></p>
       </div>
     </section>
   </div>

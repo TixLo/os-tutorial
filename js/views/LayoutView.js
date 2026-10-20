@@ -21,6 +21,7 @@ export class LayoutView extends EventEmitter {
   #bindGutter(gutter) {
     const { size: name, cssVar, axis } = gutter.dataset;
     const container = document.getElementById(gutter.dataset.target);
+    const panel = gutter.previousElementSibling;  // the panel this splitter resizes
     this.#cssVars.set(name, cssVar);
 
     gutter.addEventListener('pointerdown', (e) => {
@@ -32,10 +33,13 @@ export class LayoutView extends EventEmitter {
 
     gutter.addEventListener('pointermove', (e) => {
       if (!gutter.hasPointerCapture(e.pointerId)) return;
+      // Size is measured from the panel's own start edge, as a share of the container,
+      // so a splitter below another panel only resizes the panel right above it
       const rect = container.getBoundingClientRect();
+      const start = panel.getBoundingClientRect();
       const percent = axis === 'x'
-        ? (e.clientX - rect.left) / rect.width * 100
-        : (e.clientY - rect.top) / rect.height * 100;
+        ? (e.clientX - start.left) / rect.width * 100
+        : (e.clientY - start.top) / rect.height * 100;
       this.emit('resize', name, percent);
     });
 

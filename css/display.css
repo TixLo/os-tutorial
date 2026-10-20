@@ -11,8 +11,8 @@
   max-width: 320px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px 20px;
+  gap: 6px;
+  padding: 10px 16px;
   border: 1px solid #2a303b;
   border-radius: 6px;
   background: #0d1015;
