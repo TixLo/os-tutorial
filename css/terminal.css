@@ -1,0 +1,35 @@
+/* Terminal panel (placeholder until commands are added) */
+
+.terminal {
+  background: #07090c;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.term-note {
+  margin: 0 0 8px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+}
+
+.term-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--led-on);
+}
+
+.term-cursor {
+  width: 8px;
+  height: 15px;
+  background: currentColor;
+  animation: term-blink 1s steps(1) infinite;
+}
+
+@keyframes term-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .term-cursor { animation: none; }
+}

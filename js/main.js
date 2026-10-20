@@ -9,7 +9,7 @@ import { PlayerView } from './views/PlayerView.js';
 import { LessonView } from './views/LessonView.js';
 import { BoardView } from './views/BoardView.js';
 import { RegisterView } from './views/RegisterView.js';
-import { ConsoleView } from './views/ConsoleView.js';
+import { DisplayView } from './views/DisplayView.js';
 import { StatusView } from './views/StatusView.js';
 import { MemoryView } from './views/MemoryView.js';
 import { LayoutController } from './controllers/LayoutController.js';
@@ -28,7 +28,7 @@ const controllers = [
     lesson: new LessonView(),
     board: new BoardView(),
     registers: new RegisterView(),
-    console: new ConsoleView(),
+    display: new DisplayView(),
     status: new StatusView(),
   }),
 ];

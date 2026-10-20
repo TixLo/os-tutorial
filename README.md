@@ -1,8 +1,9 @@
 # os-tutorial
 
 A browser-based visualizer for following along with *30 Days to Build an OS*
-(Hidemi Kawai). It shows a console, a memory map, and the boot steps,
-processes, and timing side by side.
+(Hidemi Kawai). Four resizable panels sit side by side: a display (the
+machine's screen), a terminal (reserved for typing CPU commands in a later
+chapter), a memory map, and the boot steps with a motherboard diagram.
 
 ## Running locally
 
@@ -21,14 +22,15 @@ The code follows MVC. Each feature is a model / view / controller trio wired
 together in `js/main.js`.
 
 ```
-index.html                 Markup only: page frame, panels, motherboard SVG
+index.html                 Markup only: page frame, four panels, motherboard SVG
 css/
   base.css                 Design tokens (colors, sizes) and resets
   layout.css               Page frame, split areas, responsive rules
   panels.css               Panel chrome and splitters
   player.css               Video-player controls on the front panel
   front-panel.css          Power button and LEDs
-  console.css              Console panel drawn as a monitor
+  display.css              Display panel drawn as a monitor
+  terminal.css             Terminal panel (placeholder)
   memory.css               Memory map rows, region states, legend
   lesson.css               Step explanation and register table
   board.css                Motherboard diagram signal states
@@ -50,7 +52,7 @@ js/
     LessonView.js          Current step explanation
     BoardView.js           Motherboard diagram (signals, CPU state)
     RegisterView.js        CPU register table
-    ConsoleView.js         Monitor
+    DisplayView.js         Monitor
     StatusView.js          Status bar
     MemoryView.js          Memory map rows
   controllers/             Connect views to models. No DOM, no state.

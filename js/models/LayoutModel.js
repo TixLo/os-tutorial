@@ -1,11 +1,12 @@
 import { EventEmitter } from '../core/EventEmitter.js';
 
-const STORAGE_KEY = 'os-tutorial.layout.v1';
+const STORAGE_KEY = 'os-tutorial.layout.v2';
 
 // Panel sizes in percent. Emits 'change' (name, percent) whenever a size changes.
 export class LayoutModel extends EventEmitter {
   static DEFAULTS = Object.freeze({
-    consoleWidth: 42,
+    leftWidth: 42,
+    displayHeight: 62,
     memoryHeight: 45,
   });
   static MIN = 15;  // each panel keeps at least 15%

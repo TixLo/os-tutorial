@@ -9,7 +9,8 @@
 <link rel="stylesheet" href="css/panels.css">
 <link rel="stylesheet" href="css/player.css">
 <link rel="stylesheet" href="css/front-panel.css">
-<link rel="stylesheet" href="css/console.css">
+<link rel="stylesheet" href="css/display.css">
+<link rel="stylesheet" href="css/terminal.css">
 <link rel="stylesheet" href="css/memory.css">
 <link rel="stylesheet" href="css/lesson.css">
 <link rel="stylesheet" href="css/board.css">
@@ -72,20 +73,38 @@
 </div>
 
 <main id="main">
-  <section id="console" class="panel">
-    <div class="panel-head">CONSOLE</div>
-    <div class="panel-body monitor" id="monitor" data-monitor="off">
-      <div class="monitor-osd">
-        <strong>NO SIGNAL</strong>
-        <span>The screen stays black because nothing has set up the video card yet.
-          The BIOS does that later, during the power-on self test.</span>
+  <div id="left">
+    <section id="display" class="panel">
+      <div class="panel-head">DISPLAY</div>
+      <div class="panel-body monitor" id="monitor" data-monitor="off">
+        <div class="monitor-osd">
+          <strong>NO SIGNAL</strong>
+          <span>The screen stays black because nothing has set up the video card yet.
+            The BIOS does that later, during the power-on self test.</span>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <div class="gutter gutter-h" role="separator" aria-orientation="horizontal"
+         aria-label="Resize display height" tabindex="0"
+         data-size="displayHeight" data-css-var="--display-height"
+         data-axis="y" data-target="left"></div>
+
+    <section id="terminal" class="panel">
+      <div class="panel-head">TERMINAL</div>
+      <div class="panel-body terminal" id="terminal-body">
+        <p class="term-note">Reserved for a later chapter: you will type commands here
+          to drive the CPU step by step.</p>
+        <div class="term-line" aria-hidden="true">
+          <span class="term-prompt">&gt;</span><span class="term-cursor"></span>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <div class="gutter gutter-v" role="separator" aria-orientation="vertical"
-       aria-label="Resize console width" tabindex="0"
-       data-size="consoleWidth" data-css-var="--console-width"
+       aria-label="Resize left column width" tabindex="0"
+       data-size="leftWidth" data-css-var="--left-width"
        data-axis="x" data-target="main"></div>
 
   <div id="side">

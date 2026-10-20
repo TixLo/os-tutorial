@@ -31,7 +31,8 @@
   --mem-unmapped-border: #3a414e;
 
   /* Defaults before JS runs; LayoutModel owns the live values */
-  --console-width: 42%;  /* width of the console column */
+  --left-width: 42%;      /* width of the display + terminal column */
+  --display-height: 62%;  /* height of the display panel */
   --memory-height: 45%;  /* height of the memory panel */
   --gutter-size: 6px;
 }

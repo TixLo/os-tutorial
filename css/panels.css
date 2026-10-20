@@ -28,7 +28,7 @@
   padding: 10px;
   color: var(--text-dim);
 }
-#console .panel-body {
+#terminal .panel-body {
   font-family: ui-monospace, Menlo, Consolas, monospace;
 }
 
