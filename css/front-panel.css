@@ -98,3 +98,22 @@
 .fp-clock[data-running="true"] .fp-clock-value {
   color: var(--led-on);
 }
+
+/* Narrow screens: power and clock on the first row, the player below */
+@media (max-width: 767px) {
+  #front-panel {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    padding: 8px 12px;
+  }
+  .fp-clock {
+    order: 1;
+    margin-left: auto;
+    min-width: 0;
+  }
+  .player {
+    order: 2;
+    flex-basis: 100%;
+  }
+}

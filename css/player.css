@@ -1,11 +1,5 @@
 /* Video-player style controls on the front panel, next to the power button */
 
-#topbar .chapter {
-  color: var(--text-dim);
-  font-size: 13px;
-  white-space: nowrap;
-}
-
 .player {
   flex: 1;
   min-width: 0;
@@ -126,8 +120,7 @@
 .pl-speed:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
 @media (max-width: 767px) {
-  #front-panel { height: auto; flex-wrap: wrap; padding: 8px 12px; row-gap: 6px; }
-  .player { flex-basis: 100%; flex-wrap: wrap; gap: 8px; padding-left: 0; border-left: none; }
+  .player { flex-wrap: wrap; gap: 8px; padding-left: 0; border-left: none; }
   .pl-track { order: 3; flex-basis: 100%; }
   .pl-count { flex: 1; text-align: left; }
 }
