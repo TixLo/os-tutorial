@@ -26,11 +26,11 @@ css/
   base.css                 Design tokens (colors, sizes) and resets
   layout.css               Page frame, split areas, responsive rules
   panels.css               Panel chrome and splitters
-  toolbar.css              Chapter label and playback buttons
+  player.css               Video-player controls in the top bar
   front-panel.css          Power button and LEDs
   console.css              Console panel drawn as a monitor
   memory.css               Memory map rows, region states, legend
-  lesson.css               Step list, explanation, register table
+  lesson.css               Step explanation and register table
   board.css                Motherboard diagram signal states
 js/
   main.js                  Entry point: builds and starts each trio
@@ -46,8 +46,8 @@ js/
   views/                   DOM rendering and user input. No app state.
     LayoutView.js          Splitter drag/keyboard input, CSS variable output
     FrontPanelView.js      Power button and LEDs
-    ToolbarView.js         Back / Next step / Auto play
-    LessonView.js          Step list and current step explanation
+    PlayerView.js          Play/pause, step buttons, progress track, speed, keys
+    LessonView.js          Current step explanation
     BoardView.js           Motherboard diagram (signals, CPU state)
     RegisterView.js        CPU register table
     ConsoleView.js         Monitor
@@ -55,7 +55,7 @@ js/
     MemoryView.js          Memory map rows
   controllers/             Connect views to models. No DOM, no state.
     LayoutController.js
-    MachineController.js   Input -> machine steps; step -> every view; auto play
+    MachineController.js   Input -> machine steps; step -> every view; playback timing
     MemoryController.js
 ```
 
@@ -65,7 +65,13 @@ The tutorial plays the boot process as a list of steps in
 `js/data/bootSteps.js`. Each step has a title, a plain-language summary, a
 technical detail paragraph, an approximate time, and a `state` patch.
 `MachineModel` merges the patches in order, so any step can be shown on its
-own (Back and the step list jump freely).
+own.
+
+The top bar works like a video player: play/pause advances one step every
+6 seconds (0.5×, 1×, or 2× speed), the step buttons move one step at a time,
+and the progress track can be clicked or dragged to jump to any step.
+Keyboard: Space plays or pauses, Left and Right step back and forward.
+Playing from standby presses the power button automatically.
 
 | Phase | Steps | What happens |
 |---|---|---|

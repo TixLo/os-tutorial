@@ -1,13 +1,13 @@
 import { EventEmitter } from '../core/EventEmitter.js';
 
-const HINT_MS = 1600;
+const PRESS_MS = 700;
 
 // The machine's front panel: buttons and indicator LEDs.
 // Events: 'power' (button pressed)
 export class FrontPanelView extends EventEmitter {
   #root;
   #powerButton;
-  #hintTimer = null;
+  #pressTimer = null;
 
   constructor(root = document.getElementById('front-panel')) {
     super();
@@ -21,13 +21,12 @@ export class FrontPanelView extends EventEmitter {
     this.#powerButton.setAttribute('aria-pressed', String(powered));
   }
 
-  // Draw attention to the power button
-  hint() {
-    clearTimeout(this.#hintTimer);
-    this.#powerButton.classList.remove('hint');
+  // Show the power button being pressed when playback presses it automatically
+  press() {
+    clearTimeout(this.#pressTimer);
+    this.#powerButton.classList.remove('pressed');
     void this.#powerButton.offsetWidth;  // restart the animation
-    this.#powerButton.classList.add('hint');
-    this.#powerButton.focus();
-    this.#hintTimer = setTimeout(() => this.#powerButton.classList.remove('hint'), HINT_MS);
+    this.#powerButton.classList.add('pressed');
+    this.#pressTimer = setTimeout(() => this.#powerButton.classList.remove('pressed'), PRESS_MS);
   }
 }

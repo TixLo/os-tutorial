@@ -5,7 +5,7 @@ import { MachineModel } from './models/MachineModel.js';
 import { MemoryModel } from './models/MemoryModel.js';
 import { LayoutView } from './views/LayoutView.js';
 import { FrontPanelView } from './views/FrontPanelView.js';
-import { ToolbarView } from './views/ToolbarView.js';
+import { PlayerView } from './views/PlayerView.js';
 import { LessonView } from './views/LessonView.js';
 import { BoardView } from './views/BoardView.js';
 import { RegisterView } from './views/RegisterView.js';
@@ -24,8 +24,8 @@ const controllers = [
   new MemoryController(memory, new MemoryView()),
   new MachineController(machine, memory, {
     frontPanel: new FrontPanelView(),
-    toolbar: new ToolbarView(),
-    lesson: new LessonView(BOOT_STEPS, PHASES),
+    player: new PlayerView(BOOT_STEPS, PHASES),
+    lesson: new LessonView(),
     board: new BoardView(),
     registers: new RegisterView(),
     console: new ConsoleView(),

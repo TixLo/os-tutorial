@@ -8,16 +8,15 @@ body {
 /* Top bar */
 #topbar {
   flex: none;
-  height: 40px;
+  height: 48px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   padding: 0 12px;
   border-bottom: 1px solid var(--border);
   background: var(--panel-head);
 }
 #topbar .title { font-weight: 600; }
-#topbar .spacer { flex: 1; }
 
 /* Main area: console on the left, side column on the right */
 #main {

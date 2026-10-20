@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/panels.css">
-<link rel="stylesheet" href="css/toolbar.css">
+<link rel="stylesheet" href="css/player.css">
 <link rel="stylesheet" href="css/front-panel.css">
 <link rel="stylesheet" href="css/console.css">
 <link rel="stylesheet" href="css/memory.css">
@@ -19,12 +19,39 @@
 
 <header id="topbar">
   <span class="title">OS Tutorial</span>
-  <span class="chapter">Day 0 · From power button to first instruction</span>
-  <span class="spacer"></span>
-  <div id="toolbar" class="toolbar">
-    <button type="button" class="tb-btn" data-action="back">◀ Back</button>
-    <button type="button" class="tb-btn tb-primary" data-action="next">Next step ▶</button>
-    <button type="button" class="tb-btn" data-action="play" aria-pressed="false">Auto play</button>
+  <span class="chapter" title="Day 0: from power button to first instruction">Day 0</span>
+  <div id="player" class="player" data-playing="false">
+    <div class="pl-buttons">
+      <button type="button" class="pl-btn" data-action="restart" aria-label="Restart" title="Restart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12a8 8 0 1 0 2.4-5.7"/>
+          <path d="M4 4v5h5"/>
+        </svg>
+      </button>
+      <button type="button" class="pl-btn" data-action="prev" aria-label="Previous step" title="Previous step (←)">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M6 5h2.5v14H6z"/><path d="M19 5v14L9.5 12z"/>
+        </svg>
+      </button>
+      <button type="button" class="pl-btn pl-play" data-action="play" aria-label="Play" title="Play / pause (Space)">
+        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M7.5 4.5v15l12-7.5z"/>
+        </svg>
+        <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M6.5 5h4v14h-4zM13.5 5h4v14h-4z"/>
+        </svg>
+      </button>
+      <button type="button" class="pl-btn" data-action="next" aria-label="Next step" title="Next step (→)">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M15.5 5H18v14h-2.5z"/><path d="M5 5v14l9.5-7z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="pl-track" role="slider" aria-label="Boot step" aria-valuemin="1"></div>
+    <span class="pl-label"><span class="pl-count"></span><span class="pl-title"></span></span>
+    <button type="button" class="pl-speed" data-action="speed" aria-label="Playback speed"
+            title="Playback speed">1×</button>
   </div>
 </header>
 
@@ -80,8 +107,6 @@
     <section id="boot" class="panel">
       <div class="panel-head">BOOT · PROCESS · TIME</div>
       <div class="panel-body lesson" id="lesson" aria-live="polite">
-        <ol class="step-strip" aria-label="Boot steps"></ol>
-
         <div class="lesson-head">
           <span class="step-id"></span>
           <h2 class="step-title"></h2>

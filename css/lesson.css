@@ -1,43 +1,9 @@
-/* Boot panel: step list, explanation, and register table */
+/* Boot panel: step explanation and register table */
 
 .lesson {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color: var(--text);
-}
-
-/* Step list */
-.step-strip {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-}
-.phase-label {
-  font-size: 11px;
-  color: var(--text-dim);
-  margin: 0 2px 0 10px;
-}
-.phase-label:first-child { margin-left: 0; }
-.step-chip {
-  padding: 2px 8px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: transparent;
-  color: var(--text-dim);
-  font: 11px ui-monospace, Menlo, Consolas, monospace;
-  cursor: pointer;
-}
-.step-chip:hover { border-color: #566070; }
-.step-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-.step-chip.done { color: var(--text); }
-.step-chip[aria-current="step"] {
-  background: var(--accent-bg);
-  border-color: var(--accent);
   color: var(--text);
 }
 
