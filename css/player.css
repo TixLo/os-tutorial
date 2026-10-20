@@ -124,3 +124,19 @@
   .pl-track { order: 3; flex-basis: 100%; }
   .pl-count { flex: 1; text-align: left; }
 }
+
+/* Milestone markers: a diamond on the bar, filled once playback reaches it */
+.pl-milestone {
+  position: absolute;
+  top: 50%;
+  z-index: 3;  /* above the thumb, so a reached milestone stays visible */
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--sig-ramp);
+  border-radius: 2px;
+  background: var(--bezel);
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: background 0.2s;
+}
+.pl-milestone.reached { background: var(--sig-ramp); }
+.player[data-enabled="false"] .pl-milestone { opacity: 0.5; }

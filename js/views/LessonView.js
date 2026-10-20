@@ -18,6 +18,7 @@ export class LessonView extends EventEmitter {
   constructor(root = document.getElementById('lesson')) {
     super();
     this.#fields = {
+      milestone: root.querySelector('.step-milestone'),
       title: root.querySelector('.step-title'),
       summary: root.querySelector('.step-summary'),
       detail: root.querySelector('.step-detail'),
@@ -28,6 +29,8 @@ export class LessonView extends EventEmitter {
 
   render(step) {
     const f = this.#fields;
+    f.milestone.textContent = step.milestone ? `Milestone · ${step.milestone}` : '';
+    f.milestone.hidden = !step.milestone;
     f.title.textContent = step.title;
     this.#fill(f.summary, step.summary);
     this.#fill(f.detail, step.detail);

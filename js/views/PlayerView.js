@@ -4,7 +4,8 @@ const STEP_TRANSITION_MS = 200;  // smooth jump when stepping by hand
 
 // Video-player style controls for the boot sequence, on the front panel next to power.
 // The progress bar runs from A1 (just after the power button) to the last step, and
-// every control stays disabled until the machine is powered on.
+// every control stays disabled until the machine is powered on. Milestone steps get a
+// diamond marker on the bar; hover it for its name, click it to jump there.
 // Events: 'restart', 'prev', 'play' (toggle), 'next', 'speed' (cycle), 'seek' (step index)
 // Keyboard: Space plays/pauses, Left/Right step back/forward.
 export class PlayerView extends EventEmitter {
@@ -13,6 +14,7 @@ export class PlayerView extends EventEmitter {
   #track;
   #fill;
   #count;
+  #markers = [];  // { index, el }
   #steps;
   #enabled = false;
 
@@ -31,8 +33,23 @@ export class PlayerView extends EventEmitter {
       this.#buttons[action] = button;
     }
 
+    this.#buildMarkers();
     this.#bindScrubbing();
     this.#bindKeyboard();
+  }
+
+  #buildMarkers() {
+    const rail = this.#fill.parentElement;
+    this.#steps.forEach((step, index) => {
+      if (!step.milestone || index === 0) return;
+      const el = document.createElement('span');
+      el.className = 'pl-milestone';
+      el.style.left = `${this.#position(index) * 100}%`;
+      el.title = `Milestone: ${step.milestone}`;
+      el.setAttribute('aria-hidden', 'true');
+      rail.appendChild(el);
+      this.#markers.push({ index, el });
+    });
   }
 
   get #lastIndex() {
@@ -61,6 +78,9 @@ export class PlayerView extends EventEmitter {
     this.#track.setAttribute('aria-disabled', String(!enabled));
     this.#track.setAttribute('aria-valuenow', String(index));
     this.#track.setAttribute('aria-valuetext', step.title);
+    for (const marker of this.#markers) {
+      marker.el.classList.toggle('reached', enabled && index >= marker.index);
+    }
     this.#renderFill(enabled, index, playing, duration, elapsed, canNext);
   }
 
