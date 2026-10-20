@@ -1,8 +1,8 @@
 # os-tutorial
 
-A browser-based visualizer for following along with *30 Days to Build an OS*
-(Hidemi Kawai). The boot explanation (steps, motherboard diagram, CPU
-registers) fills the left half. The right half stacks a display (the
+A browser-based visualizer for following along with Hidemi Kawai's book
+*30日でできる! OS自作入門* (Chinese edition: *30天自制操作系统*). The boot
+explanation (steps, motherboard diagram, CPU registers) fills the left half. The right half stacks a display (the
 machine's screen), a memory map, and a terminal (reserved for typing CPU
 commands in a later chapter) at a 1 : 2 : 1 ratio. Every splitter can be
 dragged.
@@ -109,3 +109,11 @@ The memory map panel was added this way:
 Next phases: C · POST (BIOS self test) and D · loading the boot sector to
 `0x7C00`, where day 1 of the book begins. New physical controls (reset
 button, disk LED, ...) go on the front panel in `FrontPanelView`.
+
+## Credits
+
+This project follows the structure of *30日でできる! OS自作入門* by Hidemi
+Kawai (川合秀実), published in Chinese as *30天自制操作系统*. It is an
+unofficial companion and is not affiliated with or endorsed by the author
+or the publishers. The explanations, diagrams, and code here are written
+for this project; read the book for the full material.
