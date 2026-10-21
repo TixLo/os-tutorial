@@ -41,8 +41,8 @@ const STEPS = Object.freeze([
     summary: 'The BIOS has copied the floppy\'s first sector to {0x7C00} and jumped there. ' +
       'The CPU is about to run whatever those 512 bytes say.',
     detail: 'Today we open those 512 bytes, see what each part is for, and then let the CPU ' +
-      'run them. The code panel below the memory shows the same bytes written as text, ' +
-      'one line per piece. Tap a line to find its bytes in memory.',
+      'run them. The CODE tab shows the same bytes written as text, one line per piece. ' +
+      'Tap a line to see its bytes in the MEMORY tab.',
     time: '≈ 2.4 s',
     state: {
       ...DAY_0_END,
@@ -73,6 +73,7 @@ const STEPS = Object.freeze([
       'and for the operating system we are about to build.',
     time: '≈ 2.4 s',
     state: {
+      tab: 'memory',
       memory: { focus: { id: 'boot_sector', note: 'The start of the boot sector', bytes: [0x07C00, 0x07C00] } },
     },
   },
@@ -103,6 +104,7 @@ const STEPS = Object.freeze([
     formula: 'EB 4E → {0x7C02} + 0x4E = {0x7C50}',
     time: '≈ 2.4 s',
     state: {
+      tab: 'code',
       code: { focus: [0x07C00, 0x07C02] },
       memory: { focus: { id: 'boot_sector', note: 'Part 1: the jump', bytes: [0x07C00, 0x07C02] } },
     },
@@ -146,7 +148,7 @@ const STEPS = Object.freeze([
     summary: 'From {0x7C50}, 29 bytes of real instructions, followed by the message.',
     detail: 'In plain words, the program says: get ready; take the next letter of the ' +
       'message; if it is the end marker, stop; otherwise ask the BIOS to print it and go ' +
-      'back for the next one. Each line in the code panel is one instruction, between one ' +
+      'back for the next one. Each line in the CODE tab is one instruction, between one ' +
       'and three bytes long. Day 2 explains how each instruction turns into its bytes.',
     time: '≈ 2.4 s',
     state: {
@@ -276,10 +278,11 @@ const STEPS = Object.freeze([
     title: 'The whole message',
     summary: 'Ten more times around the loop, and "hello, world" is on the screen.',
     detail: 'Every letter you see is also two bytes in video memory: the character and its ' +
-      'color, just like the BIOS text above it. Tap the video memory row in the memory ' +
-      'panel to find them.',
+      'color, just like the BIOS text above it. Tap the video memory row in the MEMORY ' +
+      'tab to find them.',
     time: '≈ 2.4 s + a few µs',
     state: {
+      tab: 'memory',
       regs: {
         'AX': { value: '0E64', note: 'AL = 64 ("d"), the last letter' },
         'SI': { value: '7C79', note: 'Past the last letter' },
@@ -299,6 +302,7 @@ const STEPS = Object.freeze([
       'Then AL is 0, test al, al sees it, and jz ("jump if zero") leaves the loop for halt.',
     time: '≈ 2.4 s + a few µs',
     state: {
+      tab: 'code',
       regs: {
         'EIP': { value: '00007C6A', note: 'At hlt' },
         'AX':  { value: '0E00', note: 'AL = 00: the end marker' },

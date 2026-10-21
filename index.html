@@ -247,33 +247,28 @@
          data-size="displayHeight" data-css-var="--display-height"
          data-axis="y" data-target="side"></div>
 
-    <section id="memory" class="panel">
-      <div class="panel-head">MEMORY</div>
-      <div class="panel-body memory-map" id="memory-map"></div>
-      <div class="mem-legend">
-        <span data-state="off">Off</span>
-        <span data-state="undefined">Undefined RAM</span>
-        <span data-state="tested">Tested</span>
-        <span data-state="written">Written</span>
-        <span data-state="rom">ROM</span>
-        <span data-state="unmapped">Unmapped</span>
-        <span data-state="mixed">Several regions in one page</span>
-      </div>
-    </section>
-
-    <div class="gutter gutter-h" role="separator" aria-orientation="horizontal"
-         aria-label="Resize memory panel height" tabindex="0"
-         data-size="memoryHeight" data-css-var="--memory-height"
-         data-axis="y" data-target="side"></div>
-
     <section id="dock" class="panel">
-      <div class="panel-head dock-tabs" role="tablist" aria-label="Code and terminal">
+      <div class="panel-head dock-tabs" role="tablist" aria-label="Memory, code, and terminal">
+        <button type="button" role="tab" id="tab-memory" aria-controls="memory-pane"
+                aria-selected="true" data-tab="memory">MEMORY</button>
         <button type="button" role="tab" id="tab-code" aria-controls="code-body"
-                aria-selected="true" data-tab="code">CODE</button>
+                aria-selected="false" data-tab="code">CODE</button>
         <button type="button" role="tab" id="tab-terminal" aria-controls="terminal-body"
                 aria-selected="false" data-tab="terminal">TERMINAL</button>
       </div>
-      <div class="panel-body code" id="code-body" role="tabpanel" aria-labelledby="tab-code"></div>
+      <div class="dock-pane" id="memory-pane" role="tabpanel" aria-labelledby="tab-memory">
+        <div class="panel-body memory-map" id="memory-map"></div>
+        <div class="mem-legend">
+          <span data-state="off">Off</span>
+          <span data-state="undefined">Undefined RAM</span>
+          <span data-state="tested">Tested</span>
+          <span data-state="written">Written</span>
+          <span data-state="rom">ROM</span>
+          <span data-state="unmapped">Unmapped</span>
+          <span data-state="mixed">Several regions in one page</span>
+        </div>
+      </div>
+      <div class="panel-body code" id="code-body" role="tabpanel" aria-labelledby="tab-code" hidden></div>
       <div class="panel-body terminal" id="terminal-body" role="tabpanel"
            aria-labelledby="tab-terminal" hidden>
         <p class="term-note">Reserved for a later chapter: you will type commands here

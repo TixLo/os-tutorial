@@ -42,8 +42,8 @@ const STEPS = Object.freeze([
       'becomes those bytes.',
     detail: 'People write programs as text, in assembly language: short words like mov, ' +
       'jmp, and hlt, one instruction per line. A program called an assembler translates ' +
-      'each line into the bytes the CPU understands, called machine code. In the code ' +
-      'panel, the source is on the right and the bytes it became are on the left.',
+      'each line into the bytes the CPU understands, called machine code. In the CODE ' +
+      'tab, the source is on the right and the bytes it became are on the left.',
     time: '≈ 2.4 s + a few µs',
     state: {
       ...DAY_1_END,

@@ -23,7 +23,7 @@ body {
 .credit-author,
 .credit-note { white-space: nowrap; }
 
-/* Main area: explanation on the left; display, memory, and the code/terminal dock on the right */
+/* Main area: explanation on the left; display and the memory/code/terminal dock on the right */
 #main {
   flex: 1;
   min-height: 0;
@@ -36,9 +36,8 @@ body {
   display: flex;
   flex-direction: column;
 }
-/* Display and memory may shrink so the dock always keeps a strip */
+/* The display may shrink so the dock always keeps a strip */
 #display { flex: 0 1 var(--display-height); }
-#memory { flex: 0 1 var(--memory-height); }
 #dock { flex: 1 1 0; min-height: 60px; }
 
 /* Status bar */
@@ -59,7 +58,8 @@ body {
 @media (max-width: 767px) {
   body { height: auto; min-height: 100%; }
   #main, #side { flex-direction: column; }
-  #display, #dock, #memory, #boot { flex: none; min-height: 260px; }
+  #display, #boot { flex: none; min-height: 260px; }
+  #dock { flex: none; height: 80vh; min-height: 420px; }
   .panel + .panel, #dock, #side { border-top: 1px solid var(--border); }
   .gutter { display: none; }
   #statusbar { height: auto; flex-wrap: wrap; gap: 4px 16px; padding: 4px 12px; }

@@ -118,6 +118,7 @@ const STEPS = Object.freeze([
       '{0x8000} + 0x2D000 = {0x35000}, so the copy fills {0x8200}–{0x34FFF}',
     time: '≈ 2.4 s',
     state: {
+      tab: 'memory',
       code: { focus: ['cyls'] },
       memory: { focus: { id: 'free_high', note: 'Where the disk will be copied', range: [0x08200, LOADED_END] } },
       disk: { focus: 'read', note: ['Cylinders 0–9: sectors 1–360', '→ copied to 0x8000 onward'] },
@@ -136,6 +137,7 @@ const STEPS = Object.freeze([
     formula: 'ES:BX = 0x0820:0000 → 0x0820 × 16 + 0 = {0x8200}',
     time: '≈ 2.4 s',
     state: {
+      tab: 'code',
       regs: {
         'EIP': IPL_EIP,
         'AX': reg('0201', 'AH = 02 (read), AL = 01 (one sector)'),
@@ -164,6 +166,7 @@ const STEPS = Object.freeze([
       'reports no error, and the carry flag is clear, so jnc ("jump if no carry") moves on.',
     time: '≈ 2.6 s',
     state: {
+      tab: 'memory',
       signals: { disk: true },
       regs: { 'AX': reg('0001', 'AH = 00 (no error), AL = 01 (one sector read)') },
       writes: { loaded: loaded(0x083FF) },
@@ -184,6 +187,7 @@ const STEPS = Object.freeze([
       'is skipped.',
     time: '≈ 2.6 s',
     state: {
+      tab: 'code',
       code: { focus: ['retry', 'error'], current: 'nextsec' },
       memory: { focus: { id: 'free_high', note: 'Sector 2 arrived on the first try', range: [0x08200, 0x083FF] } },
     },
@@ -200,6 +204,7 @@ const STEPS = Object.freeze([
     formula: 'ES: 0x0820 → 0x0840 → 0x0860 → ... → 0x0A40   (17 × 0x20)',
     time: '≈ 2.8 s',
     state: {
+      tab: 'memory',
       regs: {
         'CX': reg('0001', 'CH = 00, CL = 01: back to sector 1'),
         'DX': reg('0100', 'DH = 01: now the other side'),
@@ -270,6 +275,7 @@ const STEPS = Object.freeze([
     milestone: { label: 'Loaded', text: 'The whole kernel is in memory' },
     time: '≈ 7 s',
     state: {
+      tab: 'code',
       signals: { disk: false },
       regs: {
         'EIP': reg('0000C200', 'The first byte of kernel.sys'),
@@ -286,7 +292,7 @@ const STEPS = Object.freeze([
     phase: 'B',
     title: 'The kernel starts',
     summary: 'The CPU is now running kernel.sys. Its first part is still 16-bit assembly.',
-    detail: 'The code panel now shows kernel.asm. It prepares the screen and the CPU for ' +
+    detail: 'The CODE tab now shows kernel.asm. It prepares the screen and the CPU for ' +
       'the rest of the kernel, which will be written in C. Everything until the switch ' +
       'still runs in real mode, with BIOS services available.',
     time: '≈ 7 s',
@@ -310,6 +316,7 @@ const STEPS = Object.freeze([
     formula: 'pixel (x, y) is the byte at {0xA0000} + y × 320 + x',
     time: '≈ 7 s',
     state: {
+      tab: 'memory',
       regs: { 'EIP': KERNEL_EIP, 'AX': reg('0013', 'AH = 00 (set mode), AL = 13h') },
       monitor: 'graphics',
       screen: [],
@@ -351,6 +358,7 @@ const STEPS = Object.freeze([
       'Protected mode: 32-bit addresses up to 0xFFFFFFFF (4 GiB)',
     time: '≈ 7 s',
     state: {
+      tab: 'memory',
       code: { focus: null, current: 'mask' },
       memory: { focus: { id: 'extended', note: 'Memory above 1 MiB: out of reach so far' } },
     },
@@ -366,6 +374,7 @@ const STEPS = Object.freeze([
       '0x21 and 0xA1, then clears the CPU\'s interrupt flag with cli.',
     time: '≈ 7 s',
     state: {
+      tab: 'code',
       regs: { 'AX': reg('00FF', 'AL = FF: mask all eight inputs'), 'EFLAGS': reg('00000002', 'IF = 0: interrupts off') },
       code: { focus: ['mask', 'cli'], current: 'a20' },
       memory: { focus: null },
@@ -384,6 +393,7 @@ const STEPS = Object.freeze([
       'reachable.',
     time: '≈ 7 s',
     state: {
+      tab: 'memory',
       regs: { 'AX': reg('00DF', 'AL = DF: output port with A20 on') },
       code: { focus: ['a20', 'kbc'], current: 'lgdt' },
       memory: { focus: { id: 'extended', note: 'Reachable now that A20 is on' } },
@@ -403,6 +413,7 @@ const STEPS = Object.freeze([
       'GDTR = size 3 × 8 − 1 = 23, plus the table\'s address',
     time: '≈ 7 s',
     state: {
+      tab: 'code',
       regs: { 'GDTR': reg('loaded', 'Size 23 and the address of the table') },
       code: { focus: ['lgdt', 'gdt', 'gdtr'], current: 'cr0' },
       memory: { focus: null },
@@ -504,6 +515,7 @@ const STEPS = Object.freeze([
     milestone: { label: '32-bit C', text: 'Protected mode, running C' },
     time: '≈ 7 s + a few µs',
     state: {
+      tab: 'memory',
       code: { focus: null },
       memory: { focus: { id: 'free_high', note: 'The copied disk, with the kernel', range: [0x08200, LOADED_END] } },
     },

@@ -6,7 +6,7 @@ export class PanelPulseView {
   #heads = new Map();    // panel name -> heading element
   #timers = new Map();
 
-  constructor(panels = { display: 'display', memory: 'memory', dock: 'dock' }) {
+  constructor(panels = { display: 'display' }) {
     for (const [name, id] of Object.entries(panels)) {
       this.#heads.set(name, document.getElementById(id).querySelector('.panel-head'));
     }

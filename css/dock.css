@@ -1,4 +1,4 @@
-/* The panel under memory: CODE and TERMINAL tabs */
+/* The dock under the display: MEMORY, CODE, and TERMINAL tabs */
 
 .dock-tabs {
   gap: 2px;
@@ -73,4 +73,33 @@
 
 @media (max-width: 767px) {
   .code-note { display: none; }
+}
+
+/* A tab panel that holds more than one scrolling part (memory: grid plus legend) */
+.dock-pane {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.dock-pane[hidden] { display: none; }
+
+/* A dot on a tab whose content changed while another tab was showing */
+.dock-tabs [role="tab"].updated::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 6px;
+  vertical-align: 2px;
+  border-radius: 50%;
+  background: var(--sig-ramp);
+}
+.dock-tabs [role="tab"].flash { animation: tab-flash 1.2s ease-out; }
+@keyframes tab-flash {
+  0%, 30% { background: #1d3a6b; }
+  100% { background: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock-tabs [role="tab"].flash { animation: none; }
 }

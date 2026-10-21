@@ -38,8 +38,7 @@
 
   /* Defaults before JS runs; LayoutModel owns the live values */
   --boot-width: 50%;      /* width of the boot panel (left column) */
-  --display-height: 25%;  /* right column is display : memory : code/terminal = 1 : 2 : 1 */
-  --memory-height: 50%;
+  --display-height: 33%;  /* right column: display above, memory/code/terminal tabs below */
   --gutter-size: 6px;
 }
 

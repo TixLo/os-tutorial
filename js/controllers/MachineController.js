@@ -3,11 +3,13 @@ import { sourceText } from '../data/programs/assemble.js';
 
 const STEP_MS = 2500;  // time per step during auto play
 
-// What each panel shows, to tell which panels a step changed
+// What each panel or dock tab shows, to tell which ones a step changed
 const PANEL_CONTENT = {
   display: (s) => [s.monitor, s.screen, s.cursor],
+};
+const TAB_CONTENT = {
   memory: (s) => [s.memory.powered, s.writes, s.ranges, s.screen],
-  dock: (s) => [s.code, s.regs && s.regs['EIP']],
+  code: (s) => [s.code, s.regs && s.regs['EIP']],
 };
 
 // Address of the instruction the CPU runs next (CS base + EIP), when both are known
@@ -27,6 +29,7 @@ export class MachineController {
   #timer = null;
   #deadline = 0;           // when auto play moves on, while playing
   #remaining = STEP_MS;    // ms left on the current step, while paused
+  #newChapter = false;     // the next render opens a chapter rather than moving a step
 
   constructor(machine, memory, views) {
     this.machine = machine;
@@ -63,6 +66,7 @@ export class MachineController {
 
     machine.on('chapter', (chapter) => {
       this.#stop();
+      this.#newChapter = true;
       player.setSteps(chapter.steps, machine.firstStep);
       chapters.render(chapter.id);
     });
@@ -141,17 +145,22 @@ export class MachineController {
     });
     // A step picks the tab; the reader's own choice stays until a step picks another
     if (!previous || previous.tab !== state.tab) dock.select(state.tab);
-    if (previous) this.#pulseChangedPanels(previous, state);
+    // Opening a chapter is a fresh start, not a change worth pointing at
+    if (this.#newChapter) this.views.dock.clearUpdates();
+    else if (previous) this.#pulseChangedPanels(previous, state);
+    this.#newChapter = false;
     status.render({ cpu: state.cpu, csip: state.csip });
     route.render(this.machine.chapter.id, index);
     this.#renderPlayer();
   }
 
   #pulseChangedPanels(previous, state) {
+    const changed = (content) => JSON.stringify(content(previous)) !== JSON.stringify(content(state));
     for (const [panel, content] of Object.entries(PANEL_CONTENT)) {
-      if (JSON.stringify(content(previous)) !== JSON.stringify(content(state))) {
-        this.views.pulse.pulse(panel);
-      }
+      if (changed(content)) this.views.pulse.pulse(panel);
+    }
+    for (const [tab, content] of Object.entries(TAB_CONTENT)) {
+      if (changed(content)) this.views.dock.notify(tab);
     }
   }
 

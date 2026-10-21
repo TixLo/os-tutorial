@@ -74,7 +74,7 @@ const STEPS = Object.freeze([
       cursor: null,         // [row, column] on the text screen; null: line after the text
       // trace: mark the next instruction from CS:EIP; current: its tag in simplified code
       code: { program: null, focus: null, trace: true, current: null },
-      tab: 'code',          // which tab the panel under memory shows
+      tab: 'memory',        // which dock tab a step opens: memory, code, or terminal
       visual: 'board',      // which diagram the explanation panel shows ('none' for none)
       disk: { focus: null, note: null },  // note: two lines under the disk diagram
       gdt: { focus: null },

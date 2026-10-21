@@ -30,11 +30,16 @@ const memory = new MemoryModel();
 const lesson = new LessonView();
 const registers = new RegisterView();
 const code = new CodeView();
+const dock = new DockView();
 const memoryController = new MemoryController(memory, new MemoryView());
 
-// Clicking an address in the explanation, the register table, or the code shows it in memory
+// Clicking an address in the explanation, the register table, or the code opens the
+// MEMORY tab at that byte
 for (const view of [lesson, registers, code]) {
-  view.on('locate', (address) => memoryController.locate(address));
+  view.on('locate', (address) => {
+    dock.select('memory');
+    memoryController.locate(address);
+  });
 }
 
 const controllers = [
@@ -52,7 +57,7 @@ const controllers = [
     status: new StatusView(),
     visual: new VisualView(),
     code,
-    dock: new DockView(),
+    dock,
     pulse: new PanelPulseView(),
   }),
   new AboutController(new AboutModel(), new AboutView()),

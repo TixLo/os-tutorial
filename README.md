@@ -29,10 +29,11 @@ publishers; see [Credits](#credits).
 
 ## Layout
 
-The boot explanation (steps, motherboard diagram, CPU registers) fills the
-left half. The right half stacks a display (the machine's screen), a memory
-map, and a terminal (reserved for typing CPU commands in a later chapter) at
-a 1 : 2 : 1 ratio. Every splitter can be dragged.
+The explanation (steps, a diagram for the chapter, CPU registers) fills the
+left half. The right half has the display (the machine's screen) on top and,
+below it, tabs for MEMORY, CODE, and TERMINAL (reserved for typing CPU
+commands in a later chapter). Each step opens the tab it is about. Both
+splitters can be dragged.
 
 ## Running locally
 
@@ -60,7 +61,7 @@ css/
   front-panel.css          Power button and LEDs
   display.css              Display panel drawn as a monitor
   terminal.css             Terminal tab (placeholder)
-  dock.css                 CODE / TERMINAL tabs and the code listing
+  dock.css                 MEMORY / CODE / TERMINAL tabs and the code listing
   memory.css               Zoomable page grid, zoom trail, detail line, legend
   lesson.css               Step explanation and register table
   board.css                Motherboard diagram signal states
@@ -100,8 +101,8 @@ js/
     BoardView.js           Motherboard diagram (signals, CPU state)
     VisualView.js          Which diagram the chapter shows; floppy disk highlight
     CodeView.js            Program listing, step focus, next instruction
-    DockView.js            CODE / TERMINAL tabs
-    PanelPulseView.js      Lights up a panel heading when a step changes it
+    DockView.js            MEMORY / CODE / TERMINAL tabs, update dots
+    PanelPulseView.js      Lights up the display heading when a step changes it
     RegisterView.js        CPU register table
     DisplayView.js         Monitor
     StatusView.js          Status bar
@@ -127,12 +128,14 @@ day 0 starts switched off, and later days start with the machine already
 running.
 
 Each chapter shows the diagram that matters to it in the explanation panel
-(the motherboard on day 0, the floppy disk on day 1). The panel under memory
-has CODE and TERMINAL tabs: CODE lists the program in memory with its
-address, bytes, source, and comment, highlights the lines the step is about,
-and marks the instruction the CPU runs next with ▶; tapping a line shows its
-bytes in memory. When a step changes what the display, memory, or code
-panel shows, that panel's heading lights up briefly.
+(the motherboard on day 0, the floppy disk on days 1 and 3, the GDT on
+day 3). Under the display, each step opens the MEMORY, CODE, or TERMINAL tab
+it is about. CODE lists the program with its address, bytes, source, and
+comment, highlights the lines the step is about, and marks the instruction
+the CPU runs next with ▶. Tapping a code line, an address in the
+explanation, or CS base / EIP in the register table opens MEMORY at that
+byte. When a step changes a tab that is not showing, the tab gets a dot
+until it is opened; the display heading lights up when the screen changes.
 
 The chapter picker on the front panel lists every day; days without steps
 yet show as coming soon. The URL hash follows the current chapter and step
