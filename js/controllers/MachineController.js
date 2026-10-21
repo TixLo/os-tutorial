@@ -137,6 +137,7 @@ export class MachineController {
       program: PROGRAMS[state.code.program] || null,
       focus: state.code.focus,
       pc: state.code.program && state.code.trace !== false ? nextInstruction(state.regs) : null,
+      current: state.code.current,
     });
     // A step picks the tab; the reader's own choice stays until a step picks another
     if (!previous || previous.tab !== state.tab) dock.select(state.tab);

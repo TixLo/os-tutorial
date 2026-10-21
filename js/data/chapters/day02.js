@@ -228,7 +228,7 @@ const STEPS = Object.freeze([
       'binary file of exactly 512 bytes. It does for assembly language what a compiler ' +
       'does for languages like C, which the book starts using on day 3.',
     source: 'helloBoot',
-    hint: 'Day 3: reading the rest of the floppy and switching to 32-bit mode. Coming soon.',
+    hint: 'Day 3: reading the rest of the floppy and switching to 32-bit mode.',
     milestone: { label: 'Machine code', text: 'Every byte of the boot sector explained' },
     time: '≈ 2.4 s + a few µs',
     state: {},

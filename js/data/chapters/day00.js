@@ -72,10 +72,12 @@ const STEPS = Object.freeze([
       monitor: 'off',
       screen: [],
       cursor: null,         // [row, column] on the text screen; null: line after the text
-      code: { program: null, focus: null, trace: true },  // trace: mark the next instruction
+      // trace: mark the next instruction from CS:EIP; current: its tag in simplified code
+      code: { program: null, focus: null, trace: true, current: null },
       tab: 'code',          // which tab the panel under memory shows
       visual: 'board',      // which diagram the explanation panel shows ('none' for none)
-      disk: { focus: null },
+      disk: { focus: null, note: null },  // note: two lines under the disk diagram
+      gdt: { focus: null },
       csip: '—',
     },
   },

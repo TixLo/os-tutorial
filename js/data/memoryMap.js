@@ -11,6 +11,9 @@ export const MEMORY_MAP = Object.freeze([
   { id: 'video_bios',  start: 0xC0000, end: 0xC7FFF, name: 'Video BIOS',             kind: 'rom' },
   { id: 'option_rom',  start: 0xC8000, end: 0xEFFFF, name: 'Option ROMs / unmapped', kind: 'reserved' },
   { id: 'system_bios', start: 0xF0000, end: 0xFFFFF, name: 'System BIOS',            kind: 'rom' },
+  // RAM above 1 MiB exists from power-on, but real mode cannot reach it; only its first
+  // 64 KiB is shown
+  { id: 'extended',    start: 0x100000, end: 0x10FFFF, name: 'Extended memory (above 1 MiB)', kind: 'ram' },
   // The chipset also maps the BIOS ROM to the top of the 4 GiB address space,
   // where the CPU fetches its first instruction after reset.
   { id: 'bios_alias',  start: 0xFFFF0000, end: 0xFFFFFFFF, name: 'BIOS ROM (top of 4 GiB)', kind: 'rom' },

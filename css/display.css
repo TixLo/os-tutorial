@@ -35,7 +35,8 @@
 
 /* 80 x 25 text mode screen; DisplayView sets the font size so it fits the panel */
 .monitor-osd,
-.text-screen { grid-area: 1 / 1; }
+.text-screen,
+.graphics-screen { grid-area: 1 / 1; }
 .monitor[data-monitor="text"] { place-items: start center; }
 
 .text-screen {
@@ -60,3 +61,23 @@
 @media (prefers-reduced-motion: reduce) {
   .text-cursor { animation: none; }
 }
+
+/* 320 x 200 graphics mode: a black 16:10 screen */
+.graphics-screen {
+  display: none;
+  width: min(100%, 480px);
+  aspect-ratio: 16 / 10;
+  max-height: 100%;
+  border: 1px solid #1d222b;
+  background: #000;
+  position: relative;
+}
+.graphics-screen span {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  font-size: 10px;
+  color: #3a414e;
+}
+.monitor[data-monitor="graphics"] { place-items: center; }
+.monitor[data-monitor="graphics"] .graphics-screen { display: block; }

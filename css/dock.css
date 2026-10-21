@@ -54,6 +54,8 @@
   vertical-align: top;
 }
 .code-lines tr { cursor: pointer; }
+.code-lines tr.no-link { cursor: default; }
+.code-lines.no-addresses .code-addr { display: none; }
 .code-lines tr:hover td { background: var(--panel-head); }
 .code-mark { width: 1em; padding-right: 0; color: var(--accent); }
 .code-addr { color: var(--text-dim); }

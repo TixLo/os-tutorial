@@ -6,7 +6,8 @@ const MAX_FONT_PX = 16;
 
 // The monitor. Before the BIOS sets up the video card there is nothing to show, so it
 // displays the monitor's own "no signal" message. In text mode it shows the 80 x 25
-// character screen, scaled so all 80 columns fit the panel's width.
+// character screen, scaled so all 80 columns fit the panel's width. In graphics mode
+// (320 x 200, from day 3) it shows the pixel screen, all black until something draws.
 export class DisplayView {
   #root;
   #screen;
@@ -16,11 +17,17 @@ export class DisplayView {
     this.#screen = document.createElement('pre');
     this.#screen.className = 'text-screen';
     this.#screen.setAttribute('aria-label', 'Text screen');
-    root.appendChild(this.#screen);
+    const graphics = document.createElement('div');
+    graphics.className = 'graphics-screen';
+    graphics.setAttribute('aria-label', 'Graphics screen, 320 by 200 pixels, all black');
+    const caption = document.createElement('span');
+    caption.textContent = '320 × 200 · 256 colors · nothing drawn yet';
+    graphics.appendChild(caption);
+    root.append(this.#screen, graphics);
     new ResizeObserver(() => this.#fit()).observe(root);
   }
 
-  // monitor: 'off' | 'nosignal' | 'text'; screen: lines of text;
+  // monitor: 'off' | 'nosignal' | 'text' | 'graphics'; screen: lines of text;
   // cursor: [row, column], or null for the start of the line after the text
   render({ monitor, screen, cursor }) {
     this.#root.dataset.monitor = monitor;

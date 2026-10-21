@@ -4,8 +4,8 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 to M3b done** (days 0 to 2, plus the chapter framework). Next:
-**M4** (day 3). Everything else is a draft waiting for the open questions at
+Status: **M0 to M4 done** (days 0 to 3, plus the chapter framework). Next:
+**M5a** (day 4). Everything else is a draft waiting for the open questions at
 the bottom to be settled.
 
 ## 1. Book outline
@@ -45,19 +45,22 @@ the bottom to be settled.
 
 ## 2. How the OS runs on the site
 
-Later days execute far too many instructions (interrupts, multitasking,
-applications) to hand-write the state of every step. Three options:
+**Decided: scripted steps with simplified teaching code, no emulator.** The
+site exists to teach what happens, not to ship an OS that boots, so:
 
-| Approach | What it means | Fits |
-|---|---|---|
-| **Scripted steps** (current) | Every step's registers, memory, and screen are written as data | Days 0–2: concept-heavy, few steps |
-| **Real emulator** | Run an x86 emulator in the browser (for example the open-source v86) on the real disk image, and read memory, registers, and the screen from it | Day 3 onward: complex code, needs keyboard and mouse |
-| **Hybrid** (recommended) | Scripted steps explain each concept; at the end of each day, switch to "run it" and boot that day's build in the emulator | The whole book |
+- Every step's registers, memory, and screen are written as data, as on
+  days 0 to 2.
+- Programs are written for this site. Days 1 and 2 use a complete boot
+  sector, byte for byte. From day 3 on, programs are simplified: the
+  structure, BIOS calls, key instructions, addresses, and numbers are real,
+  but only the lines being taught show their bytes, and the code is not a
+  complete system you can assemble and boot.
+- Long loops are walked through once and then summarized (for example the
+  disk read loop on day 3), with memory and diagrams showing the result.
+- Nothing is copied from the book's own code.
 
-Before using an emulator, confirm which one and that its license allows this.
-The book's accompanying code has the author's own license; confirm whether it
-may be used here. Until then, all code on the site is written for this project
-and nothing is copied from the book.
+An emulator (for example v86) could still be added later as an optional "run
+it" view, but it is not planned.
 
 ## 3. Milestones
 
@@ -72,7 +75,7 @@ first milestone that needs it.
 | **M2** | ✅ Done: chapter framework | Split step data into one file per day, add a chapter picker, link straight to any chapter and step | Chapter system |
 | **M3a** | ✅ Done: day 1 | What every byte of the boot sector means (BPB, code, `55 AA`), printing hello world with INT 10h | **Code panel** that highlights the line being run; **floppy panel** (cylinders, heads, sectors) |
 | **M3b** | ✅ Done: day 2 | The same program in assembly, how assembly maps to machine code, the IPL | — |
-| **M4** | Day 3 | The disk read loop, video mode switch, GDT and CR0, moving from real mode to protected mode | CPU mode and segment visualization; start wiring in the emulator |
+| **M4** | ✅ Done: day 3 | The disk read loop, video mode switch, GDT and CR0, moving from real mode to protected mode | CPU mode, GDT table, graphics-mode display, memory above 1 MiB, simplified code listings |
 | **M5a** | Day 4 | Drawing into VRAM, palette | Display supports 320×200 graphics mode |
 | **M5b** | Day 5 | Fonts and text, mouse cursor, GDT/IDT | — |
 | **M6a** | Day 6 | PIC setup, interrupt handlers | **Devices panel** (PIC, keyboard controller) |
@@ -92,7 +95,7 @@ first milestone that needs it.
 | **M9d** | Day 20 | System call API | — |
 | **M9e** | Day 21 | Protecting the OS, exceptions | — |
 | **M9f** | Day 22 | Applications in C | — |
-| **M10a–h** | Days 23–30 | One milestone per day: drawing APIs, windows, sound and consoles, speedups, LDT and libraries, files and Japanese text, compression, larger applications | Mostly "run it" plus highlights instead of step-by-step breakdowns |
+| **M10a–h** | Days 23–30 | One milestone per day: drawing APIs, windows, sound and consoles, speedups, LDT and libraries, files and Japanese text, compression, larger applications | Highlights instead of step-by-step breakdowns |
 
 ## 4. Structure of each day
 
@@ -101,15 +104,14 @@ Every chapter follows the same shape so readers know what to expect:
 1. **Goal**: what this day builds (a screenshot or animation)
 2. **Concept steps**: like phases A and B, watch the hardware and memory change one step at a time
 3. **Code walkthrough**: the key lines, shown next to memory and registers
-4. **Run it**: boot this day's result in the emulator and type commands in the terminal
+4. **Recap**: a last step that sums up what the day built
 
 ## 5. Open questions
 
 1. **Chapter order**: follow the book day by day, or merge or skip some days?
    For example, days 29–30 are mostly applications and could be covered by
    highlights only.
-2. **How to run the OS**: scripted steps, emulator, or hybrid?
-3. **Level of detail**: break the early days (boot, protected mode) into very
-   fine steps and cover later days with "run it" plus highlights?
-4. **Terminal**: a debugger (single step, show registers, dump memory), the OS's
+2. **Level of detail**: break the early days (boot, protected mode) into very
+   fine steps and cover later days with highlights?
+3. **Terminal**: a debugger (single step, show registers, dump memory), the OS's
    own console from day 17 on, or both?

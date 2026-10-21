@@ -3,6 +3,7 @@ const CPU_LABELS = Object.freeze({
   reset: 'Held in reset',
   starting: 'Leaving reset',
   running: 'Real mode',
+  protected: 'Protected mode (32-bit)',
 });
 
 // Status bar along the bottom of the page.

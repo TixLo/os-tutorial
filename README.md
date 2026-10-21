@@ -19,6 +19,11 @@ boot sector taking over at `0x7C00`. It covers the power supply and reset
 signals, the CPU's reset state and first instruction, the BIOS power-on self
 test, and how the first sector of the floppy gets loaded and run.
 
+All code shown is written for this site. Days 1 and 2 use a complete boot
+sector; from day 3 on, programs are simplified for teaching: the structure,
+BIOS calls, key instructions, and addresses are real, but they are not a
+complete OS you can assemble and boot.
+
 It is an unofficial companion, not affiliated with the author or the
 publishers; see [Credits](#credits).
 
@@ -72,9 +77,12 @@ js/
       day00.js             Day 0 steps: text, timing, and hardware state patches
       day01.js             Day 1: inside the boot sector, then running it
       day02.js             Day 2: how each instruction becomes its bytes
+      day03.js             Day 3: load the OS, graphics mode, protected mode, C
     programs/
       assemble.js          Write programs as data: source, bytes, comments
-      helloBoot.js         Day 1's boot sector
+      helloBoot.js         Day 1's boot sector (complete)
+      ipl.js               Day 3's loader (simplified)
+      kernel.js            Day 3's kernel start and first C function (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
   models/                  State and rules. No DOM access.

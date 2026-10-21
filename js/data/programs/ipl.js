@@ -1,0 +1,71 @@
+// Day 3's boot sector: an initial program loader (IPL) that reads the first 10 cylinders
+// of the floppy into memory and jumps to the kernel. Simplified teaching code written for
+// this site: the structure and the BIOS calls are real, but only some lines show their
+// bytes and the listing has no addresses. Lines share a tag so a step can highlight them.
+export const IPL = Object.freeze({
+  name: 'ipl.asm',
+  illustrative: true,
+  lines: [
+    { source: 'org 0x7c00', comment: 'The BIOS loads this sector at 0x7C00' },
+    { source: 'jmp short entry', bytes: [0xEB, 0x4E], comment: 'Skip the disk description, as on day 1' },
+    { source: 'nop', bytes: [0x90] },
+    { heading: 'Disk description: the same 59 bytes as on day 1' },
+    { source: 'CYLS equ 10', comment: 'How many cylinders to read', tag: 'cyls' },
+
+    { label: 'entry' },
+    { source: 'xor ax, ax', bytes: [0x31, 0xC0], tag: 'setup' },
+    { source: 'mov ds, ax', bytes: [0x8E, 0xD8], tag: 'setup' },
+    { source: 'mov ss, ax', bytes: [0x8E, 0xD0], tag: 'setup' },
+    { source: 'mov sp, 0x7c00', bytes: [0xBC, 0x00, 0x7C], tag: 'setup' },
+    { source: 'mov ax, 0x0820', bytes: [0xB8, 0x20, 0x08], comment: 'Load to segment 0x0820...', tag: 'dest' },
+    { source: 'mov es, ax', bytes: [0x8E, 0xC0], comment: '...so ES:BX = 0x0820:0000 = 0x8200', tag: 'dest' },
+    { source: 'xor bx, bx', bytes: [0x31, 0xDB], tag: 'dest' },
+    { source: 'mov ch, 0', bytes: [0xB5, 0x00], comment: 'Cylinder 0', tag: 'chs' },
+    { source: 'mov dh, 0', bytes: [0xB6, 0x00], comment: 'Head 0', tag: 'chs' },
+    { source: 'mov cl, 2', bytes: [0xB1, 0x02], comment: 'Sector 2 (sector 1 is this one)', tag: 'chs' },
+
+    { label: 'read' },
+    { source: 'mov si, 0', comment: 'Failed attempts so far', tag: 'retry' },
+    { label: 'retry' },
+    { source: 'mov ah, 0x02', bytes: [0xB4, 0x02], comment: 'BIOS disk function 02h: read sectors', tag: 'call' },
+    { source: 'mov al, 1', bytes: [0xB0, 0x01], comment: 'One sector', tag: 'call' },
+    { source: 'mov dl, 0x00', bytes: [0xB2, 0x00], comment: 'Drive A:', tag: 'call' },
+    { source: 'int 0x13', bytes: [0xCD, 0x13], comment: 'Read it into ES:BX', tag: 'call' },
+    { source: 'jnc next', comment: 'Carry flag clear: it worked', tag: 'check' },
+    { source: 'add si, 1', comment: 'Count the failure', tag: 'retry' },
+    { source: 'cmp si, 5', tag: 'retry' },
+    { source: 'jae error', comment: 'Give up after 5 tries', tag: 'retry' },
+    { source: 'mov ah, 0x00', bytes: [0xB4, 0x00], comment: 'Function 00h: reset the drive', tag: 'retry' },
+    { source: 'int 0x13', bytes: [0xCD, 0x13], tag: 'retry' },
+    { source: 'jmp retry', comment: 'Try again', tag: 'retry' },
+
+    { label: 'next' },
+    { source: 'mov ax, es', tag: 'nextsec' },
+    { source: 'add ax, 0x0020', comment: '512 bytes further: 0x20 × 16', tag: 'nextsec' },
+    { source: 'mov es, ax', tag: 'nextsec' },
+    { source: 'add cl, 1', comment: 'Next sector', tag: 'nextsec' },
+    { source: 'cmp cl, 18', tag: 'nextsec' },
+    { source: 'jbe read', comment: 'Up to sector 18 of this track', tag: 'nextsec' },
+    { source: 'mov cl, 1', tag: 'nexthead' },
+    { source: 'add dh, 1', comment: 'Other side of the disk', tag: 'nexthead' },
+    { source: 'cmp dh, 2', tag: 'nexthead' },
+    { source: 'jb read', tag: 'nexthead' },
+    { source: 'mov dh, 0', tag: 'nextcyl' },
+    { source: 'add ch, 1', comment: 'Next cylinder', tag: 'nextcyl' },
+    { source: 'cmp ch, CYLS', tag: 'nextcyl' },
+    { source: 'jb read', comment: 'Until 10 cylinders are in memory', tag: 'nextcyl' },
+
+    { source: 'mov [0x0ff0], ch', comment: 'Write down how many cylinders were read', tag: 'done' },
+    { source: 'jmp 0xc200', comment: 'Run the kernel', tag: 'jump' },
+
+    { label: 'error' },
+    { source: 'mov si, errmsg', comment: 'Print "load error" like day 1 printed hello', tag: 'error' },
+    { source: '...', comment: 'The same print loop and hlt as day 1', tag: 'error' },
+    { label: 'errmsg' },
+    { source: 'db "load error", 13, 10, 0', tag: 'error' },
+
+    { heading: 'Pad to 512 bytes and end with the boot signature, as on day 1' },
+    { source: 'times 510-($-$$) db 0' },
+    { source: 'db 0x55, 0xaa', bytes: [0x55, 0xAA] },
+  ],
+});

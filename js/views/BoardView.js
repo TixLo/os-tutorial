@@ -3,6 +3,7 @@ const CPU_LABELS = Object.freeze({
   reset: 'frozen',
   starting: 'waking up',
   running: 'running',
+  protected: 'protected mode',
 });
 
 const RESET_LABELS = Object.freeze({

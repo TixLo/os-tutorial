@@ -4,10 +4,11 @@
   display: flex;
   justify-content: center;
 }
-.lesson-visual > svg { display: none; }
+.lesson-visual > * { display: none; }
 .lesson-visual[data-visual="none"] { display: none; }
 .lesson-visual[data-visual="board"] > #board,
-.lesson-visual[data-visual="disk"] > #disk { display: block; }
+.lesson-visual[data-visual="disk"] > #disk,
+.lesson-visual[data-visual="gdt"] > #gdt { display: block; }
 
 /* Floppy disk layout. The highlighted area comes from data-focus on #disk (VisualView). */
 .disk {
@@ -34,9 +35,52 @@
   transition: stroke 0.3s;
 }
 
-#disk[data-focus="boot"] .dk-boot rect {
+#disk[data-focus="boot"] .dk-boot rect,
+#disk[data-focus="kernel"] .dk-data rect,
+#disk[data-focus="read"] .dk-part rect {
   fill: var(--mem-written-bg);
   stroke: var(--mem-written-border);
 }
+/* Only the first 360 of 2880 sectors are read: the data box is just partly covered */
+#disk[data-focus="read"] .dk-data rect {
+  fill: url(#dk-partial);
+}
 #disk[data-focus="boot"] .dk-arrow { stroke: var(--accent); }
 #disk[data-focus="boot"] .dk-load { fill: var(--text); }
+
+/* A step's own note replaces the default "sector 1" caption */
+.dk-status { font-size: 9px; fill: var(--text); }
+#disk[data-note="true"] .dk-load,
+#disk[data-note="true"] .dk-arrow { display: none; }
+
+/* GDT table (day 3). data-focus on #gdt highlights an entry. */
+.gdt {
+  width: 100%;
+  max-width: 460px;
+  font-size: 12px;
+}
+.gdt-title {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+}
+.gdt table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+.gdt th, .gdt td {
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.gdt th { font-weight: 500; color: var(--text-dim); font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+.gdt td:last-child { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+.gdt tr[data-entry="null"] td { color: var(--text-dim); }
+#gdt[data-focus="all"] tbody tr:not([data-entry="null"]) td,
+#gdt[data-focus="code"] tr[data-entry="code"] td,
+#gdt[data-focus="data"] tr[data-entry="data"] td {
+  background: var(--accent-bg);
+  color: var(--text);
+}

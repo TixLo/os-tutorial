@@ -153,6 +153,12 @@
         </svg>
         <svg id="disk" class="disk" viewBox="0 0 340 150" role="img"
              aria-label="Floppy disk layout: boot sector, FATs, root directory, and data area">
+          <defs>
+            <linearGradient id="dk-partial">
+              <stop offset="0.33" stop-color="var(--mem-written-bg)"/>
+              <stop offset="0.33" stop-color="#1a1e25"/>
+            </linearGradient>
+          </defs>
           <text class="dk-title" x="170" y="16" text-anchor="middle">1.44 MB floppy image · 2,880 sectors × 512 bytes</text>
 
           <g class="dk-part dk-boot">
@@ -180,8 +186,24 @@
           <path class="dk-arrow" d="M32 74 V112 H96"/>
           <text class="dk-load" x="100" y="108">Cylinder 0, head 0, sector 1</text>
           <text class="dk-load" x="100" y="121">→ loaded to 0x7C00 by the BIOS</text>
+          <text class="dk-status" x="170" y="108" text-anchor="middle"></text>
+          <text class="dk-status" x="170" y="121" text-anchor="middle"></text>
           <text class="dk-geo" x="170" y="142" text-anchor="middle">80 cylinders × 2 heads × 18 sectors per track</text>
         </svg>
+
+        <div id="gdt" class="gdt" role="img" aria-label="Global descriptor table with three entries">
+          <p class="gdt-title">GDT: the segment table</p>
+          <table>
+            <thead>
+              <tr><th>Selector</th><th>Entry</th><th>Base</th><th>Limit</th><th>Use</th></tr>
+            </thead>
+            <tbody>
+              <tr data-entry="null"><td>0x00</td><td>0</td><td>—</td><td>—</td><td>Must be empty</td></tr>
+              <tr data-entry="code"><td>0x08</td><td>1</td><td>0x00000000</td><td>4 GiB</td><td>Code: run, read</td></tr>
+              <tr data-entry="data"><td>0x10</td><td>2</td><td>0x00000000</td><td>4 GiB</td><td>Data: read, write</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <p class="step-detail"></p>
@@ -300,6 +322,8 @@
     memory panel.
   </p>
   <p class="about-note">
+    The code shown is written for this site. From day 3 on it is simplified for teaching:
+    the structure and key instructions are real, but it is not a complete OS you can boot.
     An unofficial companion, not affiliated with the author or the publishers.
     Source code on <a href="https://github.com/TixLo/os-tutorial" target="_blank" rel="noopener">GitHub</a>.
   </p>
