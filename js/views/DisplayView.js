@@ -20,20 +20,20 @@ export class DisplayView {
     new ResizeObserver(() => this.#fit()).observe(root);
   }
 
-  // monitor: 'off' | 'nosignal' | 'text'; screen: lines of text
-  render({ monitor, screen }) {
+  // monitor: 'off' | 'nosignal' | 'text'; screen: lines of text;
+  // cursor: [row, column], or null for the start of the line after the text
+  render({ monitor, screen, cursor }) {
     this.#root.dataset.monitor = monitor;
     this.#fit();
     const lines = Array.from({ length: ROWS }, (_, row) => (screen[row] || '').padEnd(COLUMNS));
-    // The BIOS leaves its cursor on the line after the last text
-    const cursorRow = Math.min(screen.length, ROWS - 1);
+    const [cursorRow, cursorCol] = cursor || [Math.min(screen.length, ROWS - 1), 0];
     this.#screen.replaceChildren();
     lines.forEach((line, row) => {
       if (row === cursorRow) {
-        const cursor = document.createElement('span');
-        cursor.className = 'text-cursor';
-        cursor.textContent = '_';
-        this.#screen.append(cursor, line.slice(1));
+        const mark = document.createElement('span');
+        mark.className = 'text-cursor';
+        mark.textContent = '_';
+        this.#screen.append(line.slice(0, cursorCol), mark, line.slice(cursorCol + 1));
       } else {
         this.#screen.append(line);
       }

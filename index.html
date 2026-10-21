@@ -11,9 +11,11 @@
 <link rel="stylesheet" href="css/front-panel.css">
 <link rel="stylesheet" href="css/display.css">
 <link rel="stylesheet" href="css/terminal.css">
+<link rel="stylesheet" href="css/dock.css">
 <link rel="stylesheet" href="css/memory.css">
 <link rel="stylesheet" href="css/lesson.css">
 <link rel="stylesheet" href="css/board.css">
+<link rel="stylesheet" href="css/disk.css">
 <link rel="stylesheet" href="css/about.css">
 <script type="module" src="js/main.js"></script>
 </head>
@@ -97,57 +99,90 @@
       <h2 class="step-title"></h2>
       <p class="step-summary"></p>
 
-      <svg id="board" class="board" viewBox="0 0 340 162" role="img"
-           aria-label="Motherboard diagram showing power, reset, and disk signals">
-        <path class="wire" data-wire="pwrsw" d="M30 92 H62"/>
-        <path class="wire" data-wire="pson" d="M82 76 V20 H140"/>
-        <path class="wire" data-wire="pwrok" d="M140 34 H112 V76"/>
-        <path class="wire wire-rail" d="M180 42 V126"/>
-        <path class="wire wire-rail" d="M245 42 V76"/>
-        <path class="wire" data-wire="reset" d="M142 92 H240"/>
-        <path class="wire" data-wire="bus" d="M280 108 V126"/>
-        <path class="wire" data-wire="disk" d="M138 108 V136"/>
+      <div class="lesson-visual" id="lesson-visual" data-visual="board">
+        <svg id="board" class="board" viewBox="0 0 340 162" role="img"
+             aria-label="Motherboard diagram showing power, reset, and disk signals">
+          <path class="wire" data-wire="pwrsw" d="M30 92 H62"/>
+          <path class="wire" data-wire="pson" d="M82 76 V20 H140"/>
+          <path class="wire" data-wire="pwrok" d="M140 34 H112 V76"/>
+          <path class="wire wire-rail" d="M180 42 V126"/>
+          <path class="wire wire-rail" d="M245 42 V76"/>
+          <path class="wire" data-wire="reset" d="M142 92 H240"/>
+          <path class="wire" data-wire="bus" d="M280 108 V126"/>
+          <path class="wire" data-wire="disk" d="M138 108 V136"/>
+  
+          <text class="bd-wire-label" x="47" y="86" text-anchor="middle">PWR_SW</text>
+          <text class="bd-wire-label" x="78" y="52" text-anchor="end">PS_ON#</text>
+          <text class="bd-wire-label" x="116" y="60">PWR_OK</text>
+          <text class="bd-wire-label" x="210" y="86" text-anchor="middle">RESET#</text>
+          <text class="bd-reset-state" x="210" y="105" text-anchor="middle"></text>
+          <text class="bd-wire-label" x="286" y="121">fetch</text>
+  
+          <g class="bd-part bd-button">
+            <circle cx="20" cy="92" r="10"/>
+            <text x="20" y="118" text-anchor="middle">Power</text>
+            <text x="20" y="128" text-anchor="middle">button</text>
+          </g>
+          <g class="bd-part bd-chipset">
+            <rect x="62" y="76" width="80" height="32" rx="4"/>
+            <text x="102" y="96" text-anchor="middle">Chipset</text>
+            <text class="bd-sub" x="102" y="120" text-anchor="middle">on +5V standby</text>
+          </g>
+          <g class="bd-part bd-psu">
+            <rect x="140" y="8" width="110" height="34" rx="4"/>
+            <text x="195" y="22" text-anchor="middle">Power supply</text>
+            <text class="bd-sub bd-rails" x="195" y="35" text-anchor="middle">12 V · 5 V · 3.3 V</text>
+          </g>
+          <g class="bd-part bd-cpu">
+            <rect x="240" y="76" width="80" height="32" rx="4"/>
+            <text x="280" y="90" text-anchor="middle">CPU</text>
+            <text class="bd-sub bd-cpu-state" x="280" y="102" text-anchor="middle"></text>
+          </g>
+          <g class="bd-part bd-ram">
+            <rect x="150" y="126" width="60" height="26" rx="4"/>
+            <text x="180" y="143" text-anchor="middle">RAM</text>
+          </g>
+          <g class="bd-part bd-floppy">
+            <rect x="62" y="136" width="80" height="20" rx="4"/>
+            <text x="102" y="150" text-anchor="middle">Floppy A:</text>
+          </g>
+          <g class="bd-part bd-rom">
+            <rect x="240" y="126" width="80" height="26" rx="4"/>
+            <text x="280" y="143" text-anchor="middle">BIOS ROM</text>
+          </g>
+        </svg>
+        <svg id="disk" class="disk" viewBox="0 0 340 150" role="img"
+             aria-label="Floppy disk layout: boot sector, FATs, root directory, and data area">
+          <text class="dk-title" x="170" y="16" text-anchor="middle">1.44 MB floppy image · 2,880 sectors × 512 bytes</text>
 
-        <text class="bd-wire-label" x="47" y="86" text-anchor="middle">PWR_SW</text>
-        <text class="bd-wire-label" x="78" y="52" text-anchor="end">PS_ON#</text>
-        <text class="bd-wire-label" x="116" y="60">PWR_OK</text>
-        <text class="bd-wire-label" x="210" y="86" text-anchor="middle">RESET#</text>
-        <text class="bd-reset-state" x="210" y="105" text-anchor="middle"></text>
-        <text class="bd-wire-label" x="286" y="121">fetch</text>
+          <g class="dk-part dk-boot">
+            <rect x="10" y="34" width="44" height="40" rx="3"/>
+            <text x="32" y="51" text-anchor="middle">Boot</text>
+            <text class="dk-sub" x="32" y="64" text-anchor="middle">sector 1</text>
+          </g>
+          <g class="dk-part dk-fat">
+            <rect x="58" y="34" width="70" height="40" rx="3"/>
+            <text x="93" y="51" text-anchor="middle">FAT × 2</text>
+            <text class="dk-sub" x="93" y="64" text-anchor="middle">sectors 2–19</text>
+          </g>
+          <g class="dk-part dk-root">
+            <rect x="132" y="34" width="66" height="40" rx="3"/>
+            <text x="165" y="51" text-anchor="middle">Root dir</text>
+            <text class="dk-sub" x="165" y="64" text-anchor="middle">sectors 20–33</text>
+          </g>
+          <g class="dk-part dk-data">
+            <rect x="202" y="34" width="128" height="40" rx="3"/>
+            <text x="266" y="51" text-anchor="middle">File data</text>
+            <text class="dk-sub" x="266" y="64" text-anchor="middle">sectors 34–2880</text>
+          </g>
+          <text class="dk-note" x="170" y="88" text-anchor="middle">Not to scale: the data area is 99% of the disk</text>
 
-        <g class="bd-part bd-button">
-          <circle cx="20" cy="92" r="10"/>
-          <text x="20" y="118" text-anchor="middle">Power</text>
-          <text x="20" y="128" text-anchor="middle">button</text>
-        </g>
-        <g class="bd-part bd-chipset">
-          <rect x="62" y="76" width="80" height="32" rx="4"/>
-          <text x="102" y="96" text-anchor="middle">Chipset</text>
-          <text class="bd-sub" x="102" y="120" text-anchor="middle">on +5V standby</text>
-        </g>
-        <g class="bd-part bd-psu">
-          <rect x="140" y="8" width="110" height="34" rx="4"/>
-          <text x="195" y="22" text-anchor="middle">Power supply</text>
-          <text class="bd-sub bd-rails" x="195" y="35" text-anchor="middle">12 V · 5 V · 3.3 V</text>
-        </g>
-        <g class="bd-part bd-cpu">
-          <rect x="240" y="76" width="80" height="32" rx="4"/>
-          <text x="280" y="90" text-anchor="middle">CPU</text>
-          <text class="bd-sub bd-cpu-state" x="280" y="102" text-anchor="middle"></text>
-        </g>
-        <g class="bd-part bd-ram">
-          <rect x="150" y="126" width="60" height="26" rx="4"/>
-          <text x="180" y="143" text-anchor="middle">RAM</text>
-        </g>
-        <g class="bd-part bd-floppy">
-          <rect x="62" y="136" width="80" height="20" rx="4"/>
-          <text x="102" y="150" text-anchor="middle">Floppy A:</text>
-        </g>
-        <g class="bd-part bd-rom">
-          <rect x="240" y="126" width="80" height="26" rx="4"/>
-          <text x="280" y="143" text-anchor="middle">BIOS ROM</text>
-        </g>
-      </svg>
+          <path class="dk-arrow" d="M32 74 V112 H96"/>
+          <text class="dk-load" x="100" y="108">Cylinder 0, head 0, sector 1</text>
+          <text class="dk-load" x="100" y="121">→ loaded to 0x7C00 by the BIOS</text>
+          <text class="dk-geo" x="170" y="142" text-anchor="middle">80 cylinders × 2 heads × 18 sectors per track</text>
+        </svg>
+      </div>
 
       <p class="step-detail"></p>
       <div class="step-formula" hidden></div>
@@ -205,9 +240,16 @@
          data-size="memoryHeight" data-css-var="--memory-height"
          data-axis="y" data-target="side"></div>
 
-    <section id="terminal" class="panel">
-      <div class="panel-head">TERMINAL</div>
-      <div class="panel-body terminal" id="terminal-body">
+    <section id="dock" class="panel">
+      <div class="panel-head dock-tabs" role="tablist" aria-label="Code and terminal">
+        <button type="button" role="tab" id="tab-code" aria-controls="code-body"
+                aria-selected="true" data-tab="code">CODE</button>
+        <button type="button" role="tab" id="tab-terminal" aria-controls="terminal-body"
+                aria-selected="false" data-tab="terminal">TERMINAL</button>
+      </div>
+      <div class="panel-body code" id="code-body" role="tabpanel" aria-labelledby="tab-code"></div>
+      <div class="panel-body terminal" id="terminal-body" role="tabpanel"
+           aria-labelledby="tab-terminal" hidden>
         <p class="term-note">Reserved for a later chapter: you will type commands here
           to drive the CPU step by step.</p>
         <div class="term-line" aria-hidden="true">

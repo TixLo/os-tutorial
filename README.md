@@ -46,7 +46,7 @@ The code follows MVC. Each feature is a model / view / controller trio wired
 together in `js/main.js`.
 
 ```
-index.html                 Markup only: page frame, four panels, motherboard SVG
+index.html                 Markup only: page frame, four panels, diagram SVGs
 css/
   base.css                 Design tokens (colors, sizes) and resets
   layout.css               Page frame, split areas, responsive rules
@@ -54,19 +54,27 @@ css/
   player.css               Video-player controls on the front panel
   front-panel.css          Power button and LEDs
   display.css              Display panel drawn as a monitor
-  terminal.css             Terminal panel (placeholder)
+  terminal.css             Terminal tab (placeholder)
+  dock.css                 CODE / TERMINAL tabs and the code listing
   memory.css               Zoomable page grid, zoom trail, detail line, legend
   lesson.css               Step explanation and register table
   board.css                Motherboard diagram signal states
+  disk.css                 Diagram slot and the floppy disk diagram
   about.css                ABOUT button and dialog
 js/
   main.js                  Entry point: builds and starts each trio
   core/
     EventEmitter.js        Shared pub/sub for models and views
+    state.js               Merging step state patches
   data/                    Static facts the models load (no logic)
     chapters/
       index.js             Chapter list: day 0 plus the book's 30 days
       day00.js             Day 0 steps: text, timing, and hardware state patches
+      day01.js             Day 1: inside the boot sector, then running it
+    programs/
+      assemble.js          Write programs as data: source, bytes, comments
+      helloBoot.js         Day 1's boot sector
+      index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
   models/                  State and rules. No DOM access.
     LayoutModel.js         Panel sizes, limits, persistence
@@ -81,6 +89,10 @@ js/
     RouteView.js           URL hash (#day0/5) for links and reloads
     LessonView.js          Current step explanation
     BoardView.js           Motherboard diagram (signals, CPU state)
+    VisualView.js          Which diagram the chapter shows; floppy disk highlight
+    CodeView.js            Program listing, step focus, next instruction
+    DockView.js            CODE / TERMINAL tabs
+    PanelPulseView.js      Lights up a panel heading when a step changes it
     RegisterView.js        CPU register table
     DisplayView.js         Monitor
     StatusView.js          Status bar
@@ -104,6 +116,14 @@ can be shown on its own. Step 0 of every chapter holds its full starting
 state, so a chapter opens directly without replaying the ones before it:
 day 0 starts switched off, and later days start with the machine already
 running.
+
+Each chapter shows the diagram that matters to it in the explanation panel
+(the motherboard on day 0, the floppy disk on day 1). The panel under memory
+has CODE and TERMINAL tabs: CODE lists the program in memory with its
+address, bytes, source, and comment, highlights the lines the step is about,
+and marks the instruction the CPU runs next with ▶; tapping a line shows its
+bytes in memory. When a step changes what the display, memory, or code
+panel shows, that panel's heading lights up briefly.
 
 The chapter picker on the front panel lists every day; days without steps
 yet show as coming soon. The URL hash follows the current chapter and step

@@ -1,25 +1,6 @@
 import { EventEmitter } from '../core/EventEmitter.js';
 import { CHAPTERS } from '../data/chapters/index.js';
-
-// Merge a step's patch onto the previous state. Plain objects merge one level deep.
-function mergeState(base, patch) {
-  const next = { ...base };
-  for (const [key, value] of Object.entries(patch)) {
-    const isPlainObject = value !== null && typeof value === 'object' && !Array.isArray(value);
-    next[key] = isPlainObject ? { ...base[key], ...value } : value;
-  }
-  return next;
-}
-
-function buildStates(steps) {
-  const states = [];
-  let state = {};
-  for (const step of steps) {
-    state = mergeState(state, step.state);
-    states.push(state);
-  }
-  return states;
-}
+import { buildStates } from '../core/state.js';
 
 // The current chapter, the position in its steps, and the full hardware state there.
 // A chapter that starts switched off (day 0) has standby as step 0; later chapters start

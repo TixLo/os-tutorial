@@ -1,4 +1,21 @@
+import { PROGRAMS } from '../data/programs/index.js';
+
 const STEP_MS = 2500;  // time per step during auto play
+
+// What each panel shows, to tell which panels a step changed
+const PANEL_CONTENT = {
+  display: (s) => [s.monitor, s.screen, s.cursor],
+  memory: (s) => [s.memory.powered, s.writes, s.ranges, s.screen],
+  dock: (s) => [s.code, s.regs && s.regs['EIP']],
+};
+
+// Address of the instruction the CPU runs next (CS base + EIP), when both are known
+function nextInstruction(regs) {
+  const base = regs && regs['CS base'] && regs['CS base'].value;
+  const eip = regs && regs['EIP'] && regs['EIP'].value;
+  const isHex = (v) => typeof v === 'string' && /^[0-9A-F]+$/i.test(v);
+  return isHex(base) && isHex(eip) ? parseInt(base, 16) + parseInt(eip, 16) : null;
+}
 
 // Drives the tutorial: the chapter picker and the URL choose a chapter, the power button
 // turns the machine on or off, the player moves through the chapter's steps once it is
@@ -101,7 +118,7 @@ export class MachineController {
   }
 
   #render({ index, step, state, previous }) {
-    const { frontPanel, lesson, board, registers, display, status, route } = this.views;
+    const { frontPanel, lesson, board, registers, display, status, route, visual, code, dock } = this.views;
     frontPanel.render({ powered: this.machine.powered, led: state.led, time: step.time });
     this.memory.apply({
       ...state.memory,
@@ -111,11 +128,28 @@ export class MachineController {
     });
     lesson.render(step);
     board.render(state);
+    visual.render(state);
     registers.render(state.regs, previous && previous.regs, state.cpu);
-    display.render({ monitor: state.monitor, screen: state.screen });
+    display.render({ monitor: state.monitor, screen: state.screen, cursor: state.cursor });
+    code.render({
+      program: PROGRAMS[state.code.program] || null,
+      focus: state.code.focus,
+      pc: state.code.program ? nextInstruction(state.regs) : null,
+    });
+    // A step picks the tab; the reader's own choice stays until a step picks another
+    if (!previous || previous.tab !== state.tab) dock.select(state.tab);
+    if (previous) this.#pulseChangedPanels(previous, state);
     status.render({ cpu: state.cpu, csip: state.csip });
     route.render(this.machine.chapter.id, index);
     this.#renderPlayer();
+  }
+
+  #pulseChangedPanels(previous, state) {
+    for (const [panel, content] of Object.entries(PANEL_CONTENT)) {
+      if (JSON.stringify(content(previous)) !== JSON.stringify(content(state))) {
+        this.views.pulse.pulse(panel);
+      }
+    }
   }
 
   #renderPlayer() {

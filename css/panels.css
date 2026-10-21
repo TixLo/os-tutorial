@@ -28,7 +28,7 @@
   padding: 10px;
   color: var(--text-dim);
 }
-#terminal .panel-body {
+.terminal {
   font-family: ui-monospace, Menlo, Consolas, monospace;
 }
 
@@ -50,3 +50,15 @@
 body.resizing { user-select: none; }
 body.resizing-v { cursor: col-resize; }
 body.resizing-h { cursor: row-resize; }
+
+/* A heading lights up when the step changes what its panel shows (PanelPulseView) */
+.panel-head.pulse {
+  animation: panel-pulse 1.2s ease-out;
+}
+@keyframes panel-pulse {
+  0%, 30% { background: #1d3a6b; color: var(--text); box-shadow: inset 3px 0 0 var(--accent); }
+  100% { background: var(--panel-head); box-shadow: inset 3px 0 0 transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel-head.pulse { animation: none; box-shadow: inset 3px 0 0 var(--accent); }
+}

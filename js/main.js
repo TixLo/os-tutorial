@@ -16,6 +16,10 @@ import { DisplayView } from './views/DisplayView.js';
 import { StatusView } from './views/StatusView.js';
 import { MemoryView } from './views/MemoryView.js';
 import { AboutView } from './views/AboutView.js';
+import { VisualView } from './views/VisualView.js';
+import { CodeView } from './views/CodeView.js';
+import { DockView } from './views/DockView.js';
+import { PanelPulseView } from './views/PanelPulseView.js';
 import { LayoutController } from './controllers/LayoutController.js';
 import { MemoryController } from './controllers/MemoryController.js';
 import { MachineController } from './controllers/MachineController.js';
@@ -25,10 +29,11 @@ const machine = new MachineModel(CHAPTERS);
 const memory = new MemoryModel();
 const lesson = new LessonView();
 const registers = new RegisterView();
+const code = new CodeView();
 const memoryController = new MemoryController(memory, new MemoryView());
 
-// Clicking an address in the explanation or the register table shows it in memory
-for (const view of [lesson, registers]) {
+// Clicking an address in the explanation, the register table, or the code shows it in memory
+for (const view of [lesson, registers, code]) {
   view.on('locate', (address) => memoryController.locate(address));
 }
 
@@ -45,6 +50,10 @@ const controllers = [
     registers,
     display: new DisplayView(),
     status: new StatusView(),
+    visual: new VisualView(),
+    code,
+    dock: new DockView(),
+    pulse: new PanelPulseView(),
   }),
   new AboutController(new AboutModel(), new AboutView()),
 ];

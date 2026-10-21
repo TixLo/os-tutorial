@@ -1,0 +1,41 @@
+/* The explanation panel's diagram slot shows one diagram per chapter (VisualView) */
+
+.lesson-visual {
+  display: flex;
+  justify-content: center;
+}
+.lesson-visual > svg { display: none; }
+.lesson-visual[data-visual="board"] > #board,
+.lesson-visual[data-visual="disk"] > #disk { display: block; }
+
+/* Floppy disk layout. The highlighted area comes from data-focus on #disk (DiskView). */
+.disk {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.dk-title { font-size: 10px; fill: var(--text); }
+.dk-part rect {
+  fill: #1a1e25;
+  stroke: #3a414e;
+  stroke-width: 1.5;
+  transition: fill 0.3s, stroke 0.3s;
+}
+.dk-part text { font-size: 10px; fill: var(--text); }
+.dk-part .dk-sub { font-size: 8px; fill: var(--text-dim); }
+.dk-note, .dk-geo { font-size: 8px; fill: var(--text-dim); }
+.dk-load { font-size: 9px; fill: var(--text-dim); transition: fill 0.3s; }
+.dk-arrow {
+  fill: none;
+  stroke: #3a414e;
+  stroke-width: 1.5;
+  transition: stroke 0.3s;
+}
+
+#disk[data-focus="boot"] .dk-boot rect {
+  fill: var(--mem-written-bg);
+  stroke: var(--mem-written-border);
+}
+#disk[data-focus="boot"] .dk-arrow { stroke: var(--accent); }
+#disk[data-focus="boot"] .dk-load { fill: var(--text); }
