@@ -4,8 +4,9 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0, M1, and M2 done** (all of day 0, plus the chapter framework). Everything else is a draft waiting for the open questions
-at the bottom to be settled.
+Status: **M0, M1, and M2 done** (all of day 0, plus the chapter framework). Next:
+**M3a** (day 1). Everything else is a draft waiting for the open questions at
+the bottom to be settled.
 
 ## 1. Book outline
 
@@ -22,16 +23,25 @@ at the bottom to be settled.
 | **Memory and layers** | 9 | Measure memory size, memory management (allocate, free) |
 | | 10 | Manage memory in 4 KiB units, sheet (layer) management |
 | | 11 | Windows, faster layer refresh, no flicker |
-| **Timers and multitasking** | 12–13 | PIT timer interrupts, timer management and speedups, one FIFO for all events |
+| **Timers and multitasking** | 12 | PIT timer interrupts, timer management |
+| | 13 | Faster timers, one FIFO for all events |
 | | 14 | High resolution (VBE), keyboard input into a window, blinking cursor |
-| | 15–16 | Task switching with TSS, task management, sleep and priorities |
-| **Console and applications** | 17–18 | Console window, `mem` / `cls` / `dir` commands, reading FAT12 directories |
-| | 19–20 | Run the first application, API through INT 0x40 system calls |
-| | 21–22 | Protect the OS from applications (exceptions), write applications in C |
-| **Finishing touches** | 23–26 | Drawing APIs, switching and moving windows, timer API, sound, multiple consoles |
+| | 15 | Task switching with TSS |
+| | 16 | Task management, sleep and priorities |
+| **Console and applications** | 17 | Console window and keyboard input to it |
+| | 18 | `mem` / `cls` / `dir` commands, reading FAT12 directories |
+| | 19 | Load a file and run the first application |
+| | 20 | API: system calls through INT 0x40 |
+| | 21 | Protect the OS from applications (exceptions) |
+| | 22 | Write applications in C |
+| **Finishing touches** | 23 | Drawing APIs (points, lines), closing windows |
+| | 24 | Switching and moving windows, timer API |
+| | 25 | Sound, more colors, multiple consoles |
+| | 26 | Faster window moves, opening and closing consoles |
 | | 27 | LDT, libraries |
 | | 28 | File API, command-line arguments, Japanese text |
-| | 29–30 | Compression, applications (calculator, text viewer, music player, image viewer) |
+| | 29 | Compression, small applications |
+| | 30 | Larger applications (calculator, text viewer, music player, image viewer) |
 
 ## 2. How the OS runs on the site
 
@@ -51,19 +61,38 @@ and nothing is copied from the book.
 
 ## 3. Milestones
 
+Each milestone covers one day. Days that share a theme share a number with a
+letter per day (M3a, M3b, ...), and a new panel or feature is built in the
+first milestone that needs it.
+
 | # | Milestone | Content | New features needed |
 |---|---|---|---|
 | **M0** | ✅ Done | First half of day 0: power-on to the CPU's first instruction (phases A and B) | — |
 | **M1** | ✅ Done: finish day 0 | Phase C, POST (memory test, IVT, BDA, video BIOS puts up the first screen); phase D, load the boot sector to `0x7C00` | Display shows the BIOS text screen; memory gets real byte contents |
 | **M2** | ✅ Done: chapter framework | Split step data into one file per day, add a chapter picker, link straight to any chapter and step | Chapter system |
-| **M3** | Days 1–2 | What every byte of the boot sector means (BPB, code, `55 AA`), printing with INT 10h, how assembly maps to machine code | **Code panel** that highlights the line being run; **floppy panel** (cylinders, heads, sectors) |
+| **M3a** | Day 1 | What every byte of the boot sector means (BPB, code, `55 AA`), printing hello world with INT 10h | **Code panel** that highlights the line being run; **floppy panel** (cylinders, heads, sectors) |
+| **M3b** | Day 2 | The same program in assembly, how assembly maps to machine code, the IPL | — |
 | **M4** | Day 3 | The disk read loop, video mode switch, GDT and CR0, moving from real mode to protected mode | CPU mode and segment visualization; start wiring in the emulator |
-| **M5** | Days 4–5 | Drawing into VRAM, palette, fonts | Display supports 320×200 graphics mode |
-| **M6** | Days 6–8 | PIC, interrupts, keyboard and mouse | **Devices panel** (PIC, keyboard controller); keyboard and mouse input on the display |
-| **M7** | Days 9–11 | Memory management, layers, windows | Memory panel shows allocations and frees |
-| **M8** | Days 12–16 | Timers, multitasking | What's happening panel shows the task list and a timeline |
-| **M9** | Days 17–22 | Console, FAT12, applications, API, protection | **Terminal panel becomes the OS console**; floppy panel shows FAT12 |
-| **M10** | Days 23–30 | Remaining APIs and applications | Mostly "run it" plus highlights instead of step-by-step breakdowns |
+| **M5a** | Day 4 | Drawing into VRAM, palette | Display supports 320×200 graphics mode |
+| **M5b** | Day 5 | Fonts and text, mouse cursor, GDT/IDT | — |
+| **M6a** | Day 6 | PIC setup, interrupt handlers | **Devices panel** (PIC, keyboard controller) |
+| **M6b** | Day 7 | FIFO buffers, keyboard and mouse data | Keyboard and mouse input on the display |
+| **M6c** | Day 8 | Mouse packets, the protected-mode switch in detail | — |
+| **M7a** | Day 9 | Memory size check, allocate and free | Memory panel shows allocations and frees |
+| **M7b** | Day 10 | 4 KiB memory units, layers | — |
+| **M7c** | Day 11 | Windows, layer refresh | — |
+| **M8a** | Day 12 | Timer interrupts, timer management | What's happening panel shows a timeline |
+| **M8b** | Day 13 | Faster timers, one FIFO for all events | — |
+| **M8c** | Day 14 | High resolution, keyboard input into a window | — |
+| **M8d** | Day 15 | Task switching with TSS | What's happening panel shows the task list |
+| **M8e** | Day 16 | Task management, sleep, priorities | — |
+| **M9a** | Day 17 | Console window | **Terminal panel becomes the OS console** |
+| **M9b** | Day 18 | Console commands, FAT12 directories | Floppy panel shows FAT12 |
+| **M9c** | Day 19 | Running the first application | — |
+| **M9d** | Day 20 | System call API | — |
+| **M9e** | Day 21 | Protecting the OS, exceptions | — |
+| **M9f** | Day 22 | Applications in C | — |
+| **M10a–h** | Days 23–30 | One milestone per day: drawing APIs, windows, sound and consoles, speedups, LDT and libraries, files and Japanese text, compression, larger applications | Mostly "run it" plus highlights instead of step-by-step breakdowns |
 
 ## 4. Structure of each day
 
