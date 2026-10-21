@@ -72,9 +72,9 @@ const STEPS = Object.freeze([
       monitor: 'off',
       screen: [],
       cursor: null,         // [row, column] on the text screen; null: line after the text
-      code: { program: null, focus: null },
+      code: { program: null, focus: null, trace: true },  // trace: mark the next instruction
       tab: 'code',          // which tab the panel under memory shows
-      visual: 'board',      // which diagram the explanation panel shows
+      visual: 'board',      // which diagram the explanation panel shows ('none' for none)
       disk: { focus: null },
       csip: '—',
     },

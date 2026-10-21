@@ -320,7 +320,7 @@ const STEPS = Object.freeze([
       'times a second. jmp halt sends it straight back to sleep, so the machine sits here, ' +
       'quiet, with "hello, world" on the screen. Everything you saw happen came from the 512 ' +
       'bytes we read earlier.',
-    hint: 'Day 2: how each instruction becomes its bytes. Coming soon.',
+    hint: 'Day 2: how each instruction becomes its bytes.',
     milestone: { label: 'Hello', text: 'Our own code prints on the screen' },
     time: '≈ 2.4 s + a few µs',
     state: {

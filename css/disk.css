@@ -5,10 +5,11 @@
   justify-content: center;
 }
 .lesson-visual > svg { display: none; }
+.lesson-visual[data-visual="none"] { display: none; }
 .lesson-visual[data-visual="board"] > #board,
 .lesson-visual[data-visual="disk"] > #disk { display: block; }
 
-/* Floppy disk layout. The highlighted area comes from data-focus on #disk (DiskView). */
+/* Floppy disk layout. The highlighted area comes from data-focus on #disk (VisualView). */
 .disk {
   width: 100%;
   max-width: 460px;

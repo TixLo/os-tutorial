@@ -71,6 +71,7 @@ js/
       index.js             Chapter list: day 0 plus the book's 30 days
       day00.js             Day 0 steps: text, timing, and hardware state patches
       day01.js             Day 1: inside the boot sector, then running it
+      day02.js             Day 2: how each instruction becomes its bytes
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector
