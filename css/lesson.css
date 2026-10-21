@@ -114,3 +114,24 @@
 .addr-link:hover { background: var(--accent-bg); }
 .addr-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .step-formula .addr-link { color: inherit; }
+
+/* A whole program's source, shown under the explanation */
+.step-source {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #0f1319;
+}
+.step-source figcaption {
+  padding: 4px 10px;
+  border-bottom: 1px solid var(--border);
+  font: 11px ui-monospace, Menlo, Consolas, monospace;
+  color: var(--text-dim);
+}
+.step-source pre {
+  margin: 0;
+  padding: 8px 10px;
+  overflow-x: auto;
+  font: 12px/1.5 ui-monospace, Menlo, Consolas, monospace;
+  color: var(--text);
+}

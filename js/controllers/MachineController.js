@@ -1,4 +1,5 @@
 import { PROGRAMS } from '../data/programs/index.js';
+import { sourceText } from '../data/programs/assemble.js';
 
 const STEP_MS = 2500;  // time per step during auto play
 
@@ -126,7 +127,8 @@ export class MachineController {
       writes: state.writes,
       screen: state.screen,
     });
-    lesson.render(step);
+    const source = step.source && PROGRAMS[step.source];
+    lesson.render(step, source ? { name: source.name, text: sourceText(source) } : null);
     board.render(state);
     visual.render(state);
     registers.render(state.regs, previous && previous.regs, state.cpu);

@@ -9,7 +9,7 @@ const LINES = [
   { source: 'jmp short entry', bytes: [0xEB, 0x4E], comment: 'Jump over the disk description to the code' },
   { source: 'nop', bytes: [0x90], comment: 'Filler, so the description starts at byte 3' },
 
-  // Disk description (BIOS parameter block) for a 1.44 MB floppy
+  { heading: 'Disk description (BIOS parameter block) for a 1.44 MB floppy' },
   { source: 'db "TUTORIPL"', bytes: db('TUTORIPL'), comment: 'Name of the tool that formatted the disk (8 bytes)' },
   { source: 'dw 512', bytes: dw(512), comment: 'Bytes per sector' },
   { source: 'db 1', bytes: db(1), comment: 'Sectors per cluster' },
@@ -31,7 +31,6 @@ const LINES = [
   { source: 'db "FAT12   "', bytes: db('FAT12   '), comment: 'File system type (8 bytes)' },
   { source: 'times 18 db 0', bytes: new Array(18).fill(0), comment: 'Unused, so the code starts at 0x7C50' },
 
-  // The program
   { label: 'entry' },
   { source: 'xor ax, ax', bytes: [0x31, 0xC0], comment: 'AX = 0' },
   { source: 'mov ds, ax', bytes: [0x8E, 0xD8], comment: 'Data segment = 0' },
@@ -53,6 +52,7 @@ const LINES = [
   { label: 'msg' },
   { source: 'db "hello, world", 13, 10, 0', bytes: db('hello, world', 13, 10, 0), comment: 'The text, a new line, and a 0 to mark the end' },
 
+  { heading: 'Pad the sector to 512 bytes and end it with the boot signature' },
   { source: 'times 510-($-$$) db 0', fillTo: 0x7DFE, comment: 'Zeros up to byte 510 of the sector' },
   { source: 'db 0x55, 0xaa', bytes: [0x55, 0xAA], comment: 'Boot signature' },
 ];

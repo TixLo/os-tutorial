@@ -78,8 +78,9 @@ export class CodeView extends EventEmitter {
     for (const line of program.lines) {
       const row = document.createElement('tr');
       if (line.label) row.className = 'code-label';
-      const cells = line.label
-        ? ['', hex(line.address), '', `${line.label}:`, '']
+      if (line.heading) row.className = 'code-heading';
+      const cells = line.heading ? ['', '', '', `; ${line.heading}`, '']
+        : line.label ? ['', hex(line.address), '', `${line.label}:`, '']
         : ['', hex(line.address), bytesText(line.bytes), `    ${line.source}`, line.comment ? `; ${line.comment}` : ''];
       ['code-mark', 'code-addr', 'code-bytes', 'code-src', 'code-note'].forEach((className, i) => {
         const cell = document.createElement('td');

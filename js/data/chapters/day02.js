@@ -209,14 +209,29 @@ const STEPS = Object.freeze([
     detail: 'The book uses its own assembler, but the steps are the same with any: ' +
       'assemble hello.asm into a 512-byte file, place it at the start of a 1.44 MB image ' +
       '(the rest left empty), and boot the image in an emulator such as QEMU. The BIOS ' +
-      'then does exactly what day 0 showed. You can now read every byte of the sector.',
-    hint: 'Day 3: reading the rest of the floppy and switching to 32-bit mode. Coming soon.',
-    milestone: { label: 'Machine code', text: 'Every byte of the boot sector explained' },
+      'then does exactly what day 0 showed.',
     time: '≈ 2.4 s + a few µs',
     state: {
       code: { focus: [0x07C00, 0x07DFF] },
       memory: { focus: { id: 'boot_sector', note: 'All 512 bytes, from text', range: [0x07C00, 0x07DFF] } },
     },
+  },
+  {
+    id: 'C2',
+    phase: 'C',
+    title: 'The whole program',
+    summary: 'Here is the complete source file, hello.asm. An assembler turns this text ' +
+      'into the 512-byte binary.',
+    detail: 'So far we took the program apart one line at a time; put together, it is about ' +
+      '50 lines of text. The assembler reads the file from top to bottom, works out the ' +
+      'address of every label, and writes out each line\'s bytes in order, producing a ' +
+      'binary file of exactly 512 bytes. It does for assembly language what a compiler ' +
+      'does for languages like C, which the book starts using on day 3.',
+    source: 'helloBoot',
+    hint: 'Day 3: reading the rest of the floppy and switching to 32-bit mode. Coming soon.',
+    milestone: { label: 'Machine code', text: 'Every byte of the boot sector explained' },
+    time: '≈ 2.4 s + a few µs',
+    state: {},
   },
 ]);
 

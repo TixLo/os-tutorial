@@ -24,10 +24,12 @@ export class LessonView extends EventEmitter {
       detail: root.querySelector('.step-detail'),
       formula: root.querySelector('.step-formula'),
       hint: root.querySelector('.step-hint'),
+      source: root.querySelector('.step-source'),
     };
   }
 
-  render(step) {
+  // source: { name, text } of a whole program to show under the explanation, or null
+  render(step, source = null) {
     const f = this.#fields;
     const { milestone } = step;
     f.milestone.textContent = milestone ? `Milestone · ${milestone.label}: ${milestone.text}` : '';
@@ -39,6 +41,9 @@ export class LessonView extends EventEmitter {
     f.formula.hidden = !step.formula;
     f.hint.textContent = step.hint || '';
     f.hint.hidden = !step.hint;
+    f.source.hidden = !source;
+    f.source.querySelector('figcaption').textContent = source ? source.name : '';
+    f.source.querySelector('pre').textContent = source ? source.text : '';
   }
 
   // Put text into an element, turning each {address} into a button
