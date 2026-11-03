@@ -61,6 +61,7 @@
 .code-addr { color: var(--text-dim); }
 .code-bytes { color: var(--mem-written-text); }
 .code-src { color: var(--text); }
+.code-lines td.code-src { white-space: pre; }  /* keep the indentation of C code */
 .code-note { color: var(--text-dim); font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
 .code-label td { padding-top: 6px; }
 .code-label .code-src { color: var(--mem-rom-text); }
