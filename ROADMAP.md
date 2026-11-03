@@ -5,8 +5,7 @@ step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
 Status: **M0 to M4 done** (days 0 to 3, plus the chapter framework). Next:
-**M5a** (day 4). Everything else is a draft waiting for the open questions at
-the bottom to be settled.
+**M5a** (day 4). The open questions are settled; see [Decisions](#5-decisions).
 
 ## 1. Book outline
 
@@ -106,12 +105,23 @@ Every chapter follows the same shape so readers know what to expect:
 3. **Code walkthrough**: the key lines, shown next to memory and registers
 4. **Recap**: a last step that sums up what the day built
 
-## 5. Open questions
+## 5. Decisions
 
-1. **Chapter order**: follow the book day by day, or merge or skip some days?
-   For example, days 29–30 are mostly applications and could be covered by
-   highlights only.
-2. **Level of detail**: break the early days (boot, protected mode) into very
-   fine steps and cover later days with highlights?
-3. **Terminal**: a debugger (single step, show registers, dump memory), the OS's
-   own console from day 17 on, or both?
+Settled on 2026-11-04:
+
+1. **Chapter order**: follow the book one day per chapter, plus this site's day 0.
+2. **Level of detail**: days 0 to 8 are broken into fine steps; later days get
+   coarser, and days 23 to 30 are highlights of 6 to 10 steps each.
+3. **Terminal**: until day 16 it is a debugger view (registers, memory dumps,
+   I/O ports); from day 17 it becomes the OS's own console.
+
+## 6. Conventions for later days
+
+- The OS keeps one memory layout from day 3 on: kernel copied to `0x8000`
+  onward (starting at `0xC200`), boot info at `0x0FF0`, stack top at `0x90000`,
+  IDT at `0x26F800` and GDT at `0x270000` (day 5), memory manager table at
+  `0x3C0000` and allocatable memory from `0x400000` (day 9). The machine has
+  32 MiB of RAM.
+- The font is drawn for this site; nothing is copied from the book's files.
+- `node tools/check.mjs` checks every chapter's data and must pass before a
+  commit.
