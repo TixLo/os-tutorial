@@ -7,6 +7,7 @@ import {
 import { DAY5_STRUCT, DAY5_LETTER, DAY5_TEXT, DAY5_CURSOR, DAY5_TABLES } from './day05.js';
 import { DAY6_BUILD, DAY6_PIC, DAY6_HANDLER, DAY6_WRAPPER, DAY6_MAIN } from './day06.js';
 import { DAY7_KEY, DAY7_BUFFER, DAY7_FIFO, DAY7_MOUSE } from './day07.js';
+import { DAY8_DECODE, DAY8_MOVE } from './day08.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -35,4 +36,6 @@ export const PROGRAMS = Object.freeze({
   day7Buffer: DAY7_BUFFER,
   day7Fifo: DAY7_FIFO,
   day7Mouse: DAY7_MOUSE,
+  day8Decode: DAY8_DECODE,
+  day8Move: DAY8_MOVE,
 });

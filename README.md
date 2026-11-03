@@ -93,6 +93,7 @@ js/
       day05.js             Day 5: boot info struct, text, mouse cursor, GDT and IDT
       day06.js             Day 6: split compilation, PIC setup, the first interrupt
       day07.js             Day 7: key codes, ring buffers, switching on the mouse
+      day08.js             Day 8: mouse packets, moving the cursor, the far jump
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
@@ -102,6 +103,7 @@ js/
       day05.js             Day 5's text, cursor, and table code (simplified)
       day06.js             Day 6's Makefile, PIC setup, and handlers (simplified)
       day07.js             Day 7's handlers, FIFO, and mouse setup (simplified)
+      day08.js             Day 8's mouse decoder and cursor movement (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
