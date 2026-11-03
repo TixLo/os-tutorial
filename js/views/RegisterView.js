@@ -30,7 +30,9 @@ export class RegisterView extends EventEmitter {
     }
 
     const links = this.#addressLinks(regs);
-    for (const [name, { value, note }] of Object.entries(regs)) {
+    for (const [name, entry] of Object.entries(regs)) {
+      if (!entry) continue;  // a step hides a register by setting it to null
+      const { value, note } = entry;
       const changed = previousRegs && previousRegs[name] && previousRegs[name].value !== value;
       const row = document.createElement('tr');
       if (changed) row.className = 'changed';
@@ -45,8 +47,8 @@ export class RegisterView extends EventEmitter {
 
   // Registers whose value points at memory: { name: { address, title } }
   #addressLinks(regs) {
-    const base = regs['CS base'] && hexValue(regs['CS base'].value);
-    const eip = regs['EIP'] && hexValue(regs['EIP'].value);
+    const base = regs['CS base'] ? hexValue(regs['CS base'].value) : null;
+    const eip = regs['EIP'] ? hexValue(regs['EIP'].value) : null;
     const links = {};
     if (base !== null && base !== undefined) {
       links['CS base'] = { address: base, title: `Show ${hex(base)} in memory` };

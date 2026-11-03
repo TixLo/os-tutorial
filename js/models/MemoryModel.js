@@ -92,7 +92,10 @@ export class MemoryModel extends EventEmitter {
     const overlays = [];
 
     if (powered) {
-      for (const { start, end, state } of Object.values(ranges)) overlays.push({ start, end, state });
+      // A step removes an earlier range or write by setting it to null
+      for (const range of Object.values(ranges)) {
+        if (range) overlays.push({ start: range.start, end: range.end, state: range.state });
+      }
       for (const write of Object.values(writes)) {
         if (!write) continue;
         this.#write(write);
