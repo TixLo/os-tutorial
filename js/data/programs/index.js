@@ -25,6 +25,7 @@ import { DAY22_GLUE, DAY22_HEADER, DAY22_BUGS, DAY22_WINDOW } from './day22.js';
 import { DAY23_API, DAY23_STARS } from './day23.js';
 import { DAY24_WINDOWS, DAY24_TIMERS } from './day24.js';
 import { DAY25_BEEP, DAY25_COLORS, DAY25_CONSOLES } from './day25.js';
+import { DAY26_FAST, DAY26_CONSOLES } from './day26.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -101,4 +102,6 @@ export const PROGRAMS = Object.freeze({
   day25Beep: DAY25_BEEP,
   day25Colors: DAY25_COLORS,
   day25Consoles: DAY25_CONSOLES,
+  day26Fast: DAY26_FAST,
+  day26Consoles: DAY26_CONSOLES,
 });
