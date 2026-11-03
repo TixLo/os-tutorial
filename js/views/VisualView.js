@@ -1,7 +1,8 @@
 import { TableDiagramView } from './TableDiagramView.js';
+import { PicView } from './PicView.js';
 
 // Diagrams added after day 3, besides 'board', 'disk', 'gdt', and 'none'
-export const VISUALS = Object.freeze(['table']);
+export const VISUALS = Object.freeze(['table', 'pic']);
 
 // The diagram slot in the explanation panel. Each chapter shows the diagram that matters
 // to it: the motherboard on day 0, the floppy disk on days 1 and 3, the GDT on day 3, and
@@ -12,6 +13,7 @@ export class VisualView {
   #diskStatus;
   #gdt;
   #table = new TableDiagramView();
+  #pic = new PicView();
 
   constructor(root = document.getElementById('lesson-visual')) {
     this.#root = root;
@@ -20,11 +22,11 @@ export class VisualView {
     this.#gdt = root.querySelector('#gdt');
   }
 
-  // visual: 'board' | 'disk' | 'gdt' | 'table' | 'none'
+  // visual: 'board' | 'disk' | 'gdt' | 'table' | 'pic' | 'none'
   // disk: { focus: 'boot' | 'read' | 'kernel' | null, note: [line, line] | null }
   // gdt: { focus: 'all' | 'code' | 'data' | null }
-  // table: see TableDiagramView
-  render({ visual, disk, gdt, table }) {
+  // table: see TableDiagramView; pic: see PicView
+  render({ visual, disk, gdt, table, pic }) {
     this.#root.dataset.visual = visual;
     this.#disk.dataset.focus = (disk && disk.focus) || '';
     const note = disk && disk.note;
@@ -32,5 +34,6 @@ export class VisualView {
     this.#diskStatus.forEach((text, i) => { text.textContent = note ? note[i] || '' : ''; });
     this.#gdt.dataset.focus = (gdt && gdt.focus) || '';
     this.#table.render(visual === 'table' ? table : null);
+    this.#pic.render(visual === 'pic' ? pic : null);
   }
 }

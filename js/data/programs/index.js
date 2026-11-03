@@ -5,6 +5,7 @@ import {
   ASM_FUNCS, DAY4_WHITE, DAY4_STRIPES, DAY4_POINTER, DAY4_PALETTE, DAY4_BOXES, DAY4_DESKTOP,
 } from './day04.js';
 import { DAY5_STRUCT, DAY5_LETTER, DAY5_TEXT, DAY5_CURSOR, DAY5_TABLES } from './day05.js';
+import { DAY6_BUILD, DAY6_PIC, DAY6_HANDLER, DAY6_WRAPPER, DAY6_MAIN } from './day06.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -24,4 +25,9 @@ export const PROGRAMS = Object.freeze({
   day5Text: DAY5_TEXT,
   day5Cursor: DAY5_CURSOR,
   day5Tables: DAY5_TABLES,
+  day6Build: DAY6_BUILD,
+  day6Pic: DAY6_PIC,
+  day6Handler: DAY6_HANDLER,
+  day6Wrapper: DAY6_WRAPPER,
+  day6Main: DAY6_MAIN,
 });

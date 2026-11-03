@@ -4,8 +4,8 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 to M5b done** (days 0 to 5, plus the chapter framework). Next:
-**M6a** (day 6). The open questions are settled; see [Decisions](#5-decisions).
+Status: **M0 to M6a done** (days 0 to 6, plus the chapter framework). Next:
+**M6b** (day 7). The open questions are settled; see [Decisions](#5-decisions).
 
 ## 1. Book outline
 
@@ -77,7 +77,7 @@ first milestone that needs it.
 | **M4** | ✅ Done: day 3 | The disk read loop, video mode switch, GDT and CR0, moving from real mode to protected mode | CPU mode, GDT table, graphics-mode display, memory above 1 MiB, simplified code listings |
 | **M5a** | ✅ Done: day 4 | Drawing into VRAM, palette | Display supports 320×200 graphics mode |
 | **M5b** | ✅ Done: day 5 | Fonts and text, mouse cursor, GDT/IDT | — |
-| **M6a** | Day 6 | PIC setup, interrupt handlers | **Devices panel** (PIC, keyboard controller) |
+| **M6a** | ✅ Done: day 6 | PIC setup, interrupt handlers | **PIC diagram** (IRQ inputs, masks, vectors) |
 | **M6b** | Day 7 | FIFO buffers, keyboard and mouse data | Keyboard and mouse input on the display |
 | **M6c** | Day 8 | Mouse packets, the protected-mode switch in detail | — |
 | **M7a** | Day 9 | Memory size check, allocate and free | Memory panel shows allocations and frees |

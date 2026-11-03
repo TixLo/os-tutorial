@@ -9,7 +9,8 @@
 .lesson-visual[data-visual="board"] > #board,
 .lesson-visual[data-visual="disk"] > #disk,
 .lesson-visual[data-visual="gdt"] > #gdt,
-.lesson-visual[data-visual="table"] > #table-diagram { display: block; }
+.lesson-visual[data-visual="table"] > #table-diagram,
+.lesson-visual[data-visual="pic"] > #pic-diagram { display: block; }
 
 /* Floppy disk layout. The highlighted area comes from data-focus on #disk (VisualView). */
 .disk {
