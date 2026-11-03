@@ -16,6 +16,12 @@ const PHASES = Object.freeze({
 
 const DAY_17_END = finalState(DAY_17.steps);
 
+// The floppy image the IPL copied on day 3, named from today on since files are read
+// from it
+export const DISK_IMAGE_REGION = Object.freeze({
+  id: 'disk_image', start: 0x08000, end: 0x34FFF, name: 'Disk image: the first 10 cylinders', kind: 'ram',
+});
+
 const reg = (value, note) => ({ value, note });
 const hex2 = (value) => value.toString(16).toUpperCase().padStart(2, '0');
 const IN_CONSOLE = reg('0000E1··', 'In console_task');
@@ -64,7 +70,11 @@ const STEPS = Object.freeze([
       table: null,
       code: { program: 'day17Console', focus: ['enter'], current: 'loop', trace: true },
       regs: { ...DAY_17_END.regs, 'EIP': IN_CONSOLE },
-      memory: { ...DAY_17_END.memory, focus: null },
+      memory: {
+        ...DAY_17_END.memory,
+        layout: [...DAY_17_END.memory.layout, DISK_IMAGE_REGION],
+        focus: null,
+      },
     },
   },
   {
@@ -127,7 +137,7 @@ const STEPS = Object.freeze([
       visual: 'disk',
       disk: { focus: 'root', note: ['Root directory: sectors 20–33', '→ in memory at 0xA600'] },
       writes: { rootDir: rootDirWrite(18) },
-      memory: { focus: { id: 'free_high', note: 'The root directory, from the disk image', bytes: [ROOT_ADDR, ROOT_ADDR + 0x5F] } },
+      memory: { focus: { id: 'disk_image', note: 'The root directory, from the disk image', bytes: [ROOT_ADDR, ROOT_ADDR + 0x5F] } },
       code: { focus: ['struct', 'dir'], current: null },
     },
   },
@@ -147,7 +157,7 @@ const STEPS = Object.freeze([
       visual: 'table',
       table: ENTRY_TABLE,
       code: { focus: ['struct', 'skip'], current: null },
-      memory: { focus: { id: 'free_high', note: 'Entry 0: KERNEL.SYS', bytes: [ROOT_ADDR, ROOT_ADDR + 0x1F] } },
+      memory: { focus: { id: 'disk_image', note: 'Entry 0: KERNEL.SYS', bytes: [ROOT_ADDR, ROOT_ADDR + 0x1F] } },
     },
   },
   {
