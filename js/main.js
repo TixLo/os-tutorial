@@ -20,6 +20,7 @@ import { VisualView } from './views/VisualView.js';
 import { CodeView } from './views/CodeView.js';
 import { DockView } from './views/DockView.js';
 import { PanelPulseView } from './views/PanelPulseView.js';
+import { TerminalView } from './views/TerminalView.js';
 import { LayoutController } from './controllers/LayoutController.js';
 import { MemoryController } from './controllers/MemoryController.js';
 import { MachineController } from './controllers/MachineController.js';
@@ -59,6 +60,7 @@ const controllers = [
     code,
     dock,
     pulse: new PanelPulseView(),
+    terminal: new TerminalView(),
   }),
   new AboutController(new AboutModel(), new AboutView()),
 ];

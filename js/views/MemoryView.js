@@ -8,6 +8,7 @@ const STATE_LABELS = Object.freeze({
 });
 
 const ONE_MIB = 0x100000;
+const MAX_HIGH_ROWS = 2;   // rows shown from the start of a large region above 1 MiB
 
 // Every level is a 16 × 16 grid; each zoom makes a cell 1/256 of the level above.
 const LEVELS = Object.freeze([
@@ -112,12 +113,17 @@ export class MemoryView {
       for (let i = 0; i < 16; i++) rows.push(start + i * row);
       return rows;
     }
-    // Whole map: every row of the first 1 MiB, plus the rows any higher region needs
+    // Whole map: every row of the first 1 MiB, plus the rows any higher region needs.
+    // A large region above 1 MiB shows its first rows and its last one; the gap row
+    // between them says what is left out.
     const set = new Set();
     for (let addr = 0; addr < ONE_MIB; addr += row) set.add(addr);
     for (const region of this.#snapshot.regions) {
       if (region.start < ONE_MIB) continue;
-      for (let addr = alignDown(region.start, row); addr <= region.end; addr += row) set.add(addr);
+      const first = alignDown(region.start, row);
+      const last = alignDown(region.end, row);
+      for (let addr = first; addr <= last && addr < first + MAX_HIGH_ROWS * row; addr += row) set.add(addr);
+      set.add(last);
     }
     return [...set].sort((a, b) => a - b);
   }

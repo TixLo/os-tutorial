@@ -1,4 +1,4 @@
-/* Terminal panel (placeholder until commands are added) */
+/* Terminal tab: a debugger log until day 17, then the OS console */
 
 .terminal {
   background: #07090c;
@@ -33,3 +33,14 @@
 @media (prefers-reduced-motion: reduce) {
   .term-cursor { animation: none; }
 }
+
+.term-log {
+  margin: 0;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.term-cmd { color: var(--led-on); }
+.term-out { color: var(--text); }

@@ -84,6 +84,10 @@ const STEPS = Object.freeze([
       visual: 'disk',
       disk: { focus: 'boot', note: null },
       gdt: { focus: null },
+      table: null,
+      terminal: null,
+      graphics: null,
+      palette: 'vga',
       cursor: null,
       csip: '0000:7C00',
     },
@@ -320,7 +324,8 @@ const STEPS = Object.freeze([
       regs: { 'EIP': KERNEL_EIP, 'AX': reg('0013', 'AH = 00 (set mode), AL = 13h') },
       monitor: 'graphics',
       screen: [],
-      writes: { vram: { start: 0xA0000, end: 0xAF9FF, data: [[0xA0000, new Array(64000).fill(0)]] } },
+      graphics: { width: 320, height: 200, ops: [{ op: 'fill', color: 0 }] },
+      palette: 'vga',
       code: { focus: ['setmode'], current: 'bootinfo' },
       memory: { focus: { id: 'vram', note: 'Video memory: one byte per pixel', bytes: [0xA0000, 0xA0000] } },
       csip: '0000:C2··',
@@ -511,7 +516,7 @@ const STEPS = Object.freeze([
       'the kernel switched the screen to 320 × 200 graphics and saved the settings; then it ' +
       'silenced interrupts, opened A20, loaded a GDT, set PE, and jumped into 32-bit code ' +
       'that calls C. Every later day builds on this.',
-    hint: 'Day 4: drawing on the screen from C. Coming soon.',
+    hint: 'Next, day 4: drawing on the screen from C.',
     milestone: { label: '32-bit C', text: 'Protected mode, running C' },
     time: '≈ 7 s + a few µs',
     state: {

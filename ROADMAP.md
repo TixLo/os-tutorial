@@ -4,8 +4,8 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 to M4 done** (days 0 to 3, plus the chapter framework). Next:
-**M5a** (day 4). The open questions are settled; see [Decisions](#5-decisions).
+Status: **M0 to M5a done** (days 0 to 4, plus the chapter framework). Next:
+**M5b** (day 5). The open questions are settled; see [Decisions](#5-decisions).
 
 ## 1. Book outline
 
@@ -75,7 +75,7 @@ first milestone that needs it.
 | **M3a** | ✅ Done: day 1 | What every byte of the boot sector means (BPB, code, `55 AA`), printing hello world with INT 10h | **Code panel** that highlights the line being run; **floppy panel** (cylinders, heads, sectors) |
 | **M3b** | ✅ Done: day 2 | The same program in assembly, how assembly maps to machine code, the IPL | — |
 | **M4** | ✅ Done: day 3 | The disk read loop, video mode switch, GDT and CR0, moving from real mode to protected mode | CPU mode, GDT table, graphics-mode display, memory above 1 MiB, simplified code listings |
-| **M5a** | Day 4 | Drawing into VRAM, palette | Display supports 320×200 graphics mode |
+| **M5a** | ✅ Done: day 4 | Drawing into VRAM, palette | Display supports 320×200 graphics mode |
 | **M5b** | Day 5 | Fonts and text, mouse cursor, GDT/IDT | — |
 | **M6a** | Day 6 | PIC setup, interrupt handlers | **Devices panel** (PIC, keyboard controller) |
 | **M6b** | Day 7 | FIFO buffers, keyboard and mouse data | Keyboard and mouse input on the display |

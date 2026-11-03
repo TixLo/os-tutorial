@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="css/lesson.css">
 <link rel="stylesheet" href="css/board.css">
 <link rel="stylesheet" href="css/disk.css">
+<link rel="stylesheet" href="css/diagram.css">
 <link rel="stylesheet" href="css/about.css">
 <script type="module" src="js/main.js"></script>
 </head>
@@ -204,6 +205,8 @@
             </tbody>
           </table>
         </div>
+
+        <div id="table-diagram" class="table-diagram"></div>
       </div>
 
       <p class="step-detail"></p>
@@ -271,8 +274,9 @@
       <div class="panel-body code" id="code-body" role="tabpanel" aria-labelledby="tab-code" hidden></div>
       <div class="panel-body terminal" id="terminal-body" role="tabpanel"
            aria-labelledby="tab-terminal" hidden>
-        <p class="term-note">Reserved for a later chapter: you will type commands here
-          to drive the CPU step by step.</p>
+        <p class="term-note">Debugger view: when a step looks inside the machine (I/O ports,
+          registers, memory), the commands and what they print appear here. From day 17
+          this becomes the OS's own console.</p>
         <div class="term-line" aria-hidden="true">
           <span class="term-prompt">&gt;</span><span class="term-cursor"></span>
         </div>

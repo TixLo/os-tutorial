@@ -5,11 +5,12 @@ const STEP_MS = 2500;  // time per step during auto play
 
 // What each panel or dock tab shows, to tell which ones a step changed
 const PANEL_CONTENT = {
-  display: (s) => [s.monitor, s.screen, s.cursor],
+  display: (s) => [s.monitor, s.screen, s.cursor, s.graphics, s.palette],
 };
 const TAB_CONTENT = {
-  memory: (s) => [s.memory.powered, s.writes, s.ranges, s.screen],
+  memory: (s) => [s.memory.powered, s.memory.layout, s.writes, s.ranges, s.screen, s.graphics],
   code: (s) => [s.code, s.regs && s.regs['EIP']],
+  terminal: (s) => [s.terminal],
 };
 
 // Address of the instruction the CPU runs next (CS base + EIP), when both are known
@@ -123,20 +124,28 @@ export class MachineController {
   }
 
   #render({ index, step, state, previous }) {
-    const { frontPanel, lesson, board, registers, display, status, route, visual, code, dock } = this.views;
+    const { frontPanel, lesson, board, registers, display, status, route, visual, code, dock, terminal } = this.views;
     frontPanel.render({ powered: this.machine.powered, led: state.led, time: step.time });
     this.memory.apply({
       ...state.memory,
       ranges: state.ranges,
       writes: state.writes,
       screen: state.screen,
+      graphics: state.monitor === 'graphics' ? state.graphics : null,
     });
     const source = step.source && PROGRAMS[step.source];
     lesson.render(step, source ? { name: source.name, text: sourceText(source) } : null);
     board.render(state);
     visual.render(state);
     registers.render(state.regs, previous && previous.regs, state.cpu);
-    display.render({ monitor: state.monitor, screen: state.screen, cursor: state.cursor });
+    display.render({
+      monitor: state.monitor,
+      screen: state.screen,
+      cursor: state.cursor,
+      graphics: state.graphics,
+      palette: state.palette,
+    });
+    terminal.render(state.terminal);
     code.render({
       program: PROGRAMS[state.code.program] || null,
       focus: state.code.focus,

@@ -1,0 +1,55 @@
+/* Table diagrams drawn from step data (TableDiagramView) */
+
+.table-diagram {
+  width: 100%;
+  max-width: 520px;
+  font-size: 12px;
+}
+.td-title {
+  margin: 0 0 6px;
+  color: var(--text-dim);
+  text-align: center;
+}
+.td-scroll {
+  max-height: 260px;
+  overflow: auto;
+}
+.table-diagram table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+.table-diagram th,
+.table-diagram td {
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+.table-diagram th {
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  font-weight: 500;
+  color: var(--text-dim);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.table-diagram tr.dim td { color: var(--text-dim); }
+.table-diagram tr.focus td {
+  background: var(--accent-bg);
+  color: var(--text);
+}
+.td-swatch {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  vertical-align: -2px;
+  border: 1px solid #3a414e;
+}
+.td-note {
+  margin: 6px 0 0;
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-align: center;
+}

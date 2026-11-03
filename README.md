@@ -19,8 +19,8 @@ boot sector taking over at `0x7C00`. It covers the power supply and reset
 signals, the CPU's reset state and first instruction, the BIOS power-on self
 test, and how the first sector of the floppy gets loaded and run.
 
-All code shown is written for this site. Days 1 and 2 use a complete boot
-sector; from day 3 on, programs are simplified for teaching: the structure,
+All code shown is written for this site, including the font. Days 1 and 2 use
+a complete boot sector; from day 3 on, programs are simplified for teaching: the structure,
 BIOS calls, key instructions, and addresses are real, but they are not a
 complete OS you can assemble and boot.
 
@@ -31,8 +31,9 @@ publishers; see [Credits](#credits).
 
 The explanation (steps, a diagram for the chapter, CPU registers) fills the
 left half. The right half has the display (the machine's screen) on top and,
-below it, tabs for MEMORY, CODE, and TERMINAL (reserved for typing CPU
-commands in a later chapter). Each step opens the tab it is about. Both
+below it, tabs for MEMORY, CODE, and TERMINAL. Until day 17 the terminal is a
+debugger view that shows what a step looks at (memory dumps, I/O port
+writes); from day 17 it becomes the OS's own console. Each step opens the tab it is about. Both
 splitters can be dragged.
 
 ## Running locally
@@ -45,6 +46,13 @@ python3 -m http.server 8123
 ```
 
 Then open <http://localhost:8123/>.
+
+Before committing, check every chapter's data (step fields, code tags, memory
+regions, address links, English-only text):
+
+```bash
+node tools/check.mjs
+```
 
 ## Project structure
 
@@ -62,6 +70,7 @@ css/
   display.css              Display panel drawn as a monitor
   terminal.css             Terminal tab (placeholder)
   dock.css                 MEMORY / CODE / TERMINAL tabs and the code listing
+  diagram.css              Table diagrams drawn from step data
   memory.css               Zoomable page grid, zoom trail, detail line, legend
   lesson.css               Step explanation and register table
   board.css                Motherboard diagram signal states
@@ -72,6 +81,7 @@ js/
   core/
     EventEmitter.js        Shared pub/sub for models and views
     state.js               Merging step state patches
+    raster.js              Drawing lists -> video memory bytes (graphics mode)
   data/                    Static facts the models load (no logic)
     chapters/
       index.js             Chapter list: day 0 plus the book's 30 days
@@ -79,13 +89,18 @@ js/
       day01.js             Day 1: inside the boot sector, then running it
       day02.js             Day 2: how each instruction becomes its bytes
       day03.js             Day 3: load the OS, graphics mode, protected mode, C
+      day04.js             Day 4: drawing from C, the palette, rectangles
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
       ipl.js               Day 3's loader (simplified)
       kernel.js            Day 3's kernel start and first C function (simplified)
+      day04.js             Day 4's assembly helpers and drawing code (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
+    palettes.js            The card's power-on palette and the OS's 16 colors
+    font.js                The OS's 8 × 16 font, drawn for this site
+    screens.js             Drawing lists for the OS's screens (desktop, ...)
   models/                  State and rules. No DOM access.
     LayoutModel.js         Panel sizes, limits, persistence
     MachineModel.js        Current chapter and step, and the merged hardware state
@@ -104,7 +119,9 @@ js/
     DockView.js            MEMORY / CODE / TERMINAL tabs, update dots
     PanelPulseView.js      Lights up the display heading when a step changes it
     RegisterView.js        CPU register table
-    DisplayView.js         Monitor
+    DisplayView.js         Monitor: text screen, or graphics drawn through the palette
+    TableDiagramView.js    Table diagrams in the explanation (palette, IDT, ...)
+    TerminalView.js        TERMINAL tab: debugger log, later the OS console
     StatusView.js          Status bar
     MemoryView.js          Zoomable grid (pages / 16-byte blocks / bytes) and detail
     AboutView.js           ABOUT button and dialog
@@ -129,7 +146,8 @@ running.
 
 Each chapter shows the diagram that matters to it in the explanation panel
 (the motherboard on day 0, the floppy disk on days 1 and 3, the GDT on
-day 3). Under the display, each step opens the MEMORY, CODE, or TERMINAL tab
+day 3, and from day 4 tables built from the step's data, such as the
+palette). Under the display, each step opens the MEMORY, CODE, or TERMINAL tab
 it is about. CODE lists the program with its address, bytes, source, and
 comment, highlights the lines the step is about, and marks the instruction
 the CPU runs next with ▶. Tapping a code line, an address in the
@@ -173,6 +191,14 @@ pages over the whole map, 16-byte blocks inside one page, and single bytes
 above the grid zooms back out. A step's memory focus can name a byte range
 (`focus.bytes`), and the panel zooms to it on its own.
 
+From day 4, a step can also set `graphics`, the picture in video memory as a
+list of drawing operations (fill, box, pattern, text, bitmap; see
+`js/core/raster.js`), and `palette` (`vga` or `os`). The display and the
+memory panel read the same bytes, so the screen always matches memory.
+`table` fills a table diagram (`visual: 'table'`), `terminal` fills the
+TERMINAL tab, and `memory.layout` adds regions the OS sets up, such as its
+tables above 1 MiB.
+
 To add a day, create `js/data/chapters/dayNN.js` exporting a chapter
 (`{ id, title, name, steps }`) and put it in `CHAPTERS` in place of its
 coming-soon entry. A new kind of hardware state needs a field in the
@@ -198,8 +224,7 @@ The memory map panel was added this way:
 5. Put panel-specific styles in a new `css/memory.css` and link it from
    `index.html`
 
-Next: day 1 of the book, the contents of the boot sector. See
-[ROADMAP.md](ROADMAP.md) for the plan covering the whole book. New physical
+See [ROADMAP.md](ROADMAP.md) for the plan covering the whole book. New physical
 controls (reset button, disk LED, ...) go on the front panel in
 `FrontPanelView`.
 

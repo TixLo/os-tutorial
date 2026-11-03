@@ -1,5 +1,6 @@
 import { EventEmitter } from '../core/EventEmitter.js';
 import { MEMORY_MAP, ROM_BYTES } from '../data/memoryMap.js';
+import { rasterize } from '../core/raster.js';
 
 // Region states:
 //   off        no power
@@ -21,6 +22,9 @@ const OVERLAY_STATES = Object.freeze(['tested', 'written']);
 // 80 x 25 text mode: each character is 2 bytes (code, then color) starting at 0xB8000
 const TEXT_SCREEN = Object.freeze({ start: 0xB8000, columns: 80, rows: 25, color: 0x07 });
 
+// Graphics mode: one byte per pixel, starting at 0xA0000 unless the step says otherwise
+const GRAPHICS_BASE = 0xA0000;
+
 // True when the intervals together cover every address of `range`
 function covers(intervals, range) {
   let next = range.start;
@@ -36,11 +40,13 @@ function covers(intervals, range) {
 // Emits 'change' (snapshot).
 export class MemoryModel extends EventEmitter {
   #regions = MEMORY_MAP.map((region) => ({ ...region, state: 'off', note: null }));
+  #layoutKey = '';
   #romBytes = new Map();  // address -> byte value, present whenever there is power
   #known = new Map();     // ROM bytes plus everything written so far
   #overlays = [];         // { start, end, state }, sorted by OVERLAY_STATES priority
   #powered = false;
   #focus = null;
+  #frame = null;          // { start, end, pixels } while graphics mode shows a picture
 
   constructor() {
     super();
@@ -68,24 +74,32 @@ export class MemoryModel extends EventEmitter {
   // undefined when there is no power
   readByte(address) {
     if (!this.#powered) return undefined;
+    const frame = this.#frame;
+    if (frame && address >= frame.start && address <= frame.end) return frame.pixels[address - frame.start];
     return this.#known.has(address) ? this.#known.get(address) : null;
   }
 
-  // memory: { powered, focus }, plus the step's ranges, writes, and screen lines.
-  // Everything is rebuilt from the step's state, so stepping backward works too.
-  apply({ powered, focus, ranges = {}, writes = {}, screen = [] }) {
+  // memory: { powered, focus, layout }, plus the step's ranges, writes, screen lines, and
+  // graphics. layout lists regions the OS has set up on top of the PC's own map (for
+  // example its tables above 1 MiB). Everything is rebuilt from the step's state, so
+  // stepping backward works too.
+  apply({ powered, focus, layout = [], ranges = {}, writes = {}, screen = [], graphics = null }) {
     this.#powered = powered;
     this.#focus = focus || null;
     this.#known = new Map(this.#romBytes);
+    this.#frame = null;
+    this.#setLayout(layout);
     const overlays = [];
 
     if (powered) {
       for (const { start, end, state } of Object.values(ranges)) overlays.push({ start, end, state });
       for (const write of Object.values(writes)) {
+        if (!write) continue;
         this.#write(write);
         overlays.push({ start: write.start, end: write.end, state: 'written' });
       }
-      if (screen.length) overlays.push(this.#writeScreen(screen));
+      if (graphics) overlays.push(this.#showFrame(graphics));
+      else if (screen.length) overlays.push(this.#writeScreen(screen));
     }
     overlays.sort((a, b) => OVERLAY_STATES.indexOf(a.state) - OVERLAY_STATES.indexOf(b.state));
     this.#overlays = overlays;
@@ -103,6 +117,23 @@ export class MemoryModel extends EventEmitter {
     for (const [address, bytes] of data) {
       bytes.forEach((value, i) => this.#known.set(address + i, value));
     }
+  }
+
+  // Regions are the PC's map plus the OS's own, kept in address order
+  #setLayout(layout) {
+    const key = JSON.stringify(layout);
+    if (key === this.#layoutKey) return;
+    this.#layoutKey = key;
+    this.#regions = [...MEMORY_MAP, ...layout]
+      .map((region) => ({ ...region, state: 'off', note: null }))
+      .sort((a, b) => a.start - b.start);
+  }
+
+  #showFrame(graphics) {
+    const { width, height, pixels } = rasterize(graphics);
+    const start = graphics.base || GRAPHICS_BASE;
+    this.#frame = { start, end: start + width * height - 1, pixels };
+    return { start, end: this.#frame.end, state: 'written' };
   }
 
   #writeScreen(lines) {

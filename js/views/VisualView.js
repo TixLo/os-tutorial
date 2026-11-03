@@ -1,10 +1,17 @@
+import { TableDiagramView } from './TableDiagramView.js';
+
+// Diagrams added after day 3, besides 'board', 'disk', 'gdt', and 'none'
+export const VISUALS = Object.freeze(['table']);
+
 // The diagram slot in the explanation panel. Each chapter shows the diagram that matters
-// to it: the motherboard on day 0, the floppy disk on days 1 and 3, the GDT on day 3.
+// to it: the motherboard on day 0, the floppy disk on days 1 and 3, the GDT on day 3, and
+// from day 4 tables drawn from the step's data.
 export class VisualView {
   #root;
   #disk;
   #diskStatus;
   #gdt;
+  #table = new TableDiagramView();
 
   constructor(root = document.getElementById('lesson-visual')) {
     this.#root = root;
@@ -13,15 +20,17 @@ export class VisualView {
     this.#gdt = root.querySelector('#gdt');
   }
 
-  // visual: 'board' | 'disk' | 'gdt' | 'none'
+  // visual: 'board' | 'disk' | 'gdt' | 'table' | 'none'
   // disk: { focus: 'boot' | 'read' | 'kernel' | null, note: [line, line] | null }
   // gdt: { focus: 'all' | 'code' | 'data' | null }
-  render({ visual, disk, gdt }) {
+  // table: see TableDiagramView
+  render({ visual, disk, gdt, table }) {
     this.#root.dataset.visual = visual;
     this.#disk.dataset.focus = (disk && disk.focus) || '';
     const note = disk && disk.note;
     this.#disk.dataset.note = String(Boolean(note));
     this.#diskStatus.forEach((text, i) => { text.textContent = note ? note[i] || '' : ''; });
     this.#gdt.dataset.focus = (gdt && gdt.focus) || '';
+    this.#table.render(visual === 'table' ? table : null);
   }
 }
