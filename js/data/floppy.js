@@ -20,7 +20,7 @@ export const FILES = Object.freeze([
   { name: 'HELLO', ext: 'TXT', attr: 0x20, cluster: 37, size: HELLO_TEXT.length },
   { name: 'HLT', ext: 'APP', attr: 0x20, cluster: 38, size: 3, from: 19 },
   { name: 'HELLO', ext: 'APP', attr: 0x20, cluster: 39, size: 29, from: 20 },
-  { name: 'CRACK', ext: 'APP', attr: 0x20, cluster: 40, size: 14, from: 21 },
+  { name: 'CRACK', ext: 'APP', attr: 0x20, cluster: 40, size: 20, from: 21 },
   { name: 'HELLO2', ext: 'APP', attr: 0x20, cluster: 41, size: 120, from: 22 },
   { name: 'BUG', ext: 'APP', attr: 0x20, cluster: 42, size: 96, from: 22 },
   { name: 'WINHELO', ext: 'APP', attr: 0x20, cluster: 43, size: 190, from: 22 },

@@ -106,6 +106,7 @@ js/
       day18.js             Day 18: mem, cls, and dir from the FAT12 root directory
       day19.js             Day 19: type, the FAT, and running a program from the disk
       day20.js             Day 20: returning from apps, INT 0x40 system calls
+      day21.js             Day 21: app data segments, privilege level 3, exception 0x0D
       desktop640.js        The 640 × 480 desktop with the console, shared from day 17
     programs/
       assemble.js          Write programs as data: source, bytes, comments
@@ -129,6 +130,7 @@ js/
       day18.js             Day 18's console commands (simplified)
       day19.js             Day 19's type command, FAT code, and hlt.app (simplified)
       day20.js             Day 20's app call, API handler, and hello.app (simplified)
+      day21.js             Day 21's crack.app, start_app, and exception handler (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
