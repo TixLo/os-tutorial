@@ -97,6 +97,7 @@ js/
       day09.js             Day 9: measuring memory, a memory manager
       day10.js             Day 10: 4 KiB allocation, layers, partial redraws
       day11.js             Day 11: a window, a counter, the layer map
+      day12.js             Day 12: the timer chip, keeping time, timers
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
@@ -110,6 +111,7 @@ js/
       day09.js             Day 9's memory test and memory manager (simplified)
       day10.js             Day 10's layer (sheet) code (simplified)
       day11.js             Day 11's window, counter, and map code (simplified)
+      day12.js             Day 12's timer code (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
@@ -137,6 +139,7 @@ js/
     TableDiagramView.js    Table diagrams in the explanation (palette, IDT, ...)
     PicView.js             Interrupt controllers: IRQ inputs, masks, vectors
     FifoView.js            Ring buffers: slots and read/write positions
+    TimelineView.js        Timelines: interrupts, timers, and later tasks over time
     TerminalView.js        TERMINAL tab: debugger log, later the OS console
     StatusView.js          Status bar
     MemoryView.js          Zoomable grid (pages / 16-byte blocks / bytes) and detail
@@ -213,7 +216,8 @@ list of drawing operations (fill, box, pattern, text, bitmap; see
 memory panel read the same bytes, so the screen always matches memory.
 `table` fills a table diagram (`visual: 'table'`), `pic` the interrupt
 controller diagram (`visual: 'pic'`), `fifo` a ring buffer
-(`visual: 'fifo'`), `terminal` fills the
+(`visual: 'fifo'`), `timeline` a timeline (`visual: 'timeline'`),
+`terminal` fills the
 TERMINAL tab, and `memory.layout` adds regions the OS sets up, such as its
 tables above 1 MiB. A write may give `fill` to set every byte of its range
 first, so a large table cleared to zero needs no byte list, and `graphics`

@@ -10,6 +10,7 @@ import { DAY_08 } from './day08.js';
 import { DAY_09 } from './day09.js';
 import { DAY_10 } from './day10.js';
 import { DAY_11 } from './day11.js';
+import { DAY_12 } from './day12.js';
 
 // Every chapter of the site, in order: day 0 (added by this site) and the book's 30 days.
 // A chapter is { id, title, name, startsOff?, steps }. Each chapter's step 0 holds its full
@@ -30,5 +31,6 @@ export const CHAPTERS = Object.freeze([
   DAY_09,
   DAY_10,
   DAY_11,
-  ...Array.from({ length: 19 }, (_, i) => comingSoon(i + 12)),
+  DAY_12,
+  ...Array.from({ length: 18 }, (_, i) => comingSoon(i + 13)),
 ]);

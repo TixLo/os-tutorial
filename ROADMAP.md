@@ -4,8 +4,8 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 to M7c done** (days 0 to 11, plus the chapter framework). Next:
-**M8a** (day 12). The open questions are settled; see [Decisions](#5-decisions).
+Status: **M0 to M8a done** (days 0 to 12, plus the chapter framework). Next:
+**M8b** (day 13). The open questions are settled; see [Decisions](#5-decisions).
 
 ## 1. Book outline
 
@@ -83,7 +83,7 @@ first milestone that needs it.
 | **M7a** | ✅ Done: day 9 | Memory size check, allocate and free | Memory panel shows allocations and frees |
 | **M7b** | ✅ Done: day 10 | 4 KiB memory units, layers | — |
 | **M7c** | ✅ Done: day 11 | Windows, layer refresh | — |
-| **M8a** | Day 12 | Timer interrupts, timer management | What's happening panel shows a timeline |
+| **M8a** | ✅ Done: day 12 | Timer interrupts, timer management | What's happening panel shows a timeline |
 | **M8b** | Day 13 | Faster timers, one FIFO for all events | — |
 | **M8c** | Day 14 | High resolution, keyboard input into a window | — |
 | **M8d** | Day 15 | Task switching with TSS | What's happening panel shows the task list |
