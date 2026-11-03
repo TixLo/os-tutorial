@@ -28,6 +28,7 @@ import { DAY25_BEEP, DAY25_COLORS, DAY25_CONSOLES } from './day25.js';
 import { DAY26_FAST, DAY26_CONSOLES } from './day26.js';
 import { DAY27_LDT, DAY27_LIB } from './day27.js';
 import { DAY28_FILES, DAY28_TEXT } from './day28.js';
+import { DAY29_COMPRESS, DAY29_STDLIB, DAY29_APPS } from './day29.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -110,4 +111,7 @@ export const PROGRAMS = Object.freeze({
   day27Lib: DAY27_LIB,
   day28Files: DAY28_FILES,
   day28Text: DAY28_TEXT,
+  day29Compress: DAY29_COMPRESS,
+  day29Stdlib: DAY29_STDLIB,
+  day29Apps: DAY29_APPS,
 });
