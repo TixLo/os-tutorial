@@ -98,6 +98,7 @@ js/
       day10.js             Day 10: 4 KiB allocation, layers, partial redraws
       day11.js             Day 11: a window, a counter, the layer map
       day12.js             Day 12: the timer chip, keeping time, timers
+      day13.js             Day 13: one FIFO for every event, a sorted timer list
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
@@ -112,6 +113,7 @@ js/
       day10.js             Day 10's layer (sheet) code (simplified)
       day11.js             Day 11's window, counter, and map code (simplified)
       day12.js             Day 12's timer code (simplified)
+      day13.js             Day 13's FIFO32 and timer list (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
