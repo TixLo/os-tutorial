@@ -35,7 +35,7 @@ const line = (y, text) => [
   { op: 'box', color: C.black, x0: 8, y0: y, x1: 8 + text.length * 8 - 1, y1: y + 15 },
   { op: 'text', x: 8, y, color: C.white, text },
 ];
-const background = (mx, my) => [
+export const background = (mx, my) => [
   ...DAY5_OPS.filter((op) => op.op !== 'bitmap'),
   ...line(96, '[lcr    0    0]'),
   ...line(112, `(${pad(mx, 3)}, ${pad(my, 3)})`),

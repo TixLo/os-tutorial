@@ -29,3 +29,49 @@ export function desktop(w = 320, h = 200) {
 
 // A graphics state for a 320 × 200 screen
 export const screen320 = (ops) => ({ width: 320, height: 200, ops });
+
+// The close button on a window's title bar: @ black, $ dark gray, Q light gray, O white
+export const CLOSE_BUTTON = Object.freeze([
+  'OOOOOOOOOOOOOOO@',
+  'OQQQQQQQQQQQQQ$@',
+  'OQQQQQQQQQQQQQ$@',
+  'OQQQ@@QQQQ@@QQ$@',
+  'OQQQQ@@QQ@@QQQ$@',
+  'OQQQQQ@@@@QQQQ$@',
+  'OQQQQQQ@@QQQQQ$@',
+  'OQQQQQ@@@@QQQQ$@',
+  'OQQQQ@@QQ@@QQQ$@',
+  'OQQQ@@QQQQ@@QQ$@',
+  'OQQQQQQQQQQQQQ$@',
+  'OQQQQQQQQQQQQQ$@',
+  'O$$$$$$$$$$$$$$@',
+  '@@@@@@@@@@@@@@@@',
+]);
+const CLOSE_COLORS = Object.freeze({ '@': C.black, $: C.darkGray, Q: C.lightGray, O: C.white });
+
+// A window drawn the way make_window draws it (day 11), at (x, y) on whatever it is
+// drawn into: raised frame, light gray face, title bar, close button. `active` picks the
+// title bar's color (day 13 dims inactive windows).
+export function windowOps(x, y, w, h, title, active = true) {
+  const at = (color, x0, y0, x1, y1) => box(color, x + x0, y + y0, x + x1, y + y1);
+  return [
+    at(C.lightGray, 0, 0, w - 1, 0),
+    at(C.white, 1, 1, w - 2, 1),
+    at(C.lightGray, 0, 0, 0, h - 1),
+    at(C.white, 1, 1, 1, h - 2),
+    at(C.darkGray, w - 2, 1, w - 2, h - 2),
+    at(C.black, w - 1, 0, w - 1, h - 1),
+    at(C.lightGray, 2, 2, w - 3, h - 3),
+    at(active ? C.darkBlue : C.darkGray, 3, 3, w - 4, 20),
+    at(C.darkGray, 1, h - 2, w - 2, h - 2),
+    at(C.black, 0, h - 1, w - 1, h - 1),
+    { op: 'text', x: x + 6, y: y + 4, color: active ? C.white : C.lightGray, text: title },
+    { op: 'bitmap', x: x + w - 21, y: y + 5, rows: CLOSE_BUTTON, colors: CLOSE_COLORS },
+  ];
+}
+
+// Text on a light gray background inside a window, as putstr_on_sheet does (day 13)
+export const textOn = (x, y, text, color = C.black, bg = C.lightGray) => [
+  box(bg, x, y, x + text.length * 8 - 1, y + 15),
+  { op: 'text', x, y, color, text },
+];

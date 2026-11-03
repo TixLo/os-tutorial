@@ -96,6 +96,7 @@ js/
       day08.js             Day 8: mouse packets, moving the cursor, the far jump
       day09.js             Day 9: measuring memory, a memory manager
       day10.js             Day 10: 4 KiB allocation, layers, partial redraws
+      day11.js             Day 11: a window, a counter, the layer map
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
@@ -108,11 +109,12 @@ js/
       day08.js             Day 8's mouse decoder and cursor movement (simplified)
       day09.js             Day 9's memory test and memory manager (simplified)
       day10.js             Day 10's layer (sheet) code (simplified)
+      day11.js             Day 11's window, counter, and map code (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
     font.js                The OS's 8 × 16 font, drawn for this site
-    screens.js             Drawing lists for the OS's screens (desktop, ...)
+    screens.js             Drawing lists for the OS's screens (desktop, windows, ...)
   models/                  State and rules. No DOM access.
     LayoutModel.js         Panel sizes, limits, persistence
     MachineModel.js        Current chapter and step, and the merged hardware state
