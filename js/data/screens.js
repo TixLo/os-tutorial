@@ -108,3 +108,39 @@ export function consoleOps(x, y, lines, { active = true, cursor = true, title = 
   }
   return ops;
 }
+
+// A line drawn the way api_linewin does (day 23): step one pixel at a time along the
+// longer axis and a fraction along the other, in 1/1024ths
+export function lineOps(x0, y0, x1, y1, color) {
+  const dx = Math.abs(x1 - x0);
+  const dy = Math.abs(y1 - y0);
+  const len = Math.max(dx, dy) + 1;
+  const sx = len > 1 ? ((x1 - x0) * 1024) / (len - 1) : 0;
+  const sy = len > 1 ? ((y1 - y0) * 1024) / (len - 1) : 0;
+  let x = x0 * 1024;
+  let y = y0 * 1024;
+  const ops = [];
+  for (let i = 0; i < len; i++) {
+    const px = Math.round(x / 1024);
+    const py = Math.round(y / 1024);
+    ops.push(box(color, px, py, px, py));
+    x += sx;
+    y += sy;
+  }
+  return ops;
+}
+
+// Points at repeatable "random" places inside a rectangle (a small linear congruential
+// generator, like an app's rand())
+export function starOps(x0, y0, w, h, count, color, seed = 1) {
+  let r = seed;
+  const next = () => {
+    r = (r * 1103515245 + 12345) & 0x7FFFFFFF;
+    return r;
+  };
+  return Array.from({ length: count }, () => {
+    const x = x0 + (next() % w);
+    const y = y0 + (next() % h);
+    return box(color, x, y, x, y);
+  });
+}

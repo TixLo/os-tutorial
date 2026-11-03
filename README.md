@@ -108,6 +108,7 @@ js/
       day20.js             Day 20: returning from apps, INT 0x40 system calls
       day21.js             Day 21: app data segments, privilege level 3, exception 0x0D
       day22.js             Day 22: apps in C, the app header, bugs, windows for apps
+      day23.js–day30.js    Days 23–30 as highlights: APIs, windows, sound, LDT, files, apps
       desktop640.js        The 640 × 480 desktop with the console, shared from day 17
     programs/
       assemble.js          Write programs as data: source, bytes, comments
@@ -133,6 +134,7 @@ js/
       day20.js             Day 20's app call, API handler, and hello.app (simplified)
       day21.js             Day 21's crack.app, start_app, and exception handler (simplified)
       day22.js             Day 22's API glue, header check, bug handling, window API (simplified)
+      day23.js–day30.js    Key code for days 23–30 (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
