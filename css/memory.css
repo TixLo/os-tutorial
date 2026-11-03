@@ -30,7 +30,7 @@
 
 /* Grid: a row label column plus 16 columns. Rows stretch to fill the panel. */
 .mem-grid {
-  flex: 1;
+  flex: 1 0 auto;   /* grow with its rows; the panel scrolls when they don't fit */
   min-height: 220px;
   display: grid;
   grid-template-columns: auto repeat(16, minmax(0, 1fr));
