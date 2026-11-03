@@ -4,8 +4,8 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 to M7a done** (days 0 to 9, plus the chapter framework). Next:
-**M7b** (day 10). The open questions are settled; see [Decisions](#5-decisions).
+Status: **M0 to M7b done** (days 0 to 10, plus the chapter framework). Next:
+**M7c** (day 11). The open questions are settled; see [Decisions](#5-decisions).
 
 ## 1. Book outline
 
@@ -81,7 +81,7 @@ first milestone that needs it.
 | **M6b** | ✅ Done: day 7 | FIFO buffers, keyboard and mouse data | Ring buffer diagram; key and mouse bytes on the display |
 | **M6c** | ✅ Done: day 8 | Mouse packets, the protected-mode switch in detail | — |
 | **M7a** | ✅ Done: day 9 | Memory size check, allocate and free | Memory panel shows allocations and frees |
-| **M7b** | Day 10 | 4 KiB memory units, layers | — |
+| **M7b** | ✅ Done: day 10 | 4 KiB memory units, layers | — |
 | **M7c** | Day 11 | Windows, layer refresh | — |
 | **M8a** | Day 12 | Timer interrupts, timer management | What's happening panel shows a timeline |
 | **M8b** | Day 13 | Faster timers, one FIFO for all events | — |

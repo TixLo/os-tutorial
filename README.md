@@ -95,6 +95,7 @@ js/
       day07.js             Day 7: key codes, ring buffers, switching on the mouse
       day08.js             Day 8: mouse packets, moving the cursor, the far jump
       day09.js             Day 9: measuring memory, a memory manager
+      day10.js             Day 10: 4 KiB allocation, layers, partial redraws
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
@@ -106,6 +107,7 @@ js/
       day07.js             Day 7's handlers, FIFO, and mouse setup (simplified)
       day08.js             Day 8's mouse decoder and cursor movement (simplified)
       day09.js             Day 9's memory test and memory manager (simplified)
+      day10.js             Day 10's layer (sheet) code (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
@@ -212,7 +214,10 @@ controller diagram (`visual: 'pic'`), `fifo` a ring buffer
 (`visual: 'fifo'`), `terminal` fills the
 TERMINAL tab, and `memory.layout` adds regions the OS sets up, such as its
 tables above 1 MiB. A write may give `fill` to set every byte of its range
-first, so a large table cleared to zero needs no byte list. Setting an entry
+first, so a large table cleared to zero needs no byte list, and `graphics`
+fills it with the pixels of a drawing list, for an off-screen buffer such as
+a layer. `marks` outlines rectangles on the graphics screen, such as the area
+a step redraws; marks are drawn over the screen, not into memory. Setting an entry
 of `writes`, `ranges`, or `regs` to `null` removes it.
 
 To add a day, create `js/data/chapters/dayNN.js` exporting a chapter

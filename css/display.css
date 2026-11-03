@@ -1,6 +1,7 @@
 /* Display panel shown as a monitor */
 
 .monitor {
+  position: relative;   /* screen marks are placed over the canvas */
   display: grid;
   grid-template-columns: minmax(0, 1fr);  /* the text screen must not widen the panel */
   place-items: center;
@@ -74,3 +75,16 @@
 }
 .monitor[data-monitor="graphics"] { place-items: stretch; grid-template-rows: minmax(0, 1fr); }
 .monitor[data-monitor="graphics"] .graphics-screen { display: block; }
+
+/* Rectangles a step points at on the graphics screen, such as the area it redraws */
+.screen-marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.screen-mark {
+  position: absolute;
+  outline: 2px solid var(--sig-ramp);
+  outline-offset: 0;
+  box-shadow: 0 0 0 1px #000;
+}

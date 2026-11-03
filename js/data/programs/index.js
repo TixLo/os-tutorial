@@ -9,6 +9,7 @@ import { DAY6_BUILD, DAY6_PIC, DAY6_HANDLER, DAY6_WRAPPER, DAY6_MAIN } from './d
 import { DAY7_KEY, DAY7_BUFFER, DAY7_FIFO, DAY7_MOUSE } from './day07.js';
 import { DAY8_DECODE, DAY8_MOVE } from './day08.js';
 import { DAY9_MEMTEST, DAY9_MEMTEST_SUB, DAY9_MEMMAN } from './day09.js';
+import { DAY10_ALLOC4K, DAY10_SHEET, DAY10_MAIN } from './day10.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -42,4 +43,7 @@ export const PROGRAMS = Object.freeze({
   day9Memtest: DAY9_MEMTEST,
   day9MemtestSub: DAY9_MEMTEST_SUB,
   day9Memman: DAY9_MEMMAN,
+  day10Alloc4k: DAY10_ALLOC4K,
+  day10Sheet: DAY10_SHEET,
+  day10Main: DAY10_MAIN,
 });

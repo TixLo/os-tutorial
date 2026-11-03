@@ -117,10 +117,16 @@ export class MemoryModel extends EventEmitter {
   // A later write replaces whatever an earlier one put in the same range. `fill` gives
   // every byte of the range a value first (for example a table cleared to zero), so a
   // large range doesn't need all its bytes listed.
-  #write({ start, end, data = [], fill }) {
+  // `graphics` fills the range with the pixels of a drawing list instead, for an
+  // off-screen buffer such as a layer.
+  #write({ start, end, data = [], fill, graphics }) {
     for (let address = start; address <= end; address++) {
       if (fill === undefined) this.#known.delete(address);
       else this.#known.set(address, fill);
+    }
+    if (graphics) {
+      const { pixels } = rasterize(graphics);
+      pixels.forEach((value, i) => this.#known.set(start + i, value));
     }
     for (const [address, bytes] of data) {
       bytes.forEach((value, i) => this.#known.set(address + i, value));

@@ -144,6 +144,7 @@ export class MachineController {
       cursor: state.cursor,
       graphics: state.graphics,
       palette: state.palette,
+      marks: state.marks,
     });
     terminal.render(state.terminal);
     code.render({

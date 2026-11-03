@@ -16,6 +16,8 @@ export class DisplayView {
   #root;
   #screen;
   #canvas;
+  #marks;
+  #markList = [];
   #drawn = '';
 
   constructor(root = document.getElementById('monitor')) {
@@ -26,17 +28,27 @@ export class DisplayView {
     this.#canvas = document.createElement('canvas');
     this.#canvas.className = 'graphics-screen';
     this.#canvas.setAttribute('role', 'img');
-    root.append(this.#screen, this.#canvas);
-    new ResizeObserver(() => this.#fit()).observe(root);
+    this.#marks = document.createElement('div');
+    this.#marks.className = 'screen-marks';
+    this.#marks.setAttribute('aria-hidden', 'true');
+    root.append(this.#screen, this.#canvas, this.#marks);
+    new ResizeObserver(() => {
+      this.#fit();
+      this.#placeMarks();
+    }).observe(root);
   }
 
   // monitor: 'off' | 'nosignal' | 'text' | 'graphics'; screen: lines of text;
   // cursor: [row, column], or null for the start of the line after the text;
-  // graphics: drawing list (see core/raster.js); palette: 'vga' | 'os'
-  render({ monitor, screen, cursor, graphics, palette }) {
+  // graphics: drawing list (see core/raster.js); palette: 'vga' | 'os';
+  // marks: rectangles to outline on the graphics screen, [{ x0, y0, x1, y1 }], such as
+  // the area a step redraws. They are drawn over the screen, not into video memory.
+  render({ monitor, screen, cursor, graphics, palette, marks }) {
     this.#root.dataset.monitor = monitor;
+    this.#markList = monitor === 'graphics' ? marks || [] : [];
     if (monitor === 'graphics') {
       this.#draw(graphics || { ops: [] }, palette || 'vga');
+      this.#placeMarks();
       return;
     }
     this.#fit();
@@ -73,6 +85,26 @@ export class DisplayView {
       image.data.set([r, g, b, 255], i * 4);
     }
     context.putImageData(image, 0, 0);
+  }
+
+  // Outline each mark where its pixels appear in the scaled, letterboxed canvas
+  #placeMarks() {
+    const marks = this.#markList;
+    this.#marks.replaceChildren();
+    if (!marks.length) return;
+    const canvas = this.#canvas;
+    const scale = Math.min(canvas.clientWidth / canvas.width, canvas.clientHeight / canvas.height);
+    const left = canvas.offsetLeft + (canvas.clientWidth - canvas.width * scale) / 2;
+    const top = canvas.offsetTop + (canvas.clientHeight - canvas.height * scale) / 2;
+    for (const { x0, y0, x1, y1 } of marks) {
+      const box = document.createElement('div');
+      box.className = 'screen-mark';
+      box.style.left = `${left + x0 * scale}px`;
+      box.style.top = `${top + y0 * scale}px`;
+      box.style.width = `${(x1 - x0 + 1) * scale}px`;
+      box.style.height = `${(y1 - y0 + 1) * scale}px`;
+      this.#marks.appendChild(box);
+    }
   }
 
   #fit() {
