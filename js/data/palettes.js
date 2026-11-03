@@ -69,7 +69,21 @@ export const C = Object.freeze({
 // The card's palette after the OS writes its 16 colors; entries 16-255 are left alone
 const OS = Object.freeze([...OS_COLORS.map((color) => color.rgb), ...VGA.slice(16)]);
 
-export const PALETTES = Object.freeze({ vga: VGA, os: OS });
+// Day 25: colors 16-231 become a 6 × 6 × 6 cube, each channel 0, 51, 102, ... 255:
+// color 16 + r + g × 6 + b × 36
+const hex8 = (value) => value.toString(16).toUpperCase().padStart(2, '0');
+const CUBE = Array.from({ length: 216 }, (_, i) => {
+  const r = i % 6;
+  const g = Math.floor(i / 6) % 6;
+  const b = Math.floor(i / 36);
+  return '#' + [r, g, b].map((v) => hex8(v * 51)).join('');
+});
+const OS216 = Object.freeze([...OS.slice(0, 16), ...CUBE, ...OS.slice(232)]);
+
+export const PALETTES = Object.freeze({ vga: VGA, os: OS, os216: OS216 });
+
+// The color number of a cube color (each channel 0-5)
+export const cube = (r, g, b) => 16 + r + g * 6 + b * 36;
 
 // The 6-bit value the card stores for an 8-bit channel
 export const to6bit = (value) => value >> 2;

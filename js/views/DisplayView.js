@@ -40,7 +40,7 @@ export class DisplayView {
 
   // monitor: 'off' | 'nosignal' | 'text' | 'graphics'; screen: lines of text;
   // cursor: [row, column], or null for the start of the line after the text;
-  // graphics: drawing list (see core/raster.js); palette: 'vga' | 'os';
+  // graphics: drawing list (see core/raster.js); palette: 'vga' | 'os' | 'os216';
   // marks: rectangles to outline on the graphics screen, [{ x0, y0, x1, y1 }], such as
   // the area a step redraws. They are drawn over the screen, not into video memory.
   render({ monitor, screen, cursor, graphics, palette, marks }) {
