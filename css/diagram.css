@@ -95,3 +95,43 @@
   font-size: 11.5px;
   text-align: center;
 }
+
+/* Ring buffers (FifoView) */
+.fifo-diagram {
+  width: 100%;
+  max-width: 560px;
+  font-size: 12px;
+}
+.fifo-title {
+  margin: 0 0 6px;
+  color: var(--text-dim);
+  text-align: center;
+}
+.fifo-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  gap: 3px;
+}
+.fifo-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2px 0;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+.fifo-slot[data-full="true"] {
+  background: var(--mem-written-bg);
+  border-color: var(--mem-written-border);
+}
+.fifo-index { font-size: 9px; color: var(--text-dim); }
+.fifo-byte { font-size: 12px; }
+.fifo-slot[data-full="false"] .fifo-byte { color: var(--text-dim); }
+.fifo-marks { min-height: 1.2em; font-size: 10px; font-weight: 700; color: var(--sig-ramp); }
+.fifo-note {
+  margin: 6px 0 0;
+  color: var(--text-dim);
+  font-size: 11.5px;
+  text-align: center;
+}

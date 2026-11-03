@@ -92,6 +92,7 @@ js/
       day04.js             Day 4: drawing from C, the palette, rectangles
       day05.js             Day 5: boot info struct, text, mouse cursor, GDT and IDT
       day06.js             Day 6: split compilation, PIC setup, the first interrupt
+      day07.js             Day 7: key codes, ring buffers, switching on the mouse
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
@@ -100,6 +101,7 @@ js/
       day04.js             Day 4's assembly helpers and drawing code (simplified)
       day05.js             Day 5's text, cursor, and table code (simplified)
       day06.js             Day 6's Makefile, PIC setup, and handlers (simplified)
+      day07.js             Day 7's handlers, FIFO, and mouse setup (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
@@ -126,6 +128,7 @@ js/
     DisplayView.js         Monitor: text screen, or graphics drawn through the palette
     TableDiagramView.js    Table diagrams in the explanation (palette, IDT, ...)
     PicView.js             Interrupt controllers: IRQ inputs, masks, vectors
+    FifoView.js            Ring buffers: slots and read/write positions
     TerminalView.js        TERMINAL tab: debugger log, later the OS console
     StatusView.js          Status bar
     MemoryView.js          Zoomable grid (pages / 16-byte blocks / bytes) and detail
@@ -201,7 +204,8 @@ list of drawing operations (fill, box, pattern, text, bitmap; see
 `js/core/raster.js`), and `palette` (`vga` or `os`). The display and the
 memory panel read the same bytes, so the screen always matches memory.
 `table` fills a table diagram (`visual: 'table'`), `pic` the interrupt
-controller diagram (`visual: 'pic'`), `terminal` fills the
+controller diagram (`visual: 'pic'`), `fifo` a ring buffer
+(`visual: 'fifo'`), `terminal` fills the
 TERMINAL tab, and `memory.layout` adds regions the OS sets up, such as its
 tables above 1 MiB. A write may give `fill` to set every byte of its range
 first, so a large table cleared to zero needs no byte list.
