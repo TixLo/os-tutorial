@@ -18,6 +18,7 @@ import { DAY15_TSS, DAY15_TASKB, DAY15_MTASK } from './day15.js';
 import { DAY16_TASKS, DAY16_SLEEP, DAY16_LEVELS } from './day16.js';
 import { DAY17_CONSOLE, DAY17_KEYS } from './day17.js';
 import { DAY18_COMMANDS } from './day18.js';
+import { DAY19_TYPE, DAY19_FAT, DAY19_RUN } from './day19.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -74,4 +75,7 @@ export const PROGRAMS = Object.freeze({
   day17Console: DAY17_CONSOLE,
   day17Keys: DAY17_KEYS,
   day18Commands: DAY18_COMMANDS,
+  day19Type: DAY19_TYPE,
+  day19Fat: DAY19_FAT,
+  day19Run: DAY19_RUN,
 });

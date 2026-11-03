@@ -52,3 +52,39 @@ export const rootDirWrite = (day) => ({
 // The console's dir listing
 export const dirLines = (day) =>
   filesOnDay(day).map((file) => `${pad(file.name, 8)}.${pad(file.ext, 3)} ${String(file.size).padStart(7)}`);
+
+// The FAT: one 12-bit entry per cluster, the number of the file's next cluster, or 0xFFF
+// at the end of a file. Entries 0 and 1 are reserved (0xFF0 = a 1.44 MB floppy).
+export function fatEntries(day) {
+  const fat = [0xFF0, 0xFFF];
+  for (const file of filesOnDay(day)) {
+    const count = Math.max(1, Math.ceil(file.size / 512));
+    for (let i = 0; i < count; i++) {
+      fat[file.cluster + i] = i === count - 1 ? 0xFFF : file.cluster + i + 1;
+    }
+  }
+  return Array.from({ length: fat.length }, (_, i) => fat[i] || 0);
+}
+
+// Two 12-bit entries packed into three bytes, low nibble first
+export function packFat(entries) {
+  const bytes = [];
+  for (let i = 0; i < entries.length; i += 2) {
+    const a = entries[i];
+    const b = entries[i + 1] || 0;
+    bytes.push(a & 0xFF, ((a >> 8) & 0x0F) | ((b & 0x0F) << 4), (b >> 4) & 0xFF);
+  }
+  return bytes;
+}
+
+export const fatWrite = (day) => ({
+  start: FAT_ADDR, end: FAT_ADDR + 9 * 512 - 1, fill: 0,
+  data: [[FAT_ADDR, packFat(fatEntries(day))]],
+});
+
+// A file's contents as a memory write, at its first cluster
+export const fileWrite = (file, bytes) => ({
+  start: clusterAddr(file.cluster), end: clusterAddr(file.cluster) + Math.max(1, Math.ceil(file.size / 512)) * 512 - 1,
+  fill: 0, data: [[clusterAddr(file.cluster), bytes]],
+});
+export const textBytes = (text) => [...text].map((ch) => ch.charCodeAt(0));

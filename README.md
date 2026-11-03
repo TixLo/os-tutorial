@@ -104,6 +104,7 @@ js/
       day16.js             Day 16: task manager, sleep and wake, priorities, levels
       day17.js             Day 17: the console task, Tab, Shift, Caps Lock, scrolling
       day18.js             Day 18: mem, cls, and dir from the FAT12 root directory
+      day19.js             Day 19: type, the FAT, and running a program from the disk
       desktop640.js        The 640 × 480 desktop with the console, shared from day 17
     programs/
       assemble.js          Write programs as data: source, bytes, comments
@@ -125,6 +126,7 @@ js/
       day16.js             Day 16's task manager (simplified)
       day17.js             Day 17's console task and keyboard handling (simplified)
       day18.js             Day 18's console commands (simplified)
+      day19.js             Day 19's type command, FAT code, and hlt.app (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors

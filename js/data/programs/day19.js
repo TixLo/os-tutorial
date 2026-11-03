@@ -1,0 +1,80 @@
+// Day 19's programs: the type command, reading the FAT to follow a file's clusters, and
+// running a program loaded from the disk. Simplified teaching code written for this
+// site; lines share a tag so a step can highlight them.
+
+export const DAY19_TYPE = Object.freeze({
+  name: 'console.c',
+  illustrative: true,
+  lines: [
+    { source: '} else if (strncmp(cmdline, "type ", 5) == 0) {', tag: 'cmd' },
+    { source: '    char name[11];', tag: 'name' },
+    { source: '    memset(name, \' \', 11);', comment: '"HELLO   TXT": 8 + 3, padded', tag: 'name' },
+    { source: '    for (x = 5, y = 0; y < 11 && cmdline[x] != 0; x++) {', tag: 'name' },
+    { source: '        if (cmdline[x] == \'.\' && y <= 8) { y = 8; continue; }', comment: 'Jump to the extension', tag: 'name' },
+    { source: '        name[y++] = toupper(cmdline[x]);', comment: 'FAT names are capitals', tag: 'name' },
+    { source: '    }', tag: 'name' },
+    { source: '    finfo = file_search(name, (struct FILEINFO *) (DISKIMG + 0x002600), 224);', comment: 'Compare all 11 bytes', tag: 'search' },
+    { source: '    if (finfo == 0) { /* "File not found." */ }', tag: 'search' },
+    { source: '    p = (char *) memman_alloc_4k(memman, finfo->size);', tag: 'load' },
+    { source: '    file_loadfile(finfo->clustno, finfo->size, p, fat, (char *) (DISKIMG + 0x003e00));', comment: 'Gather its clusters', tag: 'load' },
+    { source: '    for (x = 0; x < finfo->size; x++) {', tag: 'print' },
+    { source: '        if (p[x] == 0x09) { /* tab: spaces up to the next multiple of 4 */ }', tag: 'print' },
+    { source: '        else if (p[x] == 0x0a) { /* new line */ }', tag: 'print' },
+    { source: '        else if (p[x] != 0x0d) { /* draw the character */ }', comment: 'Carriage returns are ignored', tag: 'print' },
+    { source: '    }', tag: 'print' },
+    { source: '    memman_free_4k(memman, (int) p, finfo->size);', tag: 'load' },
+    { source: '}', tag: 'cmd' },
+  ],
+});
+
+export const DAY19_FAT = Object.freeze({
+  name: 'file.c',
+  illustrative: true,
+  lines: [
+    { source: 'void file_readfat(int *fat, unsigned char *img)', comment: 'Unpack 12-bit entries into ints', tag: 'read' },
+    { source: '{', tag: 'read' },
+    { source: '    int i, j = 0;', tag: 'read' },
+    { source: '    for (i = 0; i < 2880; i += 2) {', comment: 'Two entries per three bytes', tag: 'read' },
+    { source: '        fat[i + 0] = (img[j + 0]      | img[j + 1] << 8) & 0xfff;', tag: 'unpack' },
+    { source: '        fat[i + 1] = (img[j + 1] >> 4 | img[j + 2] << 4) & 0xfff;', tag: 'unpack' },
+    { source: '        j += 3;', tag: 'read' },
+    { source: '    }', tag: 'read' },
+    { source: '}', tag: 'read' },
+    { source: '' },
+    { source: 'void file_loadfile(int clustno, int size, char *buf, int *fat, char *img)', tag: 'load' },
+    { source: '{', tag: 'load' },
+    { source: '    int i;', tag: 'load' },
+    { source: '    for (;;) {', tag: 'load' },
+    { source: '        if (size <= 512) {', comment: 'The last piece', tag: 'load' },
+    { source: '            for (i = 0; i < size; i++) buf[i] = img[clustno * 512 + i];', tag: 'load' },
+    { source: '            break;', tag: 'load' },
+    { source: '        }', tag: 'load' },
+    { source: '        for (i = 0; i < 512; i++) buf[i] = img[clustno * 512 + i];', comment: 'A whole cluster', tag: 'load' },
+    { source: '        size -= 512;', tag: 'load' },
+    { source: '        buf += 512;', tag: 'load' },
+    { source: '        clustno = fat[clustno];', comment: 'Where the file continues', tag: 'chain' },
+    { source: '    }', tag: 'load' },
+    { source: '}', tag: 'load' },
+  ],
+});
+
+export const DAY19_RUN = Object.freeze({
+  name: 'console.c',
+  illustrative: true,
+  lines: [
+    { source: '} else if (strcmp(cmdline, "hlt") == 0) {', tag: 'cmd' },
+    { source: '    finfo = file_search("HLT     APP", (struct FILEINFO *) (DISKIMG + 0x002600), 224);', tag: 'cmd' },
+    { source: '    p = (char *) memman_alloc_4k(memman, finfo->size);', comment: 'Room for the program', tag: 'load' },
+    { source: '    file_loadfile(finfo->clustno, finfo->size, p, fat, (char *) (DISKIMG + 0x003e00));', tag: 'load' },
+    { source: '    set_segmdesc(gdt + 1003, finfo->size - 1, (int) p, AR_CODE32_ER);', comment: 'A code segment that starts at p', tag: 'segment' },
+    { source: '    farjmp(0, 1003 * 8);', comment: 'Jump to offset 0 of it', tag: 'jump' },
+    { source: '    memman_free_4k(memman, (int) p, finfo->size);', comment: 'Never reached today', tag: 'jump' },
+    { source: '}', tag: 'cmd' },
+    { source: '' },
+    { heading: 'hlt.asm, the whole application: 3 bytes' },
+    { source: 'bits 32', tag: 'app' },
+    { label: 'fin' },
+    { source: 'hlt', bytes: [0xF4], comment: 'Sleep until an interrupt', tag: 'app' },
+    { source: 'jmp fin', bytes: [0xEB, 0xFD], comment: 'and again, forever', tag: 'app' },
+  ],
+});
