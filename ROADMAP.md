@@ -4,8 +4,8 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 to M9f and M10a–g done** (days 0 to 29, plus the chapter
-framework). Next: day 30. The open questions are settled; see [Decisions](#5-decisions).
+Status: **all milestones done**: day 0 and all 30 days of the book. What
+remains is checking each day against the book and fixing what differs. The open questions are settled; see [Decisions](#5-decisions).
 
 ## 1. Book outline
 
@@ -94,7 +94,7 @@ first milestone that needs it.
 | **M9d** | ✅ Done: day 20 | System call API | — |
 | **M9e** | ✅ Done: day 21 | Protecting the OS, exceptions | — |
 | **M9f** | ✅ Done: day 22 | Applications in C | — |
-| **M10a–h** | Days 23–30 (days 23–29 ✅) | One milestone per day: drawing APIs, windows, sound and consoles, speedups, LDT and libraries, files and Japanese text, compression, larger applications | Highlights instead of step-by-step breakdowns |
+| **M10a–h** | ✅ Done: days 23–30 | One milestone per day: drawing APIs, windows, sound and consoles, speedups, LDT and libraries, files and Japanese text, compression, larger applications | Highlights instead of step-by-step breakdowns |
 
 ## 4. Structure of each day
 

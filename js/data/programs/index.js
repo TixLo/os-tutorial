@@ -29,6 +29,7 @@ import { DAY26_FAST, DAY26_CONSOLES } from './day26.js';
 import { DAY27_LDT, DAY27_LIB } from './day27.js';
 import { DAY28_FILES, DAY28_TEXT } from './day28.js';
 import { DAY29_COMPRESS, DAY29_STDLIB, DAY29_APPS } from './day29.js';
+import { DAY30_CALC, DAY30_TVIEW, DAY30_MML, DAY30_GVIEW } from './day30.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -114,4 +115,8 @@ export const PROGRAMS = Object.freeze({
   day29Compress: DAY29_COMPRESS,
   day29Stdlib: DAY29_STDLIB,
   day29Apps: DAY29_APPS,
+  day30Calc: DAY30_CALC,
+  day30Tview: DAY30_TVIEW,
+  day30Mml: DAY30_MML,
+  day30Gview: DAY30_GVIEW,
 });
