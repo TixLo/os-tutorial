@@ -101,6 +101,7 @@ js/
       day13.js             Day 13: one FIFO for every event, a sorted timer list
       day14.js             Day 14: VBE 640 × 480, typing into a text box, dragging
       day15.js             Day 15: TSS, switching tasks, switching on a timer
+      day16.js             Day 16: task manager, sleep and wake, priorities, levels
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
@@ -118,6 +119,7 @@ js/
       day13.js             Day 13's FIFO32 and timer list (simplified)
       day14.js             Day 14's VBE setup, key table, and dragging (simplified)
       day15.js             Day 15's TSS setup, task B, and timer switching (simplified)
+      day16.js             Day 16's task manager (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
