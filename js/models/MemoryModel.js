@@ -111,9 +111,14 @@ export class MemoryModel extends EventEmitter {
     this.emit('change', this.snapshot);
   }
 
-  // A later write replaces whatever an earlier one put in the same range
-  #write({ start, end, data }) {
-    for (let address = start; address <= end; address++) this.#known.delete(address);
+  // A later write replaces whatever an earlier one put in the same range. `fill` gives
+  // every byte of the range a value first (for example a table cleared to zero), so a
+  // large range doesn't need all its bytes listed.
+  #write({ start, end, data = [], fill }) {
+    for (let address = start; address <= end; address++) {
+      if (fill === undefined) this.#known.delete(address);
+      else this.#known.set(address, fill);
+    }
     for (const [address, bytes] of data) {
       bytes.forEach((value, i) => this.#known.set(address + i, value));
     }

@@ -90,12 +90,14 @@ js/
       day02.js             Day 2: how each instruction becomes its bytes
       day03.js             Day 3: load the OS, graphics mode, protected mode, C
       day04.js             Day 4: drawing from C, the palette, rectangles
+      day05.js             Day 5: boot info struct, text, mouse cursor, GDT and IDT
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
       ipl.js               Day 3's loader (simplified)
       kernel.js            Day 3's kernel start and first C function (simplified)
       day04.js             Day 4's assembly helpers and drawing code (simplified)
+      day05.js             Day 5's text, cursor, and table code (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
@@ -197,7 +199,8 @@ list of drawing operations (fill, box, pattern, text, bitmap; see
 memory panel read the same bytes, so the screen always matches memory.
 `table` fills a table diagram (`visual: 'table'`), `terminal` fills the
 TERMINAL tab, and `memory.layout` adds regions the OS sets up, such as its
-tables above 1 MiB.
+tables above 1 MiB. A write may give `fill` to set every byte of its range
+first, so a large table cleared to zero needs no byte list.
 
 To add a day, create `js/data/chapters/dayNN.js` exporting a chapter
 (`{ id, title, name, steps }`) and put it in `CHAPTERS` in place of its
