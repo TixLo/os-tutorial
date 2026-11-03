@@ -75,3 +75,16 @@ export const textOn = (x, y, text, color = C.black, bg = C.lightGray) => [
   box(bg, x, y, x + text.length * 8 - 1, y + 15),
   { op: 'text', x, y, color, text },
 ];
+
+// A sunken white text box (day 14): dark top and left edges, white bottom and right
+export function textboxOps(x, y, w, h) {
+  return [
+    box(C.darkGray, x - 2, y - 2, x + w + 1, y - 2),
+    box(C.darkGray, x - 2, y - 2, x - 2, y + h + 1),
+    box(C.white, x - 2, y + h + 1, x + w + 1, y + h + 1),
+    box(C.white, x + w + 1, y - 2, x + w + 1, y + h + 1),
+    box(C.black, x - 1, y - 1, x + w, y - 1),
+    box(C.black, x - 1, y - 1, x - 1, y + h),
+    box(C.white, x, y, x + w, y + h),
+  ];
+}
