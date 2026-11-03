@@ -14,6 +14,7 @@ import { DAY11_WINDOW, DAY11_COUNTER, DAY11_MAP } from './day11.js';
 import { DAY12_PIT, DAY12_TIMERS } from './day12.js';
 import { DAY13_PUTSHEET, DAY13_FIFO32, DAY13_TIMERLIST } from './day13.js';
 import { DAY14_VBE, DAY14_KEYS, DAY14_DRAG } from './day14.js';
+import { DAY15_TSS, DAY15_TASKB, DAY15_MTASK } from './day15.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -61,4 +62,7 @@ export const PROGRAMS = Object.freeze({
   day14Vbe: DAY14_VBE,
   day14Keys: DAY14_KEYS,
   day14Drag: DAY14_DRAG,
+  day15Tss: DAY15_TSS,
+  day15TaskB: DAY15_TASKB,
+  day15Mtask: DAY15_MTASK,
 });

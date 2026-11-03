@@ -313,3 +313,6 @@ export const DAY_14 = Object.freeze({
   phases: PHASES,
   steps: STEPS,
 });
+
+// Day 14's 640 × 480 screen, for the days that follow
+export { screen as screen640, LAYOUT as LAYOUT640 };
