@@ -27,7 +27,8 @@ export class VisualView {
   }
 
   // visual: 'board' | 'disk' | 'gdt' | 'table' | 'pic' | 'fifo' | 'timeline' | 'none'
-  // disk: { focus: 'boot' | 'read' | 'kernel' | null, note: [line, line] | null }
+  // disk: { focus: 'boot' | 'read' | 'kernel' | 'fat' | 'root' | 'files' | null,
+  //         note: [line, line] | null }
   // gdt: { focus: 'all' | 'code' | 'data' | null }
   // table, pic, fifo, timeline: see TableDiagramView, PicView, FifoView, TimelineView
   render({ visual, disk, gdt, table, pic, fifo, timeline }) {

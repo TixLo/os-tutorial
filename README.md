@@ -103,6 +103,7 @@ js/
       day15.js             Day 15: TSS, switching tasks, switching on a timer
       day16.js             Day 16: task manager, sleep and wake, priorities, levels
       day17.js             Day 17: the console task, Tab, Shift, Caps Lock, scrolling
+      day18.js             Day 18: mem, cls, and dir from the FAT12 root directory
       desktop640.js        The 640 × 480 desktop with the console, shared from day 17
     programs/
       assemble.js          Write programs as data: source, bytes, comments
@@ -123,11 +124,13 @@ js/
       day15.js             Day 15's TSS setup, task B, and timer switching (simplified)
       day16.js             Day 16's task manager (simplified)
       day17.js             Day 17's console task and keyboard handling (simplified)
+      day18.js             Day 18's console commands (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
     font.js                The OS's 8 × 16 font, drawn for this site
     screens.js             Drawing lists for the OS's screens (desktop, windows, ...)
+    floppy.js              Files on the OS's floppy (day 18 on) and where they are in memory
   models/                  State and rules. No DOM access.
     LayoutModel.js         Panel sizes, limits, persistence
     MachineModel.js        Current chapter and step, and the merged hardware state

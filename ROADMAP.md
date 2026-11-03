@@ -4,8 +4,8 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 to M9a done** (days 0 to 17, plus the chapter framework). Next:
-**M9b** (day 18). The open questions are settled; see [Decisions](#5-decisions).
+Status: **M0 to M9b done** (days 0 to 18, plus the chapter framework). Next:
+**M9c** (day 19). The open questions are settled; see [Decisions](#5-decisions).
 
 ## 1. Book outline
 
@@ -89,7 +89,7 @@ first milestone that needs it.
 | **M8d** | ✅ Done: day 15 | Task switching with TSS | Timeline of which task runs; TSS tables |
 | **M8e** | ✅ Done: day 16 | Task management, sleep, priorities | — |
 | **M9a** | ✅ Done: day 17 | Console window | **Terminal panel becomes the OS console** |
-| **M9b** | Day 18 | Console commands, FAT12 directories | Floppy panel shows FAT12 |
+| **M9b** | ✅ Done: day 18 | Console commands, FAT12 directories | Floppy diagram highlights FAT12 areas; root directory bytes in memory |
 | **M9c** | Day 19 | Running the first application | — |
 | **M9d** | Day 20 | System call API | — |
 | **M9e** | Day 21 | Protecting the OS, exceptions | — |

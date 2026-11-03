@@ -41,6 +41,11 @@
 
 #disk[data-focus="boot"] .dk-boot rect,
 #disk[data-focus="kernel"] .dk-data rect,
+#disk[data-focus="fat"] .dk-fat rect,
+#disk[data-focus="root"] .dk-root rect,
+#disk[data-focus="files"] .dk-root rect,
+#disk[data-focus="files"] .dk-fat rect,
+#disk[data-focus="files"] .dk-data rect,
 #disk[data-focus="read"] .dk-part rect {
   fill: var(--mem-written-bg);
   stroke: var(--mem-written-border);
