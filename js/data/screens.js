@@ -88,3 +88,23 @@ export function textboxOps(x, y, w, h) {
     box(C.white, x, y, x + w, y + h),
   ];
 }
+
+// The console window (day 17): a window with a black text area of 30 columns × 8 rows.
+// `lines` are the text from the top; the last 8 show. `cursor` draws the text cursor
+// after the last line.
+export const CONSOLE_W = 256;
+export const CONSOLE_H = 165;
+export function consoleOps(x, y, lines, { active = true, cursor = true, title = 'console' } = {}) {
+  const shown = lines.slice(-8);
+  const ops = [
+    ...windowOps(x, y, CONSOLE_W, CONSOLE_H, title, active),
+    box(C.black, x + 8, y + 28, x + 247, y + 155),
+    ...shown.map((text, row) => ({ op: 'text', x: x + 8, y: y + 28 + row * 16, color: C.white, text: text.slice(0, 30) })),
+  ];
+  if (cursor && shown.length) {
+    const row = shown.length - 1;
+    const cx = x + 8 + Math.min(shown[row].length, 29) * 8;
+    ops.push(box(C.white, cx, y + 28 + row * 16, cx + 7, y + 43 + row * 16));
+  }
+  return ops;
+}

@@ -102,6 +102,8 @@ js/
       day14.js             Day 14: VBE 640 × 480, typing into a text box, dragging
       day15.js             Day 15: TSS, switching tasks, switching on a timer
       day16.js             Day 16: task manager, sleep and wake, priorities, levels
+      day17.js             Day 17: the console task, Tab, Shift, Caps Lock, scrolling
+      desktop640.js        The 640 × 480 desktop with the console, shared from day 17
     programs/
       assemble.js          Write programs as data: source, bytes, comments
       helloBoot.js         Day 1's boot sector (complete)
@@ -120,6 +122,7 @@ js/
       day14.js             Day 14's VBE setup, key table, and dragging (simplified)
       day15.js             Day 15's TSS setup, task B, and timer switching (simplified)
       day16.js             Day 16's task manager (simplified)
+      day17.js             Day 17's console task and keyboard handling (simplified)
       index.js             Programs a step can show in the code panel
     memoryMap.js           Memory map regions and the ROM bytes the tutorial shows
     palettes.js            The card's power-on palette and the OS's 16 colors
@@ -148,7 +151,7 @@ js/
     PicView.js             Interrupt controllers: IRQ inputs, masks, vectors
     FifoView.js            Ring buffers: slots and read/write positions
     TimelineView.js        Timelines: interrupts, timers, and later tasks over time
-    TerminalView.js        TERMINAL tab: debugger log, later the OS console
+    TerminalView.js        TERMINAL tab: debugger log, or the OS console from day 17
     StatusView.js          Status bar
     MemoryView.js          Zoomable grid (pages / 16-byte blocks / bytes) and detail
     AboutView.js           ABOUT button and dialog
@@ -228,7 +231,7 @@ memory panel read the same bytes, so the screen always matches memory.
 controller diagram (`visual: 'pic'`), `fifo` a ring buffer
 (`visual: 'fifo'`), `timeline` a timeline (`visual: 'timeline'`),
 `terminal` fills the
-TERMINAL tab, and `memory.layout` adds regions the OS sets up, such as its
+TERMINAL tab (with `console: true` it mirrors the OS console window), and `memory.layout` adds regions the OS sets up, such as its
 tables above 1 MiB. A write may give `fill` to set every byte of its range
 first, so a large table cleared to zero needs no byte list, and `graphics`
 fills it with the pixels of a drawing list, for an off-screen buffer such as

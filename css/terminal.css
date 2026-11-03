@@ -44,3 +44,16 @@
 }
 .term-cmd { color: var(--led-on); }
 .term-out { color: var(--text); }
+
+/* OS console mode (day 17 on): white on black, like the console window */
+.term-title {
+  margin: 0 0 8px;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.term-console { background: #000; }
+.term-console .term-log { font-size: 14px; }
+.term-console .term-cmd,
+.term-console .term-out { color: #fff; }
+.term-console .term-line { display: none; }

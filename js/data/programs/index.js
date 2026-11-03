@@ -16,6 +16,7 @@ import { DAY13_PUTSHEET, DAY13_FIFO32, DAY13_TIMERLIST } from './day13.js';
 import { DAY14_VBE, DAY14_KEYS, DAY14_DRAG } from './day14.js';
 import { DAY15_TSS, DAY15_TASKB, DAY15_MTASK } from './day15.js';
 import { DAY16_TASKS, DAY16_SLEEP, DAY16_LEVELS } from './day16.js';
+import { DAY17_CONSOLE, DAY17_KEYS } from './day17.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -69,4 +70,6 @@ export const PROGRAMS = Object.freeze({
   day16Tasks: DAY16_TASKS,
   day16Sleep: DAY16_SLEEP,
   day16Levels: DAY16_LEVELS,
+  day17Console: DAY17_CONSOLE,
+  day17Keys: DAY17_KEYS,
 });
