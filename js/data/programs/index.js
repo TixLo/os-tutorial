@@ -21,6 +21,7 @@ import { DAY18_COMMANDS } from './day18.js';
 import { DAY19_TYPE, DAY19_FAT, DAY19_RUN } from './day19.js';
 import { DAY20_CALL, DAY20_API, DAY20_HELLO } from './day20.js';
 import { DAY21_CRACK, DAY21_SEGMENTS, DAY21_EXCEPTION } from './day21.js';
+import { DAY22_GLUE, DAY22_HEADER, DAY22_BUGS, DAY22_WINDOW } from './day22.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -86,4 +87,8 @@ export const PROGRAMS = Object.freeze({
   day21Crack: DAY21_CRACK,
   day21Segments: DAY21_SEGMENTS,
   day21Exception: DAY21_EXCEPTION,
+  day22Glue: DAY22_GLUE,
+  day22Header: DAY22_HEADER,
+  day22Bugs: DAY22_BUGS,
+  day22Window: DAY22_WINDOW,
 });

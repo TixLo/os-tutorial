@@ -23,6 +23,7 @@ export const FILES = Object.freeze([
   { name: 'CRACK', ext: 'APP', attr: 0x20, cluster: 40, size: 20, from: 21 },
   { name: 'HELLO2', ext: 'APP', attr: 0x20, cluster: 41, size: 120, from: 22 },
   { name: 'BUG', ext: 'APP', attr: 0x20, cluster: 42, size: 96, from: 22 },
+  { name: 'BUG2', ext: 'APP', attr: 0x20, cluster: 44, size: 44, from: 22 },
   { name: 'WINHELO', ext: 'APP', attr: 0x20, cluster: 43, size: 190, from: 22 },
 ]);
 
