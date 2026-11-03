@@ -1,0 +1,9 @@
+{
+  "name": "os-tutorial",
+  "private": true,
+  "type": "module",
+  "description": "Static site; no build step. package.json only marks the scripts as ES modules for Node.",
+  "scripts": {
+    "check": "node tools/check.mjs"
+  }
+}
