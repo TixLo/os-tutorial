@@ -4,8 +4,8 @@ Plan for turning the whole book, *30日でできる! OS自作入門* (Hidemi Kaw
 step-by-step tutorials on this site. The day-by-day outline below was written
 from memory; check chapter titles and details against the book.
 
-Status: **M0 to M9c done** (days 0 to 19, plus the chapter framework). Next:
-**M9d** (day 20). The open questions are settled; see [Decisions](#5-decisions).
+Status: **M0 to M9d done** (days 0 to 20, plus the chapter framework). Next:
+**M9e** (day 21). The open questions are settled; see [Decisions](#5-decisions).
 
 ## 1. Book outline
 
@@ -91,7 +91,7 @@ first milestone that needs it.
 | **M9a** | ✅ Done: day 17 | Console window | **Terminal panel becomes the OS console** |
 | **M9b** | ✅ Done: day 18 | Console commands, FAT12 directories | Floppy diagram highlights FAT12 areas; root directory bytes in memory |
 | **M9c** | ✅ Done: day 19 | Running the first application | — |
-| **M9d** | Day 20 | System call API | — |
+| **M9d** | ✅ Done: day 20 | System call API | — |
 | **M9e** | Day 21 | Protecting the OS, exceptions | — |
 | **M9f** | Day 22 | Applications in C | — |
 | **M10a–h** | Days 23–30 | One milestone per day: drawing APIs, windows, sound and consoles, speedups, LDT and libraries, files and Japanese text, compression, larger applications | Highlights instead of step-by-step breakdowns |

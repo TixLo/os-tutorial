@@ -19,6 +19,7 @@ import { DAY16_TASKS, DAY16_SLEEP, DAY16_LEVELS } from './day16.js';
 import { DAY17_CONSOLE, DAY17_KEYS } from './day17.js';
 import { DAY18_COMMANDS } from './day18.js';
 import { DAY19_TYPE, DAY19_FAT, DAY19_RUN } from './day19.js';
+import { DAY20_CALL, DAY20_API, DAY20_HELLO } from './day20.js';
 
 // Programs a step can show in the code panel, by id
 export const PROGRAMS = Object.freeze({
@@ -78,4 +79,7 @@ export const PROGRAMS = Object.freeze({
   day19Type: DAY19_TYPE,
   day19Fat: DAY19_FAT,
   day19Run: DAY19_RUN,
+  day20Call: DAY20_CALL,
+  day20Api: DAY20_API,
+  day20Hello: DAY20_HELLO,
 });
